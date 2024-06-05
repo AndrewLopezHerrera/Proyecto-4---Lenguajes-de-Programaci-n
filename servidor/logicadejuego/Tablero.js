@@ -3,20 +3,26 @@ const CasaAmarilla = require('./CasaAmarilla');
 const CasaAzul = require('./CasaAzul');
 const CasaRoja = require('./CasaRoja');
 const CasaVerde = require('./CasaVerde');
+const Ficha = require('./Ficha');
+const { json, json } = require('express');
 
 class Tablero{
     constructor(){
         /**@type {Object.<string, Casilla>} */
         this.Casillas = {};
         this.CrearCasillas();
+        /**@type {CasaAmarilla} */
         this.CasaAmarilla = new CasaAmarilla();
+        /**@type {CasaAzul} */
         this.CasaAzul = new CasaAzul();
+        /**@type {CasaVerde} */
         this.CasaVerde = new CasaVerde();
+        /**@type {CasaRoja} */
         this.CasaRoja = new CasaRoja();
-        this.PasilloAmarillo = CrearPasillo(69, 76);
-        this.PasilloAzul = CrearPasillo(18, 25);
-        this.PasilloRojo = CrearPasillo(35, 42);
-        this.PasilloVerde = CrearPasillo(52, 59);
+        this.Casillas['Casilla25Azul'].Espacios = Array(4);
+        this.Casillas['Casilla42Rojo'].Espacios = Array(4);
+        this.Casillas['Casilla60Verde'].Espacios = Array(4);
+        this.Casillas['Casilla76Amarillo'].Espacios = Array(4);
     }
 
     CrearCasillas(){
@@ -28,97 +34,237 @@ class Tablero{
                 this.Casillas['Casilla' + numero] = new Casilla(numero, true);
             else
             this.Casillas['Casilla' + numero] = new Casilla(numero, false);
+            this.CrearPasillos(numero);
         }
     }
 
-    CrearPasillo(numeroInicial, numeroFinal){
-        const pasillo = {}
-        for(;numeroInicial <= numeroFinal; numeroInicial++)
-            pasillo['Casilla' + numeroInicial] = new Casilla(numeroInicial, true);
-        return pasillo;
+    CrearPasillos(numero){
+        if(numero >= 18 && numero <= 25)
+            this.Casillas['Casilla' + numero + 'Azul'] = new Casilla(numero, true);
+        if(numero >= 35 && numero <= 42)
+            this.Casillas['Casilla' + numero + 'Rojo'] = new Casilla(numero, true);
+        if(numero >= 53 && numero <= 60)
+            this.Casillas['Casilla' + numero + 'Verde'] = new Casilla(numero, true);
+        if(numero >= 69 && numero <= 76)
+            this.Casillas['Casilla' + numero + 'Amarillo'] = new Casilla(numero, true);
     }
 
-    MoverFicha(color, numero, posicionActual, cantidadEspacios){
-        const ficha = this.SeleccionarFicha(color, numero, posicionActual);
-        if(color == 'rojo')
-            return this.MoverFichaRoja(ficha, cantidadEspacios);
+    /**
+     * 
+     * @param {string} color 
+     * @param {number} numero 
+     * @param {string} casillaActual 
+     * @param {number} cantidadEspacios 
+     * @returns 
+     */
+    MoverFicha(color, numero, casillaActual, cantidadEspacios){
+        const casilla = this.Casillas[casillaActual];
+        const ficha = this.SeleccionarFicha(color, numero, casilla);
         if(color == 'azul')
-            return this.MoverFichaAzul(ficha, cantidadEspacios);
-        if(color == 'verde')
-            return this.CasaVerde(ficha, cantidadEspacios);
-        if(color == 'amarillo')
-            return this.CasaAmarilla(ficha, cantidadEspacios);
-    }
-
-    MoverFichaRoja(ficha, posicionActual, cantidadEspacios){
-        const casillaActual = this.Casillas['Casilla' + posicionActual];
-        var posicionFinal = posicionActual + cantidadEspacios;
-        if(posicionFinal > 68)
-            posicionFinal - 68;
-        var resultado = null;
-        if(posicionActual <= 34 && posicionFinal > 34 && posicionFinal <= 42)
-            resultado = this.PasilloRojo['Casilla' + posicionFinal].InsertarFicha(ficha);
-        else if(posicionFinal <= 42)
-            resultado = this.Casillas['Casilla' + posicionFinal].InsertarFicha(ficha);
-        if(resultado != null)
-            casillaActual.EliminarFicha(ficha);
-        return (ficha, resultado);
-    }
-
-    MoverFichaVerde(ficha, posicionActual, cantidadEspacios){
-        const casillaActual = this.Casillas['Casilla' + posicionActual];
-        var posicionFinal = posicionActual + cantidadEspacios;
-        if(posicionFinal > 68)
-            posicionFinal - 68;
-        var resultado = null;
-        if(posicionActual <= 51 && posicionFinal > 51 && posicionFinal)
-            resultado = this.PasilloVerde['Casilla' + posicionFinal].InsertarFicha(ficha);
+            return this.MoverFichaAzul(ficha, casilla, casillaActual, cantidadEspacios);
+        else if(color == 'verde')
+            return this.MoverFichaVerde(ficha, casilla, casillaActual, cantidadEspacios);
+        else if(color == 'amarillo')
+            return this.MoverFichaAmarilla(ficha, casilla, cantidadEspacios);
         else
-            resultado = this.Casillas['Casilla' + posicionFinal].InsertarFicha(ficha);
-        if(resultado != null)
-            casillaActual.EliminarFicha(ficha);
-        return (ficha, resultado);
+            return this.MoverFichaRojo(ficha, casilla, casillaActual, cantidadEspacios);
     }
 
-    MoverFichaAzul(ficha, posicionActual, cantidadEspacios){
-        const casillaActual = this.Casillas['Casilla' + posicionActual];
-        var posicionFinal = posicionActual + cantidadEspacios;
-        if(posicionFinal > 68)
-            posicionFinal - 68;
-        var resultado = null;
-        if(posicionActual <= 34 && posicionFinal > 34)
-            resultado = this.PasilloRojo['Casilla' + posicionFinal].InsertarFicha(ficha);
+    /**
+     * 
+     * @param {Ficha} ficha 
+     * @param {Casilla} casilla
+     * @param {number} espacios
+     */
+    MoverFichaAmarilla(ficha, casilla, espacios){
+        const posicionActual = ficha.PosicionActual;
+        const camino = this.BuscarBloqueosAmarillo(posicionActual, espacios);
+        if(resultado == null)
+            return null;
+        const casillaDestino = this.Casillas[camino[camino.length - 1]];
+        casilla.EliminarFicha(ficha);
+        const fichaDevuelta = casillaDestino.InsertarFicha(ficha);
+        ficha.PosicionActual = casillaDestino.NumeroCasilla;
+        if(fichaDevuelta != ficha){
+            this.DevolverFicha(fichaDevuelta);
+            return EnviarInformacion(ficha, camino, fichaDevuelta)
+        }
+        return this.EnviarInformacion(ficha, camino);
+    }
+
+    MoverFichaRojo(ficha, casilla, nombreCasilla, espacios){
+        const posicionActual = ficha.PosicionActual;
+        const camino = this.BuscarBloqueos(posicionActual, espacios, nombreCasilla, 34, 'rojo');
+        if(resultado == null)
+            return null;
+        const casillaDestino = this.Casillas[camino[camino.length - 1]];
+        casilla.EliminarFicha(ficha);
+        const fichaDevuelta = casillaDestino.InsertarFicha(ficha);
+        ficha.PosicionActual = casillaDestino.NumeroCasilla;
+        if(fichaDevuelta != ficha){
+            this.DevolverFicha(fichaDevuelta);
+            return EnviarInformacion(ficha, camino, fichaDevuelta)
+        }
+        return this.EnviarInformacion(ficha, camino);
+    }
+
+    MoverFichaAzul(ficha, casilla, nombreCasilla, espacios){
+        const posicionActual = ficha.PosicionActual;
+        const casillaDestino = this.BuscarBloqueos(posicionActual, espacios, nombreCasilla, 17, 'azul')
+        if(resultado == null)
+            return null;
+        const camino = this.Casillas[camino[camino.length - 1]];
+        casilla.EliminarFicha(ficha);
+        const fichaDevuelta = casillaDestino.InsertarFicha(ficha);
+        ficha.PosicionActual = casillaDestino.NumeroCasilla;
+        if(fichaDevuelta != ficha){
+            this.DevolverFicha(fichaDevuelta);
+            return EnviarInformacion(ficha, camino, fichaDevuelta)
+        }
+        return this.EnviarInformacion(ficha, camino);
+    }
+
+    MoverFichaVerde(ficha, casilla, nombreCasilla, espacios){
+        const posicionActual = ficha.PosicionActual;
+        const casillaDestino = this.BuscarBloqueos(posicionActual, espacios, nombreCasilla, 51, 'rojo')
+        if(resultado == null)
+            return null;
+        const camino = this.Casillas[camino[camino.length - 1]];
+        casilla.EliminarFicha(ficha);
+        const fichaDevuelta = casillaDestino.InsertarFicha(ficha);
+        ficha.PosicionActual = casillaDestino.NumeroCasilla;
+        if(fichaDevuelta != ficha){
+            this.DevolverFicha(fichaDevuelta);
+            return EnviarInformacion(ficha, camino, fichaDevuelta)
+        }
+        return this.EnviarInformacion(ficha, camino);
+    }
+
+    /**
+     * 
+     * @param {Ficha} fichaMovida 
+     * @param {Ficha} fichaDevuelta 
+     */
+    EnviarInformacion(fichaMovida, camino, fichaDevuelta){
+        const fichaUno = {};
+        fichaUno['color'] = fichaMovida.Color;
+        fichaUno['numero'] = fichaMovida.Numero;
+        fichaUno['posicion'] = fichaMovida.PosicionActual;
+        fichaUno['camino'] = camino;
+        const fichaDos = {};
+        fichaDos['color'] = fichaDevuelta.Color;
+        fichaDos['numero'] = fichaDevuelta.Numero;
+        fichaDos['posicion'] = fichaDevuelta.PosicionActual;
+        const fichas = {};
+        fichas['fichaUno'] = fichaUno;
+        fichas['fichaDos'] = fichaDos;
+        return fichas;
+    }
+
+    EnviarInformacion(fichaMovida, camino){
+        const fichaUno = {};
+        fichaUno['color'] = fichaMovida.Color;
+        fichaUno['numero'] = fichaMovida.Numero;
+        fichaUno['posicion'] = fichaMovida.PosicionActual;
+        fichaUno['camino'] = camino;
+        const fichas = {};
+        fichas['fichaUno'] = fichaUno;
+        return fichas;
+    }
+
+    /**
+     * 
+     * @param {Ficha} ficha  
+     */
+    DevolverFicha(ficha){
+        if(ficha.Color == 'azul')
+            this.CasaAzul.IngresarFicha(ficha);
+        else if(ficha.Color == 'amarillo')
+            this.CasaAmarilla.IngresarFicha(ficha);
+        else if(ficha.Color == 'verde')
+            this.CasaVerde.IngresarFicha(ficha);
         else
-            resultado = this.Casillas['Casilla' + posicionFinal].InsertarFicha(ficha);
-        if(resultado != null)
-            casillaActual.EliminarFicha(ficha);
-        return (ficha, resultado);
+            this.CasaRoja.IngresarFicha(ficha);
     }
 
-    MoverFichaAmarilla(ficha, posicionActual, cantidadEspacios){
-        const casillaActual = this.Casillas['Casilla' + posicionActual];
-        var posicionFinal = posicionActual + cantidadEspacios;
-        if(posicionFinal > 68)
-            posicionFinal - 68;
-        var resultado = null;
-        if(posicionActual <= 34 && posicionFinal > 34)
-            resultado = this.PasilloRojo['Casilla' + posicionFinal].InsertarFicha(ficha);
-        else
-            resultado = this.Casillas['Casilla' + posicionFinal].InsertarFicha(ficha);
-        if(resultado != null)
-            casillaActual.EliminarFicha(ficha);
-        return (ficha, resultado);
-    }
-
-    SeleccionarFicha(color, numero, posicionActual){
-        const casilla = this.Casillas['Casilla' + posicionActual];
-        const fichas = casilla.Espacios;
+    /**
+     * 
+     * @param {string} color 
+     * @param {number} numero 
+     * @param {Casilla} casillaActual 
+     * @returns {Ficha}
+     */
+    SeleccionarFicha(color, numero, casillaActual){
+        const fichas = casillaActual.Espacios;
         const fichaUno = fichas[0];
         const fichaDos = fichas[1];
         fichaSeleccionada = null;
         if(fichaUno.Color == color && fichaUno.Numero == numero)
             return fichaUno;
         return fichaDos;
+    }
+
+    /**
+     * 
+     * @param {number} posicionActual 
+     * @param {number} cantidadEspacios 
+     * @returns {string[]}
+     */
+    BuscarBloqueosAmarillo(posicionActual, cantidadEspacios){
+        var posicionFinal = posicionActual + espacios;
+        if(posicionFinal > 76)
+            return false;
+        const camino = [];
+        for(var espacios = 1; espacios <= cantidadEspacios; espacios++){
+            const posicionEvaluada = posicionActual + espacios;
+            if(posicionFinal > 68){
+                if(this.Casillas['Casilla' + posicionEvaluada + 'Amarillo'].Espacios.length == 2)
+                    return null;
+                camino.push('Casilla' + posicionEvaluada + 'Amarillo');
+            }
+            else{
+                if(this.Casillas['Casilla' + posicionEvaluada].Espacios.length == 2)
+                    return null;
+                camino.push('Casilla' + posicionEvaluada);
+            }
+        }
+        if(entrarPasillo)
+            return this.Casillas['Casilla' + (posicionActual + espacios) + 'Amarillo'];
+        return this.Casillas['Casilla' + (posicionActual + espacios)];
+    }
+
+    /**
+     * 
+     * @param {number} posicionActual 
+     * @param {number} cantidadEspacios 
+     * @param {string} nombreCasilla 
+     * @param {number} entradaPasillo 
+     * @param {string} color 
+     * @returns {string[]}
+     */
+    BuscarBloqueos(posicionActual, cantidadEspacios, nombreCasilla, entradaPasillo, color){
+        var entrarPasillo = false;
+        var casilla;
+        var camino = []
+        for(var espacios = 1; espacios <= cantidadEspacios; espacios++){
+            casilla = posicionActual + espacios;
+            if(casilla > 68)
+                casilla -= 68
+            if(entrarPasillo){
+                if(this.Casillas['Casilla' + casilla + color].Espacios.length == 2)
+                    return null;
+                camino.push('Casilla' + casilla + color);
+            }
+            else
+                if(casilla == entradaPasillo || nombreCasilla.length > 9)
+                    entrarPasillo = true;
+                if(this.Casillas['Casilla' + casilla].Espacios.length == 2)
+                    return null;
+                camino.push('Casilla' + casilla);
+        }
+        if(entrarPasillo)
+            return this.Casillas['Casilla' + casilla + color];
+        return this.Casillas['Casilla' + casilla];
     }
 }
 

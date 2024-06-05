@@ -13,6 +13,23 @@ class CasaAmarilla extends Casa{
         /**@type {number} */
         this.CasillaSalida = 5;
     }
+
+    /**
+     * 
+     * @param {Ficha} ficha 
+     */
+    IngresarFicha(ficha){
+        super.IngresarFicha(ficha);
+        if(ficha.Numero == 1){
+            ficha.PosicionActual(100);
+        }
+        if(ficha.Numero == 2){
+            ficha.PosicionActual(101);
+        }
+        if(ficha.Numero == 3){
+            ficha.PosicionActual(102);
+        }
+    }
 }
 
 module.exports = CasaAmarilla;

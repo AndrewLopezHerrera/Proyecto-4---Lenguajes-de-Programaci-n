@@ -10,14 +10,25 @@ class Casilla{
         this.Espacios = Array(2);
     }
 
+    InsertarFicha(ficha){
+        if(this.Espacios.length == 4)
+            return this.InsertarCasillaMeta(ficha);
+        else
+            return this.InsertarCasillaNormal(ficha);
+    }
+
     /**
      * 
      * @param {Ficha} ficha 
      * @returns 
      */
-    InsertarFicha(ficha){
+    InsertarCasillaNormal(ficha){
         if(this.Espacios[0] != null && this.Espacios[1] != null)
             return null;
+        if(this.Espacios[0] == null && this.Espacios[1] == null){
+            this.Espacios[0] = ficha;
+            return ficha;
+        }
         const fichaEnCasilla = this.Espacios[0];
         if((fichaEnCasilla.Color == 'rojo' && ficha.Color == 'rojo')
             || (fichaEnCasilla.Color == 'azul' && ficha.Color == 'azul')
@@ -30,6 +41,18 @@ class Casilla{
         return fichaEnCasilla;
     }
 
+    /**
+     * 
+     * @param {Ficha} ficha 
+     */
+    InsertarCasillaMeta(ficha){
+        for(var indice = 0; indice < 4; indice++){
+            if(this.Espacios[indice] != null){
+                this.Espacios[indice] = ficha;
+            }
+        }
+        return ficha;
+    }
 
     EliminarFicha(ficha){
         if(this.Espacios[0] == ficha){
