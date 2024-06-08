@@ -8,6 +8,43 @@ body {
     font-family: Arial, sans-serif;
 }
 
+/*Dado*/
+
+#dado {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(0deg) rotateY(0deg);
+    transition: transform 1s;
+}
+.caradado {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    border: 2px solid #000;
+    box-shadow: inset 0 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+}
+.caradado1 { transform: rotateY(0deg) translateZ(50px); }
+.caradado2 { transform: rotateY(90deg) translateZ(50px); }
+.caradado3 { transform: rotateY(180deg) translateZ(50px); }
+.caradado4 { transform: rotateY(-90deg) translateZ(50px); }
+.caradado5 { transform: rotateX(90deg) translateZ(50px); }
+.caradado6 { transform: rotateX(-90deg) translateZ(50px); }
+
+#tirardado {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+/*Tablero*/
+
 #tablero {
     display: grid;
     grid-template-columns: repeat(19, 1fr);
@@ -16,12 +53,6 @@ body {
     height: 600px;
     background-color: #fafafa;
     border: 5px solid #cccccc;
-}
-
-#showBoardButton {
-    margin: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
 }
 
 .celda {
@@ -77,6 +108,7 @@ body {
     border-radius: 50%;
     border: 2px solid #bbbbbb;
     overflow: hidden;
+    transition: top 0.5s ease-in-out, left 0.5s ease-in-out;
 }
 
 .pieza .color {

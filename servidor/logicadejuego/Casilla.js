@@ -46,9 +46,9 @@ class Casilla{
      * @param {Ficha} ficha 
      */
     InsertarCasillaMeta(ficha){
-        for(var indice = 0; indice < 4; indice++){
-            if(this.Espacios[indice] != null){
-                this.Espacios[indice] = ficha;
+        for(var indado = 0; indado < 4; indado++){
+            if(this.Espacios[indado] != null){
+                this.Espacios[indado] = ficha;
             }
         }
         return ficha;
