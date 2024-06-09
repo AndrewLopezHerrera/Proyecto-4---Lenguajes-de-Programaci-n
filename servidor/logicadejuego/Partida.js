@@ -1,13 +1,13 @@
 const Dado = require('./Dado');
 const GestorInformacionPartida = require('./GestorInformacionPartida');
 const Jugador = require('./Jugador')
-const { nanoid } = require('nanoid');
+const { v4: uuidv4 } = require('uuid');
 const Tablero = require('./Tablero');
 const Turno = require('./Turno');
 
 class Partida{
     constructor(cantidadPersonas, personaCreadora){
-        this.ID = nanoid(15);
+        this.ID = uuidv4();
         /**@type {Jugador} */
         this.Creador = new Jugador(personaCreadora, 'rojo')
         this.CantidadPersonas = cantidadPersonas;

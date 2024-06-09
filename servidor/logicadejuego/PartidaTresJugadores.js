@@ -42,13 +42,13 @@ class PartidaTresJugadores extends Partida{
         if(this.Creador.NumeroInicio > this.PersonaDos.NumeroInicio
             && this.Creador.NumeroInicio > this.PersonaTres.NumeroInicio
         )
-            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, 1);
+            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, null, 1);
         else if(this.PersonaDos.NumeroInicio > this.Creador.NumeroInicio
             && this.PersonaDos.NumeroInicio > this.PersonaTres.NumeroInicio
         )
-            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, 2);
+            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, null, 2);
         else
-            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, 3);
+            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, null, 3);
         this.Gestor.ReiniciarUltimoNumero(this.Turnos.ObtenerActual().Nombre)
     }
 }

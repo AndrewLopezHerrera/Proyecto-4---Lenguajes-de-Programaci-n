@@ -4,7 +4,7 @@
   "description": "Un servidor que maneja la lógica del parchis en multijugador en linea",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "keywords": [
     "parchis",
@@ -15,6 +15,11 @@
   "author": "Mynell Myers Hall y Andrew Lopez Herrera",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "nanoid": "^5.0.7",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "esm": "^3.2.25"
   }
 }

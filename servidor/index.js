@@ -1,8 +1,7 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const GestorPartida = require('./GestorPartida');
-
+const GestorPartida = require('./logicadejuego/GestorPartida');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);

@@ -1,21 +1,6 @@
 const Jugador = require("./Jugador");
 
 class Turno{
-    constructor(personaUno, personaDos, inicio){
-        this.CantidadPersonas = 2;
-        this.PosicionActual = inicio;
-        this.PersonaUno = personaUno;
-        this.PersonaDos = personaDos;
-    }
-
-    constructor(personaUno, personaDos, personaTres, inicio){
-        this.CantidadPersonas = 3;
-        this.PosicionActual = inicio;
-        this.PersonaUno = personaUno;
-        this.PersonaDos = personaDos;
-        this.PersonaTres = personaTres;
-    }
-
     constructor(personaUno, personaDos, personaTres, personaCuatro, inicio){
         this.CantidadPersonas = 4;
         this.PosicionActual = inicio;

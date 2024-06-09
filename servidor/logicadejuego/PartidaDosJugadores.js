@@ -40,9 +40,9 @@ class PartidaDosJugadores extends Partida{
 
     CrearTurnos(){
         if(this.Creador.NumeroInicio > this.PersonaDos.NumeroInicio)
-            this.Turnos = new Turno(this.Creador, this.PersonaDos, 1);
+            this.Turnos = new Turno(this.Creador, this.PersonaDos, null, null, 1);
         else
-            this.Turnos = new Turno(this.Creador, this.PersonaDos, 2);
+            this.Turnos = new Turno(this.Creador, this.PersonaDos, null, null, 2);
         this.Gestor.ReiniciarUltimoNumero(this.Turnos.ObtenerActual().Nombre)
     }
 }

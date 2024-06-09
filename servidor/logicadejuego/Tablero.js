@@ -4,7 +4,6 @@ const CasaAzul = require('./CasaAzul');
 const CasaRoja = require('./CasaRoja');
 const CasaVerde = require('./CasaVerde');
 const Ficha = require('./Ficha');
-const { json, json } = require('express');
 
 class Tablero{
     constructor(){
