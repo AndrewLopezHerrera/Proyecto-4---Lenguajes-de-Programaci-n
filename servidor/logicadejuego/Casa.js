@@ -12,6 +12,11 @@ class Casa {
         this.CasillaSalida;
     }
 
+    /**
+     * 
+     * @param {number} numero 
+     * @returns {Ficha}
+     */
     SacarFicha(numero){
         if(numero == 1){
             const fichaUno = this.FichaUno;
