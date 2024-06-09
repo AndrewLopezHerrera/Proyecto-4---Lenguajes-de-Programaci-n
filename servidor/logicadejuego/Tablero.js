@@ -8,7 +8,7 @@ const { json, json } = require('express');
 
 class Tablero{
     constructor(){
-        /**@type {Object.<string, Casilla>} */
+        /**@type {Object.<string, string>} */
         this.Casillas = {};
         this.CrearCasillas();
         /**@type {CasaAmarilla} */
@@ -55,10 +55,12 @@ class Tablero{
      * @param {number} numero 
      * @param {string} casillaActual 
      * @param {number} cantidadEspacios 
-     * @returns 
+     * @returns {Object[]}
      */
     MoverFicha(color, numero, casillaActual, cantidadEspacios){
         const casilla = this.Casillas[casillaActual];
+        if(casilla == undefined && cantidadEspacios == 5)
+            return this.SacarFicha(color, numero);
         const ficha = this.SeleccionarFicha(color, numero, casilla);
         if(color == 'azul')
             return this.MoverFichaAzul(ficha, casilla, casillaActual, cantidadEspacios);
@@ -140,6 +142,49 @@ class Tablero{
         return this.EnviarInformacion(ficha, camino);
     }
 
+    SacarFicha(color, numero){
+        const ficha = null;
+        if(color == 'verde')
+            ficha = this.CasaVerde.SacarFicha(numero);
+        else if(color == 'rojo')
+            ficha = this.CasaRoja.SacarFicha(numero);
+        else if(color == 'azul')
+            ficha = this.CasaAzul.SacarFicha(numero);
+        else
+            ficha = this.CasaAmarilla.SacarFicha(numero);
+        const casilla = this.Casillas['Casilla' + ficha.Numero];
+        if(casilla.Espacios.length == 2)
+            return this.IngresarFicha(ficha);
+        else
+            this.VerificarResultadoCasilla(ficha, casilla)
+    }
+
+    IngresarFicha(ficha){
+        if(color == 'verde')
+            this.CasaVerde.IngresarFicha(ficha);
+        else if(color == 'rojo')
+            this.CasaRoja.IngresarFicha(ficha);
+        else if(color == 'azul')
+            this.CasaAzul.IngresarFicha(ficha);
+        else
+            this.CasaAmarilla.IngresarFicha(ficha);
+        return null;
+    }
+
+    /**
+     * 
+     * @param {Ficha} ficha 
+     * @param {Casilla} casilla 
+     * @returns 
+     */
+    VerificarResultadoCasilla(ficha, casilla){
+        const fichaDevuelta = casilla.InsertarFicha(ficha);
+        if(ficha == fichaDevuelta)
+            return this.EnviarInformacion(ficha, ['Casilla' + ficha.Numero], fichaDevuelta);
+        else
+            return this.EnviarInformacion(ficha, ['Casilla' + ficha.Numero]);
+    }
+
     /**
      * 
      * @param {Ficha} fichaMovida 
@@ -155,9 +200,7 @@ class Tablero{
         fichaDos['color'] = fichaDevuelta.Color;
         fichaDos['numero'] = fichaDevuelta.Numero;
         fichaDos['posicion'] = fichaDevuelta.PosicionActual;
-        const fichas = {};
-        fichas['fichaUno'] = fichaUno;
-        fichas['fichaDos'] = fichaDos;
+        const fichas = [fichaUno, fichaDos];
         return fichas;
     }
 
@@ -167,8 +210,7 @@ class Tablero{
         fichaUno['numero'] = fichaMovida.Numero;
         fichaUno['posicion'] = fichaMovida.PosicionActual;
         fichaUno['camino'] = camino;
-        const fichas = {};
-        fichas['fichaUno'] = fichaUno;
+        const fichas = [fichaUno];
         return fichas;
     }
 

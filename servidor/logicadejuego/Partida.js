@@ -1,5 +1,9 @@
+const Dado = require('./Dado');
+const GestorInformacionPartida = require('./GestorInformacionPartida');
 const Jugador = require('./Jugador')
-const { nanoid } = require('nanoid')
+const { nanoid } = require('nanoid');
+const Tablero = require('./Tablero');
+const Turno = require('./Turno');
 
 class Partida{
     constructor(cantidadPersonas, personaCreadora){
@@ -17,29 +21,11 @@ class Partida{
         this.Iniciado = false;
         this.EtapaSeleccion = false;
         this.EtapaJuego = false;
-    }
-
-    /**
-     * 
-     * @param {string} persona 
-     * @returns 
-     */
-    AgregarPersona(persona){
-        if(this.CantidadPersonas == this.PersonasUnidas)
-            return 'La sala está llena';
-        if(this.PersonaDos != null)
-            this.PersonaDos = new Jugador(persona, 'amarillo');
-        else if(this.PersonaTres != null)
-            this.PersonaTres = new Jugador(persona, 'verde');
-        else
-            this.PersonaCuatro = new Jugador(persona, 'azul');
-        this.PersonasUnidas++;
-        if(this.PersonasUnidas == this.CantidadPersonas){
-            this.Iniciado = true;
-            return 'OK';
-        }
-        else
-            return 'NO';
+        /**@type {Turno} */
+        this.Turnos = null;
+        /**@type {GestorInformacionPartida} */
+        this.Gestor = new GestorInformacionPartida();
+        this.TableroPartida = new Tablero();
     }
 
     /**
@@ -47,21 +33,49 @@ class Partida{
      * @param {string} nombrePersona 
      */
     EliminarPersona(nombrePersona){
-        if(this.PersonaDos.Nombre == nombrePersona){
+        if(this.PersonaDos == null && this.PersonaDos.Nombre == nombrePersona){
             this.PersonaDos = null;
             this.PersonasUnidas--;
         }
-        else if(this.PersonaTres.Nombre == nombrePersona){
+        else if(this.PersonaTres != null && this.PersonaTres.Nombre == nombrePersona){
             this.PersonaCuatro = null;
             this.PersonasUnidas--;
         }
-        else if(this.PersonaCuatro.Nombre == nombrePersona){
+        else if(this.PersonaCuatro != null && this.PersonaCuatro.Nombre == nombrePersona){
             this.PersonaCuatro = null;
             this.PersonasUnidas--;
         }
     }
 
-    TirarDado()
+    TirarDado(nombrePersona){
+        if(this.EtapaSeleccion)
+            return [nombrePersona, this.ElegirPrimero(nombrePersona)];
+        if(this.EtapaJuego && nombrePersona == this.Gestor.JugadorActual)
+            return [nombrePersona, this.Gestor.CambiarUltimoNumero(Dado.TirarDado())];
+        return null;
+    }
+
+    MoverFicha(color, numero, casillaActual){
+        const pasos = this.Gestor.NumeroSacado;
+        const camino = this.TableroPartida.MoverFicha(color, numero, casillaActual, pasos);
+        var fichasMovidas = camino.length;
+        for(var cantidad = 3; fichasMovidas == 2; cantidad++){
+            const nuevoCamino = this.TableroPartida.MoverFicha(color, numero, casillaActual, 20);
+            fichasMovidas = nuevoCamino.length;
+            camino.concat(nuevoCamino);
+        }
+        this.CambiarJugador();
+        return camino;
+    }
+
+    CambiarJugador(){
+        if(this.Gestor.NumeroSacado != 6)
+            this.Gestor.ReiniciarUltimoNumero(this.Turnos.DarSiguiente())
+    }
+
+    ConsultarJugadorActual(){
+        return this.Gestor.JugadorActual;
+    }
 }
 
 module.exports = Partida;
