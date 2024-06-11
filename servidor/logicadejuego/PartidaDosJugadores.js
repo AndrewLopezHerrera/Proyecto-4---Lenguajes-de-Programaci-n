@@ -45,6 +45,14 @@ class PartidaDosJugadores extends Partida{
             this.Turnos = new Turno(this.Creador, this.PersonaDos, null, null, 2);
         this.Gestor.ReiniciarUltimoNumero(this.Turnos.ObtenerActual().Nombre)
     }
+
+    MostrarGanador(){
+        if(this.TableroPartida.Casillas['Casilla42Rojo'].length == 4)
+            return this.Creador.Nombre;
+        if(this.TableroPartida.Casillas['Casilla76Amarillo'].length == 4)
+            return this.PersonaDos;
+        return null;
+    }
 }
 
 module.exports = PartidaDosJugadores;

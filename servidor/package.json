@@ -16,10 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
-    "nanoid": "^5.0.7",
-    "uuid": "^9.0.1",
-    "nth-check": "^2.0.1",
-    "postcss": "^8.4.31"
+    "mysql": "^2.18.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "esm": "^3.2.25"

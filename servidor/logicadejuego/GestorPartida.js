@@ -85,6 +85,16 @@ class GestorPartida{
             return null;
         return partida.MoverFicha(color, numero, casillaActual);
     }
+
+    MostrarGane(idPartida){
+        const partida = this.Partidas[idPartida];
+        if(partida == undefined)
+            return null;
+        const ganador = partida.MostrarGanador()
+        if(ganador != null)
+            return ganador;
+        return ganador;
+    }
 }
 
 module.exports = GestorPartida;

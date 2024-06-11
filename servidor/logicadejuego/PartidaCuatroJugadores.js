@@ -63,6 +63,18 @@ class PartidaCuatroJugadores extends Partida{
             this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, this.PersonaCuatro, 4);
         this.Gestor.ReiniciarUltimoNumero(this.Turnos.ObtenerActual().Nombre)
     }
+
+    MostrarGanador(){
+        if(this.TableroPartida.Casillas['Casilla42Rojo'].length == 4)
+            return this.Creador.Nombre;
+        if(this.TableroPartida.Casillas['Casilla76Amarillo'].length == 4)
+            return this.PersonaDos;
+        if(this.TableroPartida.Casillas['Casilla25Azul'].length == 4)
+            return this.PersonaTres;
+        if(this.TableroPartida.Casillas['Casilla60Verde'].length == 4)
+            return this.PersonaCuatro;
+        return null;
+    }
 }
 
 module.exports = PartidaCuatroJugadores;
