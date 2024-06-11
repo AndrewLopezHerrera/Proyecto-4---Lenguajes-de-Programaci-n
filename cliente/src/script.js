@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 import axios from 'axios';
+
+const socket = io('https://parchistecgame.loca.lt'); // URL de Localtunnel
 
 const App = () => {
   const [serverData, setServerData] = useState(null);
+  const [idPartida, setIdPartida] = useState('');
+  const [nombreJugador, setNombreJugador] = useState('');
+  const [dado, setDado] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Realizar la solicitud GET al servidor a través del túnel local
-        const response = await axios.get('URL_DEL_TUNEL/api/data');
+        const response = await axios.get('https://parchistecgame.loca.lt/partidas', {
+            headers: {
+                'bypass-tunnel-reminder': 'true',
+                'User-Agent': 'YourCustomUserAgent',
+            },
+        });
         setServerData(response.data);
       } catch (error) {
         console.error('Error al obtener datos del servidor:', error);
@@ -18,6 +28,22 @@ const App = () => {
     fetchData();
   }, []);
 
+  const handleJoinRoom = () => {
+    socket.emit('joinRoom', idPartida);
+  };
+
+  const handleTirarDado = async () => {
+    try {
+      const response = await axios.post('https://parchistecgame.loca.lt/partida/tirarDado', {
+        idPartida,
+        nombreJugador,
+      });
+      setDado(response.data.resultado);
+    } catch (error) {
+      console.error('Error al tirar dado:', error);
+    }
+  };
+
   return (
     <div>
       <h1>Datos del servidor:</h1>
@@ -26,11 +52,31 @@ const App = () => {
       ) : (
         <p>Cargando...</p>
       )}
+      <div>
+        <input
+          type="text"
+          placeholder="ID de la partida"
+          value={idPartida}
+          onChange={(e) => setIdPartida(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Nombre del jugador"
+          value={nombreJugador}
+          onChange={(e) => setNombreJugador(e.target.value)}
+        />
+        <button onClick={handleJoinRoom}>Unirse a la partida</button>
+        <button onClick={handleTirarDado}>Tirar dado</button>
+      </div>
+      {dado && <p>Resultado del dado: {dado}</p>}
     </div>
   );
 };
 
 export default App;
+
+
+
 
 //PIEZAS
 

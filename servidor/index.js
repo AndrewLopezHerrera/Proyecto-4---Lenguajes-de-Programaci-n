@@ -5,7 +5,7 @@ const GestorPartida = require('./logicadejuego/GestorPartida');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const port = 3000;
+const port = 4000;
 const gestorPartida = new GestorPartida();
 
 app.use(express.json());
