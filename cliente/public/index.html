@@ -16,8 +16,8 @@
           <li id="reglas"><a href="#">Cerrar Sesion</a></li>
         </ul>
     </nav>
-    <div id="tablero"></div>
-    <div id="dado">
+    <div id="tablero" class="contenido"></div>
+    <div id="dado" class="contenido">
         <div class="caradado caradado1">1</div>
         <div class="caradado caradado2">2</div>
         <div class="caradado caradado3">3</div>
@@ -25,7 +25,17 @@
         <div class="caradado caradado5">5</div>
         <div class="caradado caradado6">6</div>
     </div>
-    <button id="tirardado">Lanzar Dado</button>
+    <button id="tirardado" class="contenido">Lanzar Dado</button>
+
+    <div id="partidasContainer" class="contenido" style="display: none;">
+        <h2>Lista de Partidas</h2>
+        <div id="searchContainer">
+            <input type="text" id="busquedaPartida" placeholder="Buscar partida por nombre o ID">
+            <button id="buscarPartida">Buscar</button>
+        </div>
+        <ul id="partidasList"></ul>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

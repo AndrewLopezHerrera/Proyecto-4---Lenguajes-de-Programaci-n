@@ -20,6 +20,9 @@ const App = () => {
             },
         });
         setServerData(response.data);
+        response.data.forEach(partida => {
+            incluirPartida('Partida', partida.creador, partida.id);
+        });
       } catch (error) {
         console.error('Error al obtener datos del servidor:', error);
       }
@@ -42,6 +45,10 @@ const App = () => {
     } catch (error) {
       console.error('Error al tirar dado:', error);
     }
+  };
+
+  const getServerDataValue = () => {
+    return serverData;
   };
 
   return (
@@ -75,8 +82,9 @@ const App = () => {
 
 export default App;
 
-
-
+export const getServerData = () => {
+    return App.getServerDataValue();
+};
 
 //PIEZAS
 
@@ -177,20 +185,67 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     placePieza(posPAmarillo1.pos, posPAmarillo1.color);
+    incluirPartida('Partida A', 'Mynell Myers', 1);
+    incluirPartida('Partida B', 'Vanllely Myers', 2);
 });
 
 //MENU PRINCIPAL
 
 document.getElementById('crearpartida').addEventListener('click', function () {
-    if(document.getElementById('tablero').style.display === 'none'){
-        document.getElementById('tablero').style.display = 'grid';
-        document.getElementById('tirardado').style.display = 'block';
-        document.getElementById('dado').style.display = 'block';
-    } else {
-        document.getElementById('tablero').style.display = 'none';
-        document.getElementById('dado').style.display = 'none';
-        document.getElementById('tirardado').style.display = 'none';
+    esconderContenido()
+    document.getElementById('tablero').style.display = 'grid';
+    document.getElementById('tirardado').style.display = 'block';
+    document.getElementById('dado').style.display = 'block';
+});
+
+document.getElementById('unirsepartida').addEventListener('click', (e) => {
+    esconderContenido();
+    const partidasContainer = document.getElementById('partidasContainer');
+    partidasContainer.style.display = 'block';
+
+});
+
+function esconderContenido() {
+    const contentElements = document.querySelectorAll('.contenido');
+    contentElements.forEach(element => {
+        element.style.display = 'none';
+    });
+}
+
+//MANEJO DE PARTIDAS
+
+function incluirPartida(nuevaPartida, nombreCreador, partidaId) {
+    if (nuevaPartida && nombreCreador && partidaId && nuevaPartida !== '' && nombreCreador !== '') {
+        const partidaItem = document.createElement('li');
+
+        const nombrePartidaElement = document.createElement('strong');
+        const nombreCreadorElement = document.createElement('span');
+        nombrePartidaElement.textContent = nuevaPartida;
+        nombreCreadorElement.textContent = nombreCreador;
+
+        partidaItem.appendChild(nombrePartidaElement);
+        partidaItem.appendChild(nombreCreadorElement);
+        partidaItem.id = partidaId;
+        document.getElementById('partidasList').appendChild(partidaItem);
     }
+}
+
+
+document.getElementById('buscarPartida').addEventListener('click', () => {
+    const terminoBusqueda = document.getElementById('busquedaPartida').value.trim().toLowerCase();
+    const partidas = document.getElementById('partidasList').querySelectorAll('li');
+
+    partidas.forEach(partida => {
+        const nombrePartida = partida.querySelector('strong').textContent.toLowerCase();
+        const nombreCreador = partida.querySelector('span').textContent.toLowerCase();
+        const idPartida = partida.id.toLowerCase();
+
+        if (nombrePartida.includes(terminoBusqueda) || nombreCreador.includes(terminoBusqueda) || idPartida.includes(terminoBusqueda)) {
+            partida.removeAttribute('style');
+        } else {
+            partida.style.display = 'none';
+        }
+    });
 });
 
 //MANEJO DE DADO

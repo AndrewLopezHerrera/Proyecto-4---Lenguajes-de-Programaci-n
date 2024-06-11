@@ -8,6 +8,86 @@ body {
     font-family: Arial, sans-serif;
 }
 
+/*Lista de Partidas*/
+
+#partidasContainer {
+    margin: 2rem auto;
+    padding: 2rem;
+    width: 90%;
+    height: 85%;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+#partidasContainer h2 {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+#partidasList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 80vh;
+    overflow-y: auto;
+}
+
+#partidasList li {
+    background-color: #e0e0e0;
+    margin: 1rem 0;
+    padding: 1rem;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    transition: background-color 0.3s;
+}
+
+#partidasList li:hover {
+    background-color: #d4dae4;
+}
+
+#partidasList li strong {
+    font-size: 1.2rem;
+}
+
+#partidasList li span {
+    font-size: 0.8rem;
+}
+
+#searchContainer {
+    display: flex;
+    margin-top: 3%;
+    margin-bottom: 1rem;
+}
+
+#busquedaPartida {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+#buscarPartida {
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    background-color: #ccc;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+#buscarPartida:hover {
+    background-color: #4499f4;
+}
+
+
 /*Dado*/
 
 #dado {
@@ -156,6 +236,7 @@ body {
     text-decoration: none;
     padding: 10px 20px;
     display: block;
+    border-radius: 4px;
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
 .menu ul li a:hover {
