@@ -20,9 +20,6 @@ const App = () => {
             },
         });
         setServerData(response.data);
-        response.data.forEach(partida => {
-            incluirPartida('Partida', partida.creador, partida.id);
-        });
       } catch (error) {
         console.error('Error al obtener datos del servidor:', error);
       }
