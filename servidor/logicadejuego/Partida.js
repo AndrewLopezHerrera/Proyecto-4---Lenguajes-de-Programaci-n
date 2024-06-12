@@ -21,6 +21,7 @@ class Partida{
         this.Iniciado = false;
         this.EtapaSeleccion = false;
         this.EtapaJuego = false;
+        this.Finalizado = false;
         /**@type {Turno} */
         this.Turnos = null;
         /**@type {GestorInformacionPartida} */
