@@ -1,5 +1,5 @@
 body {
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -136,7 +136,7 @@ body {
     position: relative;
     width: 100px;
     height: 100px;
-    margin: 1%;
+    margin: 10px 10px;
     transform-style: preserve-3d;
     transform: rotateX(0deg) rotateY(0deg);
     transition: transform 1s;
@@ -152,7 +152,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fafafa;
+    color: #333;
     font: bold 100% monospace;
     font-size: 2em;
 }
@@ -165,18 +165,22 @@ body {
 .caradado6 { transform: rotateX(-90deg) translateZ(50px); }
 
 #tirardado {
-    margin: 1%;
-    padding: 10px 10px;
+    position: relative;
+    padding: 35px 20px;
+    margin: auto 0;
     font-size: 1em;
-    border-radius: 10%;
+    color: #333;
     background-color: #fafafa;
-    border: 3px solid #cccccc;
-    justify-content: center;
+    border: 2px solid #cccccc;
+    border-radius: 8px;
+    font: bold 100% monospace;
+    font-size: 1.5em;
 }
 
 /*Tablero*/
 
 #tablero {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(19, 1fr);
     grid-template-rows: repeat(19, 1fr);
@@ -184,6 +188,7 @@ body {
     height: 600px;
     background-color: #fafafa;
     border: 5px solid #cccccc;
+    margin: 0 auto;
 }
 
 .celda {
@@ -260,11 +265,12 @@ body {
 
 /*Menu*/
 
-*{margin:0;padding:0;}
+*{margin: 0;padding:0;}
 .menu {
     background-color: #333;
+    margin-bottom: 10px;
     width: 100%;
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     z-index: 1000;

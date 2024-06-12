@@ -85,7 +85,20 @@ export const getServerData = () => {
 
 //PIEZAS
 
-let posPAmarillo1= {pos :"Casilla5",color :"#ffffcc"};
+var piezas= [
+    {pos:"Casilla100",color:"#ffffcc"},
+    {pos:"Casilla101",color:"#ffffcc"},
+    {pos:"Casilla102",color:"#ffffcc"},
+    {pos:"Casilla103",color:"#ffcccc"},
+    {pos:"Casilla104",color:"#ffcccc"},
+    {pos:"Casilla105",color:"#ffcccc"},
+    {pos:"Casilla106",color:"#ccccff"},
+    {pos:"Casilla107",color:"#ccccff"},
+    {pos:"Casilla108",color:"#ccccff"},
+    {pos:"Casilla109",color:"#ccffcc"},
+    {pos:"Casilla110",color:"#ccffcc"},
+    {pos:"Casilla111",color:"#ccffcc"}
+];
 
 //INICIACION
 
@@ -124,54 +137,55 @@ document.addEventListener('DOMContentLoaded', () => {
         celda.id = `Casilla-${rowIndex}-${colIndex}`;
 
         if(pasilloCont>= 8){pasilloCont = 0;}
-        switch (celdaType) {
-            case 'rojo':
-            case 'azul':
-            case 'amarillo':
-            case 'verde':
-                celda.classList.add('casa', celdaType);
-                break;
-            case 'casilla':
-                celda.classList.add('casilla');
-                const casillaNumero = listaCasillas.shift();
-                celda.id = `Casilla${casillaNumero}`;
-                const idText = document.createElement('div');
-                idText.classList.add('casillaTexto');
-                idText.textContent = casillaNumero;
-                celda.appendChild(idText);
-                if(casillaNumero===34||casillaNumero===29||casillaNumero===46||casillaNumero===51
-                    ||casillaNumero===17||casillaNumero===12||casillaNumero===63||casillaNumero===68)
-                    celda.style.backgroundColor = '#eeeeee';
-                else if(casillaNumero===39)celda.style.backgroundColor = '#ffcccc';
-                else if(casillaNumero===22)celda.style.backgroundColor = '#ccccff';
-                else if(casillaNumero===56)celda.style.backgroundColor = '#ccffcc';
-                else if(casillaNumero===5) celda.style.backgroundColor = '#ffffcc';
-                break;
-            case 'projo':
-                celda.classList.add('pasillo', celdaType);
-                celda.id = `Casilla${35+pasilloCont++}Rojo`;
-                break;
-            case 'pverde':
-                celda.classList.add('pasillo', celdaType);
-                celda.id = `Casilla${53+pasilloCont++}Verde`;
-                break;
-            case 'pamarillo':
-                celda.classList.add('pasillo', celdaType);
-                celda.id = `Casilla${69+pasilloCont++}Amarillo`;
-                break;
-            case 'pazul':
-                celda.classList.add('pasillo', celdaType);
-                celda.id = `Casilla${25-pasilloCont++}Azul`;
-                break;
-            case 'casa':
-                celda.classList.add('casa', 'seguro');
-                break;
-            case 'centro':
-                celda.classList.add('centro');
-                break;
-            default:
-                break;
-        }return celda;
+        if(celdaType==='rojo'||celdaType==='azul'||celdaType==='amarillo'||celdaType==='verde'){
+            celda.classList.add('casa', celdaType);
+        }else if(celdaType==='casilla'){
+            celda.classList.add('casilla');
+            const casillaNumero = listaCasillas.shift();
+            celda.id = `Casilla${casillaNumero}`;
+            const idText = document.createElement('div');
+            idText.classList.add('casillaTexto');
+            idText.textContent = casillaNumero;
+            celda.appendChild(idText);
+            if(casillaNumero===34||casillaNumero===29||casillaNumero===46||casillaNumero===51
+                ||casillaNumero===17||casillaNumero===12||casillaNumero===63||casillaNumero===68)
+                celda.style.backgroundColor = '#eeeeee';
+            else if(casillaNumero===39)celda.style.backgroundColor = '#ffcccc';
+            else if(casillaNumero===22)celda.style.backgroundColor = '#ccccff';
+            else if(casillaNumero===56)celda.style.backgroundColor = '#ccffcc';
+            else if(casillaNumero===5) celda.style.backgroundColor = '#ffffcc';
+        }else if(celdaType==='projo'){
+            celda.classList.add('pasillo', celdaType);
+            celda.id = `Casilla${35+pasilloCont++}Rojo`;
+        }else if(celdaType==='pverde'){
+            celda.classList.add('pasillo', celdaType);
+            celda.id = `Casilla${53+pasilloCont++}Verde`;
+        }else if(celdaType==='pamarillo'){
+            celda.classList.add('pasillo', celdaType);
+            celda.id = `Casilla${69+pasilloCont++}Amarillo`;
+        }else if(celdaType==='pazul'){
+            celda.classList.add('pasillo', celdaType);
+            celda.id = `Casilla${25-pasilloCont++}Azul`;
+        }else if(celdaType==='casa'){
+            celda.classList.add('casa', 'seguro');
+        }else{celda.classList.add('centro');}
+
+        if(celda.id === 'Casilla-14-14'){celda.id = 'Casilla100'}
+        if(celda.id === 'Casilla-14-15'){celda.id = 'Casilla101'}
+        if(celda.id === 'Casilla-15-14'){celda.id = 'Casilla102'}
+
+        if(celda.id === 'Casilla-3-3'){celda.id = 'Casilla103'}
+        if(celda.id === 'Casilla-3-4'){celda.id = 'Casilla104'}
+        if(celda.id === 'Casilla-4-3'){celda.id = 'Casilla105'}
+
+        if(celda.id === 'Casilla-3-14'){celda.id = 'Casilla106'}
+        if(celda.id === 'Casilla-3-15'){celda.id = 'Casilla107'}
+        if(celda.id === 'Casilla-4-14'){celda.id = 'Casilla108'}
+
+        if(celda.id === 'Casilla-14-3'){celda.id = 'Casilla109'}
+        if(celda.id === 'Casilla-14-4'){celda.id = 'Casilla110'}
+        if(celda.id === 'Casilla-15-3'){celda.id = 'Casilla111'}
+        return celda;
     }
 
     tableroLayout.forEach((row, rowIndex) => {
@@ -181,7 +195,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    placePieza(posPAmarillo1.pos, posPAmarillo1.color);
+    piezas.forEach(pieza =>{
+        placePieza(pieza.pos,pieza.color);
+    })
     incluirPartida('Partida A', 'Mynell Myers', 1);
     incluirPartida('Partida B', 'Vanllely Myers', 2);
 });
@@ -193,6 +209,10 @@ document.getElementById('crearpartida').addEventListener('click', function () {
     document.getElementById('tablero').style.display = 'grid';
     document.getElementById('tirardado').style.display = 'block';
     document.getElementById('dado').style.display = 'block';
+    let jugadores= Array.from(document.getElementsByClassName('jugador'));
+    jugadores.forEach(jugador=>{
+        jugador.style.display = 'flex';
+    });
 });
 
 document.getElementById('unirsepartida').addEventListener('click', (e) => {
@@ -262,7 +282,7 @@ function rollDado(number) {
     let [x, y] = rotations[number];
     dado.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
 }
-function startRolling(number) {
+function startRolling(pieza,number) {
     let randomX = 0;
     let randomY = 0;
     let interval = setInterval(() => {
@@ -275,10 +295,10 @@ function startRolling(number) {
         clearInterval(interval);
         if (number >= 1 && number <= 6) {
             rollDado(number);
-            let camino =generarCamino(posPAmarillo1.pos,number);
+            let camino =generarCamino(pieza.pos,number);
             console.log(camino);
-            let nuevapos =movePiezaEnRango(camino,500,posPAmarillo1.color);
-            posPAmarillo1.pos = nuevapos;
+            let nuevapos =movePiezaEnRango(camino,500,pieza.color);
+            pieza.pos = nuevapos;
         } else {
             alert("Por favor, introduce un número válido entre 1 y 6.");
         }
@@ -287,7 +307,7 @@ function startRolling(number) {
 
 document.getElementById('tirardado').addEventListener('click', function (){
     let random= Math.floor(Math.random() * 6) + 1;
-    startRolling(random);
+    startRolling(piezas[0],random);
 });
 
 //MANEJO DE PIEZAS
