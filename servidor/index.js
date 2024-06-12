@@ -2,22 +2,23 @@
 
 const express = require('express');
 const http = require('http');
-const { Server } = require('socket.io');
-const GestorPartida = require('./logicadejuego/GestorPartida');
+const socketIo = require('socket.io');
+const GestorPartida = require('./GestorPartida');
+const port = 4000;
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
-const port = 4000;
-const gestorPartida = new GestorPartida();
+const io = socketIo(server);
 
 app.use(express.json());
+
+const gestorPartida = new GestorPartida(io);
 
 io.on('connection', (socket) => {
     console.log('Un jugador se ha conectado');
 
-    socket.on('joinRoom', (idPartida) => {
+    socket.on('joinRoom', (idPartida, nombreJugador) => {
         socket.join(idPartida);
-        console.log(`Jugador se unió a la partida ${idPartida}`);
+        console.log(`Jugador ${nombreJugador} se unió a la partida ${idPartida}`);
     });
 
     socket.on('disconnect', () => {
