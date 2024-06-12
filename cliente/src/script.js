@@ -209,11 +209,19 @@ function mostrarTablero() {
     document.getElementById('contjuego').style.display = 'block';
 };
 
-document.getElementById('unirsepartida').addEventListener('click', (e) => {
+document.getElementById('manejarpartidas').addEventListener('click', () => {
     esconderContenido();
-    const partidasContainer = document.getElementById('partidasContainer');
-    partidasContainer.style.display = 'block';
+    document.getElementById('partidasContainer').style.display = 'block';
+});
 
+document.getElementById('ranking').addEventListener('click', () => {
+    esconderContenido();
+    document.getElementById('rankingContainer').style.display = 'block';
+});
+
+document.getElementById('reglas').addEventListener('click', () => {
+    esconderContenido();
+    document.getElementById('reglasContainer').style.display = 'block';
 });
 
 function esconderContenido() {

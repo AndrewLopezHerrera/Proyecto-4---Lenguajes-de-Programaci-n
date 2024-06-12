@@ -56,7 +56,7 @@ body {
     margin: 2rem auto;
     padding: 2rem;
     width: 90%;
-    height: 85%;
+    max-width: 800px;
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -105,6 +105,12 @@ body {
     margin-bottom: 1rem;
 }
 
+#addPartidaContainer{
+    display: flex;
+    margin-top: 3%;
+    margin-bottom: 1rem;
+}
+
 #busquedaPartida {
     flex: 1;
     padding: 0.5rem;
@@ -129,6 +135,108 @@ body {
     background-color: #4499f4;
 }
 
+#nombrePartida{
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+#numeroJugadores{
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    border: 1px solid #ccc;
+    color: rgb(0, 0, 0);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+#agregarPartida{
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    background-color: #ccc;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+#agregarPartida:hover{
+    background-color: #4499f4;
+}
+
+/*Ranking*/
+
+#rankingContainer {
+    margin: 2rem auto;
+    padding: 2rem;
+    width: 90%;
+    max-width: 800px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+#rankingTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#rankingTable th, #rankingTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+#rankingTable th {
+    background-color: #333;
+    color: white;
+}
+
+#rankingTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/*Reglas*/
+
+#reglasContainer {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    width: 90%;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#reglasContainer h1 {
+    text-align: center;
+    color: #333;
+}
+
+#reglasContainer h2 {
+    color: #333;
+}
+
+#reglasContainer p {
+    color: #555;
+}
+
+#reglasContainer ul {
+    list-style-type: disc;
+    margin: 10px 0 10px 20px;
+    color: #555;
+}
+
+#reglasContainer ol {
+    list-style-type: decimal;
+    margin: 10px 0 10px 20px;
+    color: #555;
+}
 
 /*Dado*/
 
