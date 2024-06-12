@@ -204,16 +204,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //MENU PRINCIPAL
 
-document.getElementById('crearpartida').addEventListener('click', function () {
-    esconderContenido()
-    document.getElementById('tablero').style.display = 'grid';
-    document.getElementById('tirardado').style.display = 'block';
-    document.getElementById('dado').style.display = 'block';
-    let jugadores= Array.from(document.getElementsByClassName('jugador'));
-    jugadores.forEach(jugador=>{
-        jugador.style.display = 'flex';
-    });
-});
+function mostrarTablero() {
+    esconderContenido();
+    document.getElementById('contjuego').style.display = 'block';
+};
 
 document.getElementById('unirsepartida').addEventListener('click', (e) => {
     esconderContenido();
