@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div id="root"></div>
     <nav class="menu">
         <ul>
           <li id="crearpartida"><a href="#">Crear Partida</a></li>
@@ -17,15 +18,28 @@
         </ul>
     </nav>
     <div id="tablero" class="contenido"></div>
-    <div id="dado" class="contenido">
-        <div class="caradado caradado1">1</div>
-        <div class="caradado caradado2">2</div>
-        <div class="caradado caradado3">3</div>
-        <div class="caradado caradado4">4</div>
-        <div class="caradado caradado5">5</div>
-        <div class="caradado caradado6">6</div>
+    <div id= "dado" class="contenido">
+        <div class="caradado caradado1">I</div>
+        <div class="caradado caradado2">II</div>
+        <div class="caradado caradado3">III</div>
+        <div class="caradado caradado4">IV</div>
+        <div class="caradado caradado5">V</div>
+        <div class="caradado caradado6">VI</div>
     </div>
-    <button id="tirardado" class="contenido">Lanzar Dado</button>
+    <button id= "tirardado" class="contenido">Tirar Dado</button>
+
+    <div class="jugador jugador1 contenido">
+        <span style="font-size: 14px; margin-left: 10px;">Jugador 1</span>
+    </div>
+    <div class="jugador jugador2 contenido">
+        <span style="font-size: 14px; margin-left: 10px;">Jugador 2</span>
+    </div>
+    <div class="jugador jugador3 contenido">
+        <span style="font-size: 14px; margin-left: 10px;">Jugador 3</span>
+    </div>
+    <div class="jugador jugador4 contenido">
+        <span style="font-size: 14px; margin-left: 10px;">Jugador 4</span>
+    </div>
 
     <div id="partidasContainer" class="contenido" style="display: none;">
         <h2>Lista de Partidas</h2>
@@ -37,6 +51,7 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>
 
