@@ -2,28 +2,32 @@ const Partida = require("./Partida");
 const PartidaCuatroJugadores = require("./PartidaCuatroJugadores");
 const PartidaDosJugadores = require("./PartidaDosJugadores");
 const PartidaTresJugadores = require("./PartidaTresJugadores");
+const Ranking = require("./Ranking");
 
 class GestorPartida{
     constructor(){
         /**@type {Object.<string, Partida>} */
         this.Partidas = {};
+        this.RankingPartidas = new Ranking();
     }
 
     MostrarPartidas(){
         const partidasEncontradas = [];
         const partidas = Object.values(this.Partidas);
         partidas.forEach(partida => {
-            const informacionPartida = {}
-            informacionPartida['id'] = partida.ID;
-            informacionPartida['creador'] = partida.Creador;
-            informacionPartida['jugadorDos'] = partida.PersonaDos.Nombre;
-            if(partida.CantidadPersonas >= 3)
-                informacionPartida['jugadorTres'] = partida.PersonaTres.Nombre;
-            if(partida.CantidadPersonas >= 4)
-                informacionPartida['jugadorCuatro'] = partida.PersonaCuatro.Nombre;
-            informacionPartida['tamanoJugadores'] = partida.CantidadPersonas;
-            informacionPartida['jugadoresUnidos'] = partida.PersonasUnidas;
-            partidasEncontradas.push(informacionPartida);
+            if(!partida.Iniciado){
+                const informacionPartida = {}
+                informacionPartida['id'] = partida.ID;
+                informacionPartida['creador'] = partida.Creador;
+                informacionPartida['jugadorDos'] = partida.PersonaDos.Nombre;
+                if(partida.CantidadPersonas >= 3)
+                    informacionPartida['jugadorTres'] = partida.PersonaTres.Nombre;
+                if(partida.CantidadPersonas >= 4)
+                    informacionPartida['jugadorCuatro'] = partida.PersonaCuatro.Nombre;
+                informacionPartida['tamanoJugadores'] = partida.CantidadPersonas;
+                informacionPartida['jugadoresUnidos'] = partida.PersonasUnidas;
+                partidasEncontradas.push(informacionPartida);
+            }
         })
     }
 
@@ -92,8 +96,27 @@ class GestorPartida{
             return null;
         const ganador = partida.MostrarGanador()
         if(ganador != null)
-            return ganador;
+            this.GuardarPartida(partida, ganador);
         return ganador;
+    }
+
+    /**
+     * 
+     * @param {Partida} partida 
+     * @param {string} ganador
+     */
+    GuardarPartida(partida, ganador){
+        partida.EtapaJuego = false;
+        partida.Finalizado = true;
+        try {
+            this.RankingPartidas.AgregarPartida(partida.ID, partida.Creador, ganador);;
+          } catch (err) {
+            console.error('Error al agregar partida:', err);
+          }
+    }
+
+    MostrarRanking(){
+        return this.RankingPartidas.MostrarRanking();
     }
 }
 

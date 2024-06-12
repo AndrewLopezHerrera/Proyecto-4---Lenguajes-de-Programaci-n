@@ -59,6 +59,16 @@ app.post('/partida/moverFicha', (req, res) => {
     res.json({ resultado });
 });
 
+app.get('/ranking', async (req, res) => {
+    try {
+      const resultados = await gestorPartida.MostrarRanking();
+      res.json(resultados);
+    } catch (err) {
+      console.log('Error al mostrar el ranking:', err);
+      res.status(500).send('Error al mostrar el ranking');
+    }
+  });
+
 server.listen(port, () => {
     console.log(`Servidor escuchando en http://localhost:${port}`);
 });

@@ -14,8 +14,11 @@ class PartidaTresJugadores extends Partida{
             this.PersonaTres = new Jugador(nombrePersona, 'azul');
         else
             return 'La sala está llena';
-        if(this.PersonaDos != null && this.PersonaTres != null)
+        if(this.PersonaDos != null && this.PersonaTres != null){
+            this.Iniciado = true;
+            this.EtapaSeleccion = true;
             return 'OK';
+        }
         else
             return 'NO';
     }
@@ -32,6 +35,7 @@ class PartidaTresJugadores extends Partida{
         ){
             this.EtapaSeleccion = false;
             this.EtapaJuego = true;
+            this.CrearTurnos();
             return 'OK'
         }
         else
@@ -52,13 +56,17 @@ class PartidaTresJugadores extends Partida{
         this.Gestor.ReiniciarUltimoNumero(this.Turnos.ObtenerActual().Nombre)
     }
 
+    /**
+     * 
+     * @returns {string}
+     */
     MostrarGanador(){
         if(this.TableroPartida.Casillas['Casilla42Rojo'].length == 4)
             return this.Creador.Nombre;
         if(this.TableroPartida.Casillas['Casilla76Amarillo'].length == 4)
-            return this.PersonaDos;
+            return this.PersonaDos.Nombre;
         if(this.TableroPartida.Casillas['Casilla25Azul'].length == 4)
-            return this.PersonaTres;
+            return this.PersonaTres.Nombre;
         return null;
     }
 }

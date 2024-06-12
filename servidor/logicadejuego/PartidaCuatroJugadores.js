@@ -17,8 +17,11 @@ class PartidaCuatroJugadores extends Partida{
             this.PersonaCuatro == new Jugador(nombrePersona, 'verde');
         else
             return 'La sala está llena';
-        if(this.PersonaDos != null && this.PersonaTres != null)
+        if(this.PersonaDos != null && this.PersonaTres != null){
+            this.Iniciado = true;
+            this.EtapaSeleccion = true;
             return 'OK';
+        }
         else
             return 'NO';
     }
@@ -37,6 +40,7 @@ class PartidaCuatroJugadores extends Partida{
         ){
             this.EtapaSeleccion = false;
             this.EtapaJuego = true;
+            this.CrearTurnos();
             return 'OK'
         }
         else
