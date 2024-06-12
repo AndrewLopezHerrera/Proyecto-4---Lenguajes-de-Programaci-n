@@ -12,12 +12,14 @@
         <ul>
           <li id="crearpartida"><a href="#">Crear Partida</a></li>
           <li id="unirsepartida"><a href="#">Unirse a Partida</a></li>
-          <li id="estadisticas"><a href="#">Estadisticas</a></li>
           <li id="ranking"><a href="#">Ranking</a></li>
           <li id="reglas"><a href="#">Cerrar Sesion</a></li>
         </ul>
     </nav>
+
     <div id="tablero" class="contenido"></div>
+
+    <div style="display:flex;justify-content: center;align-items: center;">
     <div id= "dado" class="contenido">
         <div class="caradado caradado1">I</div>
         <div class="caradado caradado2">II</div>
@@ -25,9 +27,8 @@
         <div class="caradado caradado4">IV</div>
         <div class="caradado caradado5">V</div>
         <div class="caradado caradado6">VI</div>
+    </div> <button id="tirardado" class="contenido">Lanzar Dado</button>
     </div>
-    <button id= "tirardado" class="contenido">Tirar Dado</button>
-
     <div class="jugador jugador1 contenido">
         <span style="font-size: 14px; margin-left: 10px;">Jugador 1</span>
     </div>
@@ -50,6 +51,7 @@
         <ul id="partidasList"></ul>
     </div>
 
+    <p style="display: flex; margin: 5px ;font: bold 1em monospace;justify-content: center;">Creado por: Andrew Lopez y Mynell Myers</p>
     <script src="script.js"></script>
     <script src="index.js"></script>
 </body>
