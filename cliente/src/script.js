@@ -204,22 +204,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //MENU PRINCIPAL
 
-document.getElementById('crearpartida').addEventListener('click', function () {
-    esconderContenido()
-    document.getElementById('tablero').style.display = 'grid';
-    document.getElementById('tirardado').style.display = 'block';
-    document.getElementById('dado').style.display = 'block';
-    let jugadores= Array.from(document.getElementsByClassName('jugador'));
-    jugadores.forEach(jugador=>{
-        jugador.style.display = 'flex';
-    });
+function mostrarTablero() {
+    esconderContenido();
+    document.getElementById('contjuego').style.display = 'block';
+};
+
+document.getElementById('manejarpartidas').addEventListener('click', () => {
+    esconderContenido();
+    document.getElementById('partidasContainer').style.display = 'block';
 });
 
-document.getElementById('unirsepartida').addEventListener('click', (e) => {
+document.getElementById('ranking').addEventListener('click', () => {
     esconderContenido();
-    const partidasContainer = document.getElementById('partidasContainer');
-    partidasContainer.style.display = 'block';
+    document.getElementById('rankingContainer').style.display = 'block';
+});
 
+document.getElementById('reglas').addEventListener('click', () => {
+    esconderContenido();
+    document.getElementById('reglasContainer').style.display = 'block';
 });
 
 function esconderContenido() {

@@ -10,45 +10,126 @@
     <div id="root"></div>
     <nav class="menu">
         <ul>
-          <li id="crearpartida"><a href="#">Crear Partida</a></li>
-          <li id="unirsepartida"><a href="#">Unirse a Partida</a></li>
+          <li id="manejarpartidas"><a href="#">Partidas</a></li>
           <li id="ranking"><a href="#">Ranking</a></li>
-          <li id="reglas"><a href="#">Cerrar Sesion</a></li>
+          <li id="reglas"><a href="#">Reglas</a></li>
+          <li id="cerrarsesion"><a href="#">Cerrar Sesion</a></li>
         </ul>
     </nav>
 
-    <div id="tablero" class="contenido"></div>
+    <div id="contjuego" class="contenido" style="display: none;">
+        <div id="tablero"></div>
 
-    <div style="display:flex;justify-content: center;align-items: center;">
-    <div id= "dado" class="contenido">
-        <div class="caradado caradado1">I</div>
-        <div class="caradado caradado2">II</div>
-        <div class="caradado caradado3">III</div>
-        <div class="caradado caradado4">IV</div>
-        <div class="caradado caradado5">V</div>
-        <div class="caradado caradado6">VI</div>
-    </div> <button id="tirardado" class="contenido">Lanzar Dado</button>
-    </div>
-    <div class="jugador jugador1 contenido">
-        <span style="font-size: 14px; margin-left: 10px;">Jugador 1</span>
-    </div>
-    <div class="jugador jugador2 contenido">
-        <span style="font-size: 14px; margin-left: 10px;">Jugador 2</span>
-    </div>
-    <div class="jugador jugador3 contenido">
-        <span style="font-size: 14px; margin-left: 10px;">Jugador 3</span>
-    </div>
-    <div class="jugador jugador4 contenido">
-        <span style="font-size: 14px; margin-left: 10px;">Jugador 4</span>
+        <div style="display:flex;justify-content: center;align-items: center;">
+            <div id= "dado">
+                <div class="caradado caradado1">I</div>
+                <div class="caradado caradado2">II</div>
+                <div class="caradado caradado3">III</div>
+                <div class="caradado caradado4">IV</div>
+                <div class="caradado caradado5">V</div>
+                <div class="caradado caradado6">VI</div>
+            </div> <button id="tirardado">Lanzar Dado</button>
+        </div>
+        <div class="jugador jugador1">
+            <span style="font-size: 14px; margin-left: 10px;">Jugador 1</span>
+        </div>
+        <div class="jugador jugador2">
+            <span style="font-size: 14px; margin-left: 10px;">Jugador 2</span>
+        </div>
+        <div class="jugador jugador3">
+            <span style="font-size: 14px; margin-left: 10px;">Jugador 3</span>
+        </div>
+        <div class="jugador jugador4">
+            <span style="font-size: 14px; margin-left: 10px;">Jugador 4</span>
+        </div>
     </div>
 
     <div id="partidasContainer" class="contenido" style="display: none;">
+        <h2>Agregar Nueva Partida</h2>
+        <br>
+        <div id="addPartidaContainer">
+            <input type="text" id="nombrePartida" placeholder="Nombre de la Partida">
+            <select id="numeroJugadores">
+                <option value="2">2 Jugadores</option>
+                <option value="3">3 Jugadores</option>
+                <option value="4">4 Jugadores</option>
+            </select>
+            <button id="agregarPartida">Agregar Partida</button>
+        </div>
+        <br>
         <h2>Lista de Partidas</h2>
         <div id="searchContainer">
             <input type="text" id="busquedaPartida" placeholder="Buscar partida por nombre o ID">
             <button id="buscarPartida">Buscar</button>
         </div>
         <ul id="partidasList"></ul>
+    </div>
+
+    <div id="rankingContainer" class="contenido" style="display: none;">
+        <h2>Ranking</h2>
+        <table id="rankingTable">
+            <thead>
+                <tr>
+                    <th>Posición</th>
+                    <th>Creador</th>
+                    <th>Ganador</th>
+                    <th>Puntuacion</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div id="reglasContainer" class="contenido" style="display: none;">
+        <h1>Reglas del Parchís Online</h1>
+
+        <h2>Introducción</h2>
+        <p>El Parchís Online es una versión digital del clásico juego de mesa que se juega con dados y fichas. El objetivo del juego es llevar las fichas desde la salida hasta la meta recorriendo todo el tablero. Esta versión se juega con 3 fichas por jugador.</p>
+
+        <h2>Componentes del Juego</h2>
+        <ul>
+            <li>Un tablero virtual de Parchís.</li>
+            <li>Dados virtuales.</li>
+            <li>3 fichas de diferente color para cada jugador.</li>
+        </ul>
+
+        <h2>Preparación del Juego</h2>
+        <ol>
+            <li>Inicia sesión en la plataforma de Parchís Online.</li>
+            <li>Cada jugador elige un color y toma las 3 fichas de ese color.</li>
+            <li>Las fichas de cada jugador se colocan en su casa correspondiente.</li>
+            <li>Determina quién empieza tirando el dado virtual. El jugador con el número más alto comienza.</li>
+        </ol>
+
+        <h2>Desarrollo del Juego</h2>
+        <p>El juego se desarrolla por turnos en sentido de las agujas del reloj.</p>
+        <p>En su turno, cada jugador tira el dado virtual y mueve una de sus fichas siguiendo estas reglas:</p>
+        <ul>
+            <li>Para sacar una ficha de la casa, el jugador debe sacar un 5 en el dado. Si no tiene fichas en el tablero, debe seguir tirando hasta que saque un 5.</li>
+            <li>Una vez en el tablero, las fichas se mueven el número de casillas indicado por el dado.</li>
+            <li>Si un jugador saca un 6, puede mover una ficha y tirar el dado nuevamente. Sin embargo, si saca tres 6 seguidos, la última ficha movida regresa a la casa.</li>
+            <li>Las fichas pueden capturar a otras fichas aterrizando en la misma casilla. La ficha capturada vuelve a su casa y el jugador que captura obtiene un turno extra.</li>
+            <li>Si una ficha aterriza en una casilla ocupada por dos o más fichas del mismo color (seguro), no puede capturarlas.</li>
+        </ul>
+
+        <h2>Llegada a la Meta</h2>
+        <p>Las fichas deben entrar exactamente al recorrido final hacia la meta. Para ello, se debe obtener el número exacto en el dado.</p>
+        <p>La primera ficha en llegar a la meta recibe 10 puntos, la segunda ficha 5 puntos y la tercera ficha 3 puntos.</p>
+
+        <h2>Ganador del Juego</h2>
+        <p>El ganador del juego es el primer jugador en llevar todas sus fichas a la meta.</p>
+        <p>Si los jugadores deciden jugar por puntos, el ganador será el que obtenga la mayor puntuación después de que todos los jugadores hayan llevado sus fichas a la meta.</p>
+
+        <h2>Consejos y Estrategias</h2>
+        <ul>
+            <li>Trata de mantener tus fichas en movimiento y fuera de la casa lo antes posible.</li>
+            <li>Utiliza los seguros estratégicamente para proteger tus fichas y bloquear a tus oponentes.</li>
+            <li>Planifica tus movimientos con anticipación, especialmente cuando te acerques a la meta.</li>
+        </ul>
+
+        <h2>Variantes del Juego</h2>
+        <p>El Parchís Online se puede jugar con diferentes reglas y variantes según las preferencias de los jugadores. Algunas variantes incluyen el uso de más o menos fichas, reglas especiales para capturas y diferentes formas de puntuar.</p>
+
+        <p>¡Diviértete jugando al Parchís Online con tus amigos y familia!</p>
     </div>
 
     <p style="display: flex; margin: 5px ;font: bold 1em monospace;justify-content: center;">Creado por: Andrew Lopez y Mynell Myers</p>
