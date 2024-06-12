@@ -100,6 +100,24 @@ class GestorPartida{
         return ganador;
     }
 
+    MostrarEstadisticas(idPartida){
+        const partida = this.Partidas[idPartida];
+        if(partida == undefined)
+            return null;
+        const ganador = partida.MostrarGanador();
+        const estadistica = {
+            id: idPartida,
+            jugadorUno: partida.Creador.Nombre,
+            jugadorDos: partida.PersonaDos.Nombre,
+            ganadorJuego: ganador
+        };
+        if(partida.PersonaTres != null)
+            estadistica['jugadorTres'] = partida.PersonaTres.Nombre;
+        if(partida.PersonaCuatro != null)
+            estadistica['jugadorCuatro'] = partida.PersonaCuatro.Nombre;
+        return estadistica;
+    }
+
     /**
      * 
      * @param {Partida} partida 

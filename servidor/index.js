@@ -25,7 +25,6 @@ io.on('connection', (socket) => {
     });
 });
 
-// Rutas del servidor
 app.get('/partidas', (req, res) => {
     const partidas = gestorPartida.MostrarPartidas();
     res.json(partidas);
@@ -70,6 +69,12 @@ app.get('/ranking', async (req, res) => {
       res.status(500).send('Error al mostrar el ranking');
     }
   });
+
+app.post('/partida/estadistica', (req, res) => {
+    const { idPartida } = req.body;
+    const resultado = gestorPartida.MostrarEstadisticas(idPartida);
+    res.json({ resultado });
+});
 
 server.listen(port, () => {
     console.log(`Servidor escuchando en http://localhost:${port}`);
