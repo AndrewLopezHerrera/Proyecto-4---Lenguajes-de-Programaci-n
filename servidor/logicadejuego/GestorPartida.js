@@ -3,6 +3,7 @@ const PartidaCuatroJugadores = require("./PartidaCuatroJugadores");
 const PartidaDosJugadores = require("./PartidaDosJugadores");
 const PartidaTresJugadores = require("./PartidaTresJugadores");
 const Ranking = require("./Ranking");
+const Jugador = require("./Jugador");
 
 class GestorPartida {
     /**
@@ -23,11 +24,12 @@ class GestorPartida {
             if (!partida.Iniciado) {
                 const informacionPartida = {};
                 informacionPartida['id'] = partida.ID;
-                informacionPartida['creador'] = partida.Creador;
-                informacionPartida['jugadorDos'] = partida.PersonaDos.Nombre;
-                if (partida.CantidadPersonas >= 3)
+                informacionPartida['creador'] = partida.Creador.Nombre;
+                if (partida.PersonaDos != null)
+                    informacionPartida['jugadorDos'] = partida.PersonaDos.Nombre;
+                if (partida.CantidadPersonas >= 3 && partida.PersonaTres != null)
                     informacionPartida['jugadorTres'] = partida.PersonaTres.Nombre;
-                if (partida.CantidadPersonas >= 4)
+                if (partida.CantidadPersonas == 4 && partida.PersonaCuatro != null)
                     informacionPartida['jugadorCuatro'] = partida.PersonaCuatro.Nombre;
                 informacionPartida['tamanoJugadores'] = partida.CantidadPersonas;
                 informacionPartida['jugadoresUnidos'] = partida.PersonasUnidas;
@@ -47,7 +49,7 @@ class GestorPartida {
             partida = new PartidaCuatroJugadores(cantidadPersonas, nombreJugador);
         
         const informacionPartida = this.CrearInformacion(partida);
-        this.Partidas[partida.ID] = informacionPartida;
+        this.Partidas[partida.ID] = partida;
         return informacionPartida;
     }
 
@@ -59,7 +61,7 @@ class GestorPartida {
     CrearInformacion(partida) {
         const informacionPartida = {};
         informacionPartida['id'] = partida.ID;
-        informacionPartida['creador'] = partida.Creador;
+        informacionPartida['creador'] = partida.Creador.Nombre;
         informacionPartida['tamanoJugadores'] = partida.CantidadPersonas;
         informacionPartida['jugadoresUnidos'] = partida.PersonasUnidas;
         return informacionPartida;

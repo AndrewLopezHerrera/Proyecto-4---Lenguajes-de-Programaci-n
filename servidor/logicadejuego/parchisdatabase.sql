@@ -10,7 +10,8 @@ CREATE TABLE partidas (
 
 DELIMITER //
 CREATE PROCEDURE guardarPartida(
-  IN p_id VARCHAR(36),
+  IN p_id
+  VARCHAR(36),
   IN p_creador VARCHAR(255),
   IN p_ganador VARCHAR(255)
 )

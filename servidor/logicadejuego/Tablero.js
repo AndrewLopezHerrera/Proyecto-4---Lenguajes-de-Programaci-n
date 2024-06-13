@@ -10,6 +10,7 @@ class Tablero{
         /**@type {Object.<string, string>} */
         this.Casillas = {};
         this.CrearCasillas();
+        this.CrearPasillos();
         /**@type {CasaAmarilla} */
         this.CasaAmarilla = new CasaAmarilla();
         /**@type {CasaAzul} */
@@ -33,18 +34,17 @@ class Tablero{
                 this.Casillas['Casilla' + numero] = new Casilla(numero, true);
             else
             this.Casillas['Casilla' + numero] = new Casilla(numero, false);
-            this.CrearPasillos(numero);
         }
     }
 
-    CrearPasillos(numero){
-        if(numero >= 18 && numero <= 25)
+    CrearPasillos(){
+        for(var numero = 18; numero <= 25; numero++)
             this.Casillas['Casilla' + numero + 'Azul'] = new Casilla(numero, true);
-        if(numero >= 35 && numero <= 42)
+        for(var numero = 35; numero <= 42; numero++)
             this.Casillas['Casilla' + numero + 'Rojo'] = new Casilla(numero, true);
-        if(numero >= 53 && numero <= 60)
+        for(var numero = 53; numero <= 60; numero++)
             this.Casillas['Casilla' + numero + 'Verde'] = new Casilla(numero, true);
-        if(numero >= 69 && numero <= 76)
+        for(var numero = 69; numero <= 76; numero++)
             this.Casillas['Casilla' + numero + 'Amarillo'] = new Casilla(numero, true);
     }
 

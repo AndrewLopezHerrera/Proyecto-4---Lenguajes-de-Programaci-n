@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 
-const socket = io('https://parchistecgame.loca.lt'); // URL de Localtunnel
+const urlServer = "http://localhost:4000"
+const socket = io(urlServer, {
+    transports: ['websocket', 'polling']
+});
+let temporizadorPartidas = null;
 
 const App = () => {
   const [serverData, setServerData] = useState(null);
@@ -12,17 +16,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await axios.get('https://parchistecgame.loca.lt/partidas', {
-            headers: {
-                'bypass-tunnel-reminder': 'true',
-                'User-Agent': 'YourCustomUserAgent',
-            },
-        });
-        setServerData(response.data);
-      } catch (error) {
-        console.error('Error al obtener datos del servidor:', error);
-      }
+      
     };
 
     fetchData();
@@ -33,15 +27,7 @@ const App = () => {
   };
 
   const handleTirarDado = async () => {
-    try {
-      const response = await axios.post('https://parchistecgame.loca.lt/partida/tirarDado', {
-        idPartida,
-        nombreJugador,
-      });
-      setDado(response.data.resultado);
-    } catch (error) {
-      console.error('Error al tirar dado:', error);
-    }
+
   };
 
   const getServerDataValue = () => {
@@ -198,8 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
     piezas.forEach(pieza =>{
         placePieza(pieza.pos,pieza.color);
     })
-    incluirPartida('Partida A', 'Mynell Myers',1,4,2,true);
-    incluirPartida('Partida B', 'Vanllely Myers', 2,2,1,false);
 });
 
 //MENU PRINCIPAL
@@ -209,9 +193,14 @@ function mostrarTablero() {
     document.getElementById('juegoContainer').style.display = 'block';
 };
 
+document.getElementById('agregarPartida').addEventListener('click', () => {
+    agregarPartida();
+});
+
 document.getElementById('manejarpartidas').addEventListener('click', () => {
     esconderContenido();
     document.getElementById('partidasContainer').style.display = 'block';
+    temporizadorPartidas = setInterval(mostrarPartidas, 7000);
 });
 
 document.getElementById('ranking').addEventListener('click', () => {
@@ -232,6 +221,7 @@ document.getElementById('iniciosesion').addEventListener('click', () => {
 });
 
 function esconderContenido() {
+    clearInterval(temporizadorPartidas);
     const contentElements = document.querySelectorAll('.contenido');
     contentElements.forEach(element => {
         element.style.display = 'none';
@@ -240,39 +230,48 @@ function esconderContenido() {
 
 //MANEJO DE PARTIDAS
 
-function incluirPartida(nuevaPartida, nombreCreador, partidaId, numJugadores, jugadoresActuales, enCurso) {
-    if (nuevaPartida && nombreCreador && partidaId && nuevaPartida !== '' && nombreCreador !== '') {
+async function mostrarPartidas() {
+    const partidas = await mostrarPartidasServidor();
+    console.log(partidas);
+    const partidasListElement = document.getElementById('partidasList');
+    partidasListElement.innerHTML = '';
+    partidas.forEach(partida => {
         const partidaItem = document.createElement('li');
-        partidaItem.classList.add('partida-item');
-
         const nombrePartidaElement = document.createElement('strong');
         const nombreCreadorElement = document.createElement('span');
-        nombrePartidaElement.textContent = nuevaPartida;
-        nombreCreadorElement.textContent = ` por ${nombreCreador}`;
+        nombrePartidaElement.textContent = partida['id'];
+        nombreCreadorElement.textContent = partida['creador'];
 
         partidaItem.appendChild(nombrePartidaElement);
         partidaItem.appendChild(nombreCreadorElement);
-        partidaItem.id = partidaId;
-
-        const detallesDiv = document.createElement('div');
-        detallesDiv.classList.add('detalles-partida');
-        detallesDiv.innerHTML = `
-            <p>Número de jugadores: ${jugadoresActuales} / ${numJugadores}</p>
-            <p>Estado: ${enCurso ? 'En curso' : 'No iniciado'}</p>
-            <button>Ingresar</button>
-        `;
-        detallesDiv.style.display = 'none';
-        partidaItem.appendChild(detallesDiv);
-        partidaItem.addEventListener('click', function() {
-            const isExpanded = detallesDiv.style.display === 'block';
-            detallesDiv.style.display = isExpanded ? 'none' : 'block';
-        });
+        partidaItem.id = partida['id'];
         document.getElementById('partidasList').appendChild(partidaItem);
+    });
+}
+
+/**
+ * 
+ * @returns {[]}
+ */
+async function mostrarPartidasServidor(){
+    try {
+        const response = await axios.get(urlServer + '/partidas');
+        return response.data;
+    } catch (error) {
+        console.log('Error al mostrar partidas:', error);
+        return [];
     }
 }
 
-
-
+async function agregarPartida(){
+    const cantidadPersonas = parseInt(document.getElementById("numeroJugadores").value);
+    try {
+        const nombreJugador = "JugadorUno";
+        const response = await axios.post("http://localhost:4000/partida", {nombreJugador, cantidadPersonas});
+    } catch (error) {
+        console.error('Error al agregar partidas:', error);
+    }
+}
 
 document.getElementById('buscarPartida').addEventListener('click', () => {
     const terminoBusqueda = document.getElementById('busquedaPartida').value.trim().toLowerCase();

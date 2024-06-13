@@ -3,12 +3,19 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const GestorPartida = require('./GestorPartida');
+const GestorPartida = require('./logicadejuego/GestorPartida');
 const port = 4000;
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+const cors = require('cors');
 
+const corsOptions = {
+    origin: ['http://localhost:3000', 'https://parchistecgame.loca.lt'], // Añade aquí los dominios permitidos
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const gestorPartida = new GestorPartida(io);
@@ -28,6 +35,7 @@ io.on('connection', (socket) => {
 
 app.get('/partidas', (req, res) => {
     const partidas = gestorPartida.MostrarPartidas();
+    console.log(partidas);
     res.json(partidas);
 });
 
