@@ -3,15 +3,26 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const cors = require('cors');
 const GestorPartida = require('./logicadejuego/GestorPartida');
+
 const port = 4000;
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
-const cors = require('cors');
+const io = socketIo(server, {
+    cors: {
+        origin: ['http://localhost:3000', 'https://parchistecgame.loca.lt'],
+        methods: ['GET', 'POST'],
+        allowedHeaders: ['Content-Type'],
+        credentials: true
+    }
+});
 
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://parchistecgame.loca.lt'], // Añade aquí los dominios permitidos
+    origin: ['http://localhost:3000', 'https://parchistecgame.loca.lt'],
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
+    credentials: true,
     optionsSuccessStatus: 200
 };
 
