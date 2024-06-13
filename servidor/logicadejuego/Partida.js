@@ -7,9 +7,9 @@ const Turno = require('./Turno');
 
 class Partida{
     constructor(cantidadPersonas, personaCreadora){
-        this.ID = nanoid(15);
+        this.ID = nanoid(10);
         /**@type {Jugador} */
-        this.Creador = new Jugador(personaCreadora, 'rojo')
+        this.Creador = new Jugador(personaCreadora, 'rojo');
         this.CantidadPersonas = cantidadPersonas;
         this.PersonasUnidas = 1;
         /**@type {Jugador} */

@@ -1,4 +1,5 @@
 const Casa = require('./Casa');
+const Ficha = require('./Ficha');
 
 class CasaVerde extends Casa{
     constructor(){
