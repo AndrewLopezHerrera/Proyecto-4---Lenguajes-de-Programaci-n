@@ -66,6 +66,24 @@ body {
     background: #3d86d4;
 }
 
+#nomUsuario {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#nomUsuario.invalid {
+    border-color: red;
+}
+
+#nomUsuario::placeholder {
+    color: #999;
+}
+
+#nomUsuario.invalid::placeholder {
+    color: red;
+}
+
 /*Menu de Juego*/
 
 .menujuego {
