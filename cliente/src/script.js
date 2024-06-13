@@ -215,10 +215,11 @@ document.getElementById('reglas').addEventListener('click', () => {
     document.getElementById('reglasContainer').style.display = 'block';
 });
 
-document.getElementById('cerrarsesion').addEventListener('click', () => {
+document.getElementById('iniciosesion').addEventListener('click', () => {
     esconderContenido();
-    document.getElementById('menu').style.display = 'none';
-    document.getElementById('sesionContainer').style.display = 'block';
+    document.getElementById('menu').style.display = 'block';
+    document.getElementById('partidasContainer').style.display = 'block';
+    document.getElementById('bienvenida').style.display = 'none';
 });
 
 function esconderContenido() {

@@ -10,7 +10,8 @@ body {
 
 /*Inicio de Sesion*/
 
-.formContainer {
+.welcome-container {
+    text-align: center;
     margin: 2rem auto;
     padding: 2rem;
     width: 90%;
@@ -18,64 +19,51 @@ body {
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    display: none;
 }
 
-.formContainer.activo {
-    display: block;
-}
-
-.formContainer h2 {
-    margin-bottom: 20px;
+.welcome-container h1 {
     color: #333;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
-.formContainer form {
-    display: flex;
-    flex-direction: column;
+.welcome-container p {
+    color: #666;
+    margin-right: 10px;
+    margin-bottom: 20px;
 }
 
-.formContainer label {
+.welcome-container label {
+    display: block;
+    margin-right: 10px;
     margin-bottom: 5px;
     font-weight: bold;
     color: #333;
 }
 
-.formContainer input {
-    margin-bottom: 15px;
+.welcome-container input {
+    width: 95%;
     padding: 10px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
 }
 
-.formContainer button {
-    padding: 10px;
+.welcome-container button {
+    padding: 10px 20px;
+    margin-right: 10px;
     border: none;
     border-radius: 4px;
-    background: #ccc;
-    color: rgb(0, 0, 0);
+    background: #4499f4;
+    color: #fff;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.formContainer button:hover {
-    background: #4499f4;
-}
-
-.formContainer p {
-    margin-top: 20px;
-    color: #666;
-}
-
-.formContainer a {
-    color: #4499f4;
-    text-decoration: none;
-}
-
-.formContainer a:hover {
-    text-decoration: underline;
+.welcome-container button:hover {
+    background: #3d86d4;
 }
 
 /*Jugadores*/
@@ -168,6 +156,41 @@ body {
     font-size: 0.8rem;
 }
 
+.partida-item {
+    margin: 10px 0;
+    padding: 10px;
+    background: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.partida-item button{
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    background-color: #ccc;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.partida-item button:hover{
+    background-color: #4499f4;
+}
+
+.detalles-partida {
+    width: 90%;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+    background: #fafafa;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
 #searchContainer {
     display: flex;
     margin-top: 3%;
@@ -211,6 +234,7 @@ body {
     border-radius: 4px;
     font-size: 1rem;
 }
+
 #numeroJugadores{
     padding: 0.5rem 1rem;
     margin-left: 0.5rem;
@@ -476,4 +500,12 @@ body {
 .menu ul li a:hover {
     transform: translateY(3px);
     background-color: #555;
+}
+
+.menu ul li input {
+    color: #333;
+    padding: 5px 10px;
+    display: block;
+    border-radius: 4px;
+    background-color: #ccc;
 }

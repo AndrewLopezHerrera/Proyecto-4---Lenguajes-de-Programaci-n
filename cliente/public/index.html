@@ -8,38 +8,22 @@
 </head>
 <body>
     <div id="root"></div>
-    <nav id="menu" class="menu">
+
+    <nav id="menu" class="menu" style="display: none;">
         <ul>
           <li id="manejarpartidas"><a href="#">Partidas</a></li>
           <li id="ranking"><a href="#">Ranking</a></li>
           <li id="reglas"><a href="#">Reglas</a></li>
-          <li id="cerrarsesion"><a href="#">Cerrar Sesion</a></li>
         </ul>
     </nav>
 
-    <div id="sesionContainer" class="contenido" style="display: none;">
-        <div id="iniciosesion" class="formContainer activo">
-            <h2>Inicio de Sesión</h2>
-            <form>
-                <label for="usuario">Nombre de Usuario</label>
-                <input type="text" id="usuario" name="usuario" required>
-                <label for="contrasena">Contraseña</label>
-                <input type="password" id="contrasena" name="contrasena" required>
-                <button type="submit">Iniciar Sesión</button>
-            </form>
-            <p>¿No tienes una cuenta? <a href="#" onclick="cambioSesion()">Regístrate aquí</a></p>
-        </div>
-
-        <div id="registrosesion" class="formContainer">
-            <h2>Registro de Usuario</h2>
-            <form>
-                <label for="nuevonombre">Nombre de Usuario</label>
-                <input type="text" id="nuevonombre" name="nuevonombre" required>
-                <label for="nuevacontra">Contraseña</label>
-                <input type="password" id="nuevacontra" name="nuevacontra" required>
-                <button type="submit">Registrarse</button>
-            </form>
-            <p>¿Ya tienes una cuenta? <a href="#" onclick="cambioSesion()">Inicia sesión aquí</a></p>
+    <div id="bienvenida" class="welcome-container contenido">
+        <h1>¡Bienvenido a Parchis Online!</h1>
+        <p>Modalidad de tres fichas</p>
+        <div id="welcomeForm">
+            <label for="username">Nombre de Usuario</label>
+            <input type="text" id="username" name="username" required>
+            <button id="iniciosesion" type="submit">Entrar</button>
         </div>
     </div>
 
@@ -48,12 +32,12 @@
 
         <div style="display:flex;justify-content: center;align-items: center;">
             <div id= "dado">
-                <div class="caradado caradado1">I</div>
-                <div class="caradado caradado2">II</div>
-                <div class="caradado caradado3">III</div>
-                <div class="caradado caradado4">IV</div>
-                <div class="caradado caradado5">V</div>
-                <div class="caradado caradado6">VI</div>
+                <div class="caradado caradado1">1</div>
+                <div class="caradado caradado2">2</div>
+                <div class="caradado caradado3">3</div>
+                <div class="caradado caradado4">4</div>
+                <div class="caradado caradado5">5</div>
+                <div class="caradado caradado6">6</div>
             </div> <button id="tirardado">Lanzar Dado</button>
         </div>
         <div class="jugador jugador1">
@@ -80,7 +64,7 @@
                 <option value="3">3 Jugadores</option>
                 <option value="4">4 Jugadores</option>
             </select>
-            <button id="agregarPartida">Agregar Partida</button>
+            <button id="agregarPartida">+</button>
         </div>
         <br>
         <h2>Lista de Partidas</h2>
@@ -159,14 +143,9 @@
     </div>
 
     <p style="display: flex; margin: 5px ;font: bold 1em monospace;justify-content: center;">Creado por: Andrew Lopez y Mynell Myers</p>
+    <br>
     <script src="script.js"></script>
     <script src="index.js"></script>
-    <script>
-        function cambioSesion() {
-            document.getElementById('iniciosesion').classList.toggle('activo');
-            document.getElementById('registrosesion').classList.toggle('activo');
-        }
-    </script>
 </body>
 </html>
 
