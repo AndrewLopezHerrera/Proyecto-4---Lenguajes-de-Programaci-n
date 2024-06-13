@@ -198,8 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
     piezas.forEach(pieza =>{
         placePieza(pieza.pos,pieza.color);
     })
-    incluirPartida('Partida A', 'Mynell Myers', 1);
-    incluirPartida('Partida B', 'Vanllely Myers', 2);
+    incluirPartida('Partida A', 'Mynell Myers',1,4,2,true);
+    incluirPartida('Partida B', 'Vanllely Myers', 2,2,1,false);
 });
 
 //MENU PRINCIPAL
@@ -224,10 +224,11 @@ document.getElementById('reglas').addEventListener('click', () => {
     document.getElementById('reglasContainer').style.display = 'block';
 });
 
-document.getElementById('cerrarsesion').addEventListener('click', () => {
+document.getElementById('iniciosesion').addEventListener('click', () => {
     esconderContenido();
-    document.getElementById('menu').style.display = 'none';
-    document.getElementById('sesionContainer').style.display = 'block';
+    document.getElementById('menu').style.display = 'block';
+    document.getElementById('partidasContainer').style.display = 'block';
+    document.getElementById('bienvenida').style.display = 'none';
 });
 
 function esconderContenido() {
@@ -239,21 +240,38 @@ function esconderContenido() {
 
 //MANEJO DE PARTIDAS
 
-function incluirPartida(nuevaPartida, nombreCreador, partidaId) {
+function incluirPartida(nuevaPartida, nombreCreador, partidaId, numJugadores, jugadoresActuales, enCurso) {
     if (nuevaPartida && nombreCreador && partidaId && nuevaPartida !== '' && nombreCreador !== '') {
         const partidaItem = document.createElement('li');
+        partidaItem.classList.add('partida-item');
 
         const nombrePartidaElement = document.createElement('strong');
         const nombreCreadorElement = document.createElement('span');
         nombrePartidaElement.textContent = nuevaPartida;
-        nombreCreadorElement.textContent = nombreCreador;
+        nombreCreadorElement.textContent = ` por ${nombreCreador}`;
 
         partidaItem.appendChild(nombrePartidaElement);
         partidaItem.appendChild(nombreCreadorElement);
         partidaItem.id = partidaId;
+
+        const detallesDiv = document.createElement('div');
+        detallesDiv.classList.add('detalles-partida');
+        detallesDiv.innerHTML = `
+            <p>Número de jugadores: ${jugadoresActuales} / ${numJugadores}</p>
+            <p>Estado: ${enCurso ? 'En curso' : 'No iniciado'}</p>
+            <button>Ingresar</button>
+        `;
+        detallesDiv.style.display = 'none';
+        partidaItem.appendChild(detallesDiv);
+        partidaItem.addEventListener('click', function() {
+            const isExpanded = detallesDiv.style.display === 'block';
+            detallesDiv.style.display = isExpanded ? 'none' : 'block';
+        });
         document.getElementById('partidasList').appendChild(partidaItem);
     }
 }
+
+
 
 
 document.getElementById('buscarPartida').addEventListener('click', () => {
