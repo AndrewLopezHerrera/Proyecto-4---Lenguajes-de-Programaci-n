@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="root"></div>
-    <nav class="menu">
+    <nav id="menu" class="menu">
         <ul>
           <li id="manejarpartidas"><a href="#">Partidas</a></li>
           <li id="ranking"><a href="#">Ranking</a></li>
@@ -17,7 +17,33 @@
         </ul>
     </nav>
 
-    <div id="contjuego" class="contenido" style="display: none;">
+    <div id="sesionContainer" class="contenido" style="display: none;">
+        <div id="iniciosesion" class="formContainer activo">
+            <h2>Inicio de Sesión</h2>
+            <form>
+                <label for="usuario">Nombre de Usuario</label>
+                <input type="text" id="usuario" name="usuario" required>
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+            <p>¿No tienes una cuenta? <a href="#" onclick="cambioSesion()">Regístrate aquí</a></p>
+        </div>
+
+        <div id="registrosesion" class="formContainer">
+            <h2>Registro de Usuario</h2>
+            <form>
+                <label for="nuevonombre">Nombre de Usuario</label>
+                <input type="text" id="nuevonombre" name="nuevonombre" required>
+                <label for="nuevacontra">Contraseña</label>
+                <input type="password" id="nuevacontra" name="nuevacontra" required>
+                <button type="submit">Registrarse</button>
+            </form>
+            <p>¿Ya tienes una cuenta? <a href="#" onclick="cambioSesion()">Inicia sesión aquí</a></p>
+        </div>
+    </div>
+
+    <div id="juegoContainer" class="contenido" style="display: none;">
         <div id="tablero"></div>
 
         <div style="display:flex;justify-content: center;align-items: center;">
@@ -135,6 +161,12 @@
     <p style="display: flex; margin: 5px ;font: bold 1em monospace;justify-content: center;">Creado por: Andrew Lopez y Mynell Myers</p>
     <script src="script.js"></script>
     <script src="index.js"></script>
+    <script>
+        function cambioSesion() {
+            document.getElementById('iniciosesion').classList.toggle('activo');
+            document.getElementById('registrosesion').classList.toggle('activo');
+        }
+    </script>
 </body>
 </html>
 

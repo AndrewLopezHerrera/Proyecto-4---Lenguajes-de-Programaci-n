@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function mostrarTablero() {
     esconderContenido();
-    document.getElementById('contjuego').style.display = 'block';
+    document.getElementById('juegoContainer').style.display = 'block';
 };
 
 document.getElementById('agregarPartida').addEventListener('click', () => {
@@ -211,6 +211,12 @@ document.getElementById('ranking').addEventListener('click', () => {
 document.getElementById('reglas').addEventListener('click', () => {
     esconderContenido();
     document.getElementById('reglasContainer').style.display = 'block';
+});
+
+document.getElementById('cerrarsesion').addEventListener('click', () => {
+    esconderContenido();
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('sesionContainer').style.display = 'block';
 });
 
 function esconderContenido() {
