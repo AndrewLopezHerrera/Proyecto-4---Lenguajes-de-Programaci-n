@@ -21,8 +21,8 @@
         <h1>¡Bienvenido a Parchis Online!</h1>
         <p>Modalidad de tres fichas</p>
         <div id="welcomeForm">
-            <label for="username">Nombre de Usuario</label>
-            <input type="text" id="username" name="username" required>
+            <label>Nombre de Usuario</label>
+            <input id="nomUsuario">
             <button id="iniciosesion" type="submit">Entrar</button>
         </div>
     </div>
@@ -55,20 +55,14 @@
     </div>
 
     <div id="partidasContainer" class="contenido" style="display: none;">
-        <h2>Agregar Nueva Partida</h2>
-        <br>
-        <div id="addPartidaContainer">
-            <input type="text" id="nombrePartida" placeholder="Nombre de la Partida">
+        <h2>Lista de Partidas</h2>
+        <div id="searchContainer">
             <select id="numeroJugadores">
                 <option value="2">2 Jugadores</option>
                 <option value="3">3 Jugadores</option>
                 <option value="4">4 Jugadores</option>
             </select>
-            <button id="agregarPartida">+</button>
-        </div>
-        <br>
-        <h2>Lista de Partidas</h2>
-        <div id="searchContainer">
+            <button id="agregarPartida">Crear Partida</button>
             <input type="text" id="busquedaPartida" placeholder="Buscar partida por nombre o ID">
             <button id="buscarPartida">Buscar</button>
         </div>

@@ -152,10 +152,6 @@ body {
     font-size: 1.2rem;
 }
 
-#partidasList li span {
-    font-size: 0.8rem;
-}
-
 .partida-item {
     margin: 10px 0;
     padding: 10px;
@@ -197,12 +193,6 @@ body {
     margin-bottom: 1rem;
 }
 
-#addPartidaContainer{
-    display: flex;
-    margin-top: 3%;
-    margin-bottom: 1rem;
-}
-
 #busquedaPartida {
     flex: 1;
     padding: 0.5rem;
@@ -227,17 +217,8 @@ body {
     background-color: #4499f4;
 }
 
-#nombrePartida{
-    flex: 1;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
 #numeroJugadores{
     padding: 0.5rem 1rem;
-    margin-left: 0.5rem;
     border: 1px solid #ccc;
     color: rgb(0, 0, 0);
     border-radius: 4px;
@@ -247,6 +228,7 @@ body {
 #agregarPartida{
     padding: 0.5rem 1rem;
     margin-left: 0.5rem;
+    margin-right: 0.5rem;
     background-color: #ccc;
     color: rgb(0, 0, 0);
     border: none;
