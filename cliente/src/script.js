@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 
-const urlServer = "https://servidorparchistecgame.loca.lt"
+const urlServer = "http://localhost:4000"
 const socket = io(urlServer, {
     transports: ['websocket'],
     secure: true,
@@ -210,6 +210,7 @@ document.getElementById('reglas').addEventListener('click', () => {
 
 document.getElementById('iniciosesion').addEventListener('click', () => {
     esconderContenido();
+    document.getElementById('jugador1').value = document.getElementById('nomUsuario').value;
     document.getElementById('menu').style.display = 'block';
     document.getElementById('partidasContainer').style.display = 'block';
     document.getElementById('bienvenida').style.display = 'none';
