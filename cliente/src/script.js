@@ -210,7 +210,7 @@ document.getElementById('reglas').addEventListener('click', () => {
 
 document.getElementById('iniciosesion').addEventListener('click', () => {
     esconderContenido();
-    document.getElementById('jugador1').value = document.getElementById('nomUsuario').value;
+    document.getElementById('jugador1').textContent = document.getElementById('nomUsuario').value;
     document.getElementById('menu').style.display = 'block';
     document.getElementById('partidasContainer').style.display = 'block';
     document.getElementById('bienvenida').style.display = 'none';
