@@ -192,13 +192,14 @@ function mostrarTablero() {
 document.getElementById('agregarPartida').addEventListener('click', () => {
     agregarPartida();
     mostrarTablero();
+    document.getElementById('jugadorUno').innerHTML = document.getElementById('nomUsuario').value;
 });
 
 document.getElementById('manejarpartidas').addEventListener('click', () => {
     esconderContenido();
     document.getElementById('partidasContainer').style.display = 'block';
     mostrarPartidas();
-    temporizadorPartidas = setInterval(mostrarPartidas, 7000);
+    temporizadorPartidas = setInterval(mostrarPartidas, 3000);
 });
 
 document.getElementById('ranking').addEventListener('click', () => {
@@ -239,16 +240,27 @@ function esconderContenido() {
 async function mostrarPartidas() {
     const partidas = await mostrarPartidasServidor();
     const partidasListElement = document.getElementById('partidasList');
-    partidasListElement.innerHTML = '';
+    const partidasIds = partidas.map(partida => partida.id);
+
+    // Eliminar partidas que ya no están en la lista recibida
+    Array.from(partidasListElement.children).forEach(child => {
+        if (!partidasIds.includes(child.id)) {
+            partidasListElement.removeChild(child);
+        }
+    });
+
     partidas.forEach(partida => {
-        const partidaItem = document.createElement('li');
-        partidaItem.classList.add('partida-item');
+        let partidaItem = document.getElementById(partida.id);
 
-        const nombrePartidaElement = document.createElement('strong');
-        nombrePartidaElement.textContent = `${partida['creador']}`;
+        if (!partidaItem) {
+            // Crear nuevo elemento si no existe
+            partidaItem = document.createElement('li');
+            partidaItem.classList.add('partida-item');
+            partidaItem.id = partida.id;
 
-        partidaItem.appendChild(nombrePartidaElement);
-        partidaItem.id = partida['id'];
+            const nombrePartidaElement = document.createElement('strong');
+            nombrePartidaElement.textContent = `${partida.creador}`;
+            partidaItem.appendChild(nombrePartidaElement);
 
         const detallesDiv = document.createElement('div');
         detallesDiv.classList.add('detalles-partida');
@@ -264,7 +276,17 @@ async function mostrarPartidas() {
             const isExpanded = detallesDiv.style.display === 'block';
             detallesDiv.style.display = isExpanded ? 'none' : 'block';
         });
+        const button = detallesDiv.querySelector('button');
+        if (!button) {
+            const newButton = document.createElement('button');
+            newButton.textContent = 'Ingresar';
+            newButton.setAttribute('onclick', `unirsePartida('${partida.id}')`);
+            detallesDiv.appendChild(newButton);
+        } else {
+            button.setAttribute('onclick', `unirsePartida('${partida.id}')`);
+        }
         document.getElementById('partidasList').appendChild(partidaItem);
+    }
     });
 }
 
@@ -286,8 +308,9 @@ async function agregarPartida(){
     const cantidadPersonas = parseInt(document.getElementById("numeroJugadores").value);
     try {
         const nombreJugador = document.getElementById('nomUsuario').value;
-        const response= await axios.post("http://localhost:4000/partida", {nombreJugador, cantidadPersonas});
-        gameData= response;
+        const response = await axios.post(urlServer + "/partida", {nombreJugador, cantidadPersonas});
+        const idPartida = response.data['id'];
+        socket.emit('joinRoom', {idPartida, nombreJugador});
         mostrarPartidas();
     } catch (error) {
         console.error('Error al agregar partidas:', error);
@@ -315,6 +338,36 @@ async function salirPartida(){
     } catch (error) {
         console.log("No se logro cerra partida")
     }
+}
+
+window.unirsePartida = async function(idPartida){
+    const nombreJugador = document.getElementById('nomUsuario').value;
+    try {
+        const response = await axios.post(urlServer + "/partida/unirse", {idPartida, nombreJugador});
+        socket.emit('joinRoom', {idPartida, nombreJugador});
+        esconderContenido();
+        mostrarTablero();
+        actualizarJugadores(response.data.resultado);
+    } catch (error) {
+        console.log('No se puede unir');
+    }
+}
+
+socket.on('jugadorUnido', (data) => {
+    const jugadores = data.resultado;
+    actualizarJugadores(jugadores);
+});
+
+function actualizarJugadores(jugadores){
+    document.getElementById('jugadorUno').innerText = jugadores['jugadorUno'];
+    if(jugadores['jugadorDos'] != undefined)
+        document.getElementById('jugadorDos').innerText = jugadores['jugadorDos'];
+    if(jugadores['jugadorTres'] != undefined)
+        document.getElementById('jugadorTres').innerText = jugadores['jugadorTres'];
+    if(jugadores['jugadorCuatro'] != undefined)
+        document.getElementById('jugadorCuatro').innerText = jugadores['jugadorCuatro'];
+    if(jugadores['estado'] == 'OK')
+        document.getElementById('tirardado').style.display = 'block';
 }
 
 document.getElementById('buscarPartida').addEventListener('click', () => {

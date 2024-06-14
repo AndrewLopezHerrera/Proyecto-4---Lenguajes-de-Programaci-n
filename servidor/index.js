@@ -34,7 +34,7 @@ const gestorPartida = new GestorPartida(io);
 io.on('connection', (socket) => {
     console.log('Un jugador se ha conectado');
 
-    socket.on('joinRoom', (idPartida, nombreJugador) => {
+    socket.on('joinRoom', ({idPartida, nombreJugador}) => {
         socket.join(idPartida);
         console.log(`Jugador ${nombreJugador} se unió a la partida ${idPartida}`);
     });

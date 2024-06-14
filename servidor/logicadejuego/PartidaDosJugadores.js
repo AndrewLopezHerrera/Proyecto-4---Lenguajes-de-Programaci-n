@@ -1,5 +1,6 @@
 const Dado = require('./Dado');
-const Partida = require('./Partida')
+const Jugador = require('./Jugador');
+const Partida = require('./Partida');
 
 class PartidaDosJugadores extends Partida{
 
@@ -8,17 +9,27 @@ class PartidaDosJugadores extends Partida{
     }
 
     AgregarPersona(nombrePersona){
+        super.AgregarPersonas();
         if(this.PersonaDos == null)
             this.PersonaDos = new Jugador(nombrePersona, 'amarillo');
         else
             return 'La sala está llena';
-        if(this.PersonaDos != null && this.PersonaTres != null){
+        if(this.PersonaDos != null){
             this.Iniciado = true;
             this.EtapaSeleccion = true;
-            return 'OK';
+            return this.DevolverPersonas('OK');
         }
         else
-            return 'NO';
+            return this.DevolverPersonas('NO');
+    }
+
+    DevolverPersonas(estado){
+        const jugadores = {};
+        jugadores['estado'] = estado;
+        jugadores['jugadorUno'] = this.Creador.Nombre;
+        if (this.PersonaDos != null)
+            jugadores['jugadorDos'] = this.PersonaDos.Nombre;
+        return jugadores;
     }
 
     /**
