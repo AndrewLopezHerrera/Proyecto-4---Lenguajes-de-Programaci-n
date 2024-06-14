@@ -445,6 +445,7 @@ function placePieza(celdaId, colors, piezaId) {
         let nuevapos =movePiezaEnRango(camino,500,piezas[piezaId].color,piezaId);
         removePieza(piezas[piezaId].pos);
         piezas[piezaId].pos = nuevapos;
+        numDado=0;
     });
 }
 
