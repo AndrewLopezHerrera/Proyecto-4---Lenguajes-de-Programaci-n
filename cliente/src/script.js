@@ -405,18 +405,24 @@ socket.on('dadoTirado', (data) => {
 //MANEJO DE PIEZAS
 
 function generarCamino(posicion, pasos){
+    let cadena = posicion;
+    let lista = [];
+    let original = posicion;
     if(posicion === 'Casilla100' || posicion === 'Casilla101' || posicion === 'Casilla102'){posicion = 'Casilla5'}
     if(posicion === 'Casilla103' || posicion === 'Casilla104' || posicion === 'Casilla105'){posicion = 'Casilla39'}
     if(posicion === 'Casilla106' || posicion === 'Casilla107' || posicion === 'Casilla108'){posicion = 'Casilla22'}
     if(posicion === 'Casilla109' || posicion === 'Casilla110' || posicion === 'Casilla111'){posicion = 'Casilla56'}
-    let cadena = posicion;
     let numero = parseInt(posicion.match(/\d+/)[0]);
-    let lista = [];
     for (let index = 0; index <= pasos; index++) {
         lista[index] = cadena.replace(/\d+/, (numero + index)%69);
         cadena = posicion;
         if((numero + index)%69 == 0){pasos++;}
-    }return lista.filter(elemento => elemento !== 'Casilla0');
+    }
+    if(original === 'Casilla100' || original === 'Casilla101' || original === 'Casilla102' 
+        || original === 'Casilla103' || original === 'Casilla104' || original === 'Casilla105' 
+        || original === 'Casilla106' || original === 'Casilla107' || original === 'Casilla108' 
+        || original === 'Casilla109' || original === 'Casilla110' || original === 'Casilla111'){lista.unshift(original);}
+    return lista.filter(elemento => elemento !== 'Casilla0');
 }
 
 function placePieza(celdaId, colors, piezaId) {
@@ -441,11 +447,12 @@ function placePieza(celdaId, colors, piezaId) {
     pieza.style.backgroundColor = colors;
     celda.appendChild(pieza);
     pieza.addEventListener('click', function () {
-        let camino =generarCamino(piezas[piezaId].pos,numDado);
-        let nuevapos =movePiezaEnRango(camino,500,piezas[piezaId].color,piezaId);
-        removePieza(piezas[piezaId].pos);
-        piezas[piezaId].pos = nuevapos;
-        numDado=0;
+        if(numDado!==0){
+            let camino =generarCamino(piezas[piezaId].pos,numDado);
+            let nuevapos =movePiezaEnRango(camino,500,piezas[piezaId].color,piezaId);
+            piezas[piezaId].pos = nuevapos;
+            numDado=0;
+        }
     });
 }
 
@@ -492,8 +499,8 @@ function movePiezaEnRango(rangoCasillas, intervalo,color,piezaId) {
         if (index < rangoCasillas.length) {
             if (index > 0) {
                 removePieza(rangoCasillas[index - 1]);
+                placePieza(rangoCasillas[index], color,piezaId);
             }
-            placePieza(rangoCasillas[index], color,piezaId);
             index++;
         } else {
             clearInterval(moveInterval);
