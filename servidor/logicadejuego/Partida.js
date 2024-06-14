@@ -29,6 +29,11 @@ class Partida{
         this.TableroPartida = new Tablero();
     }
 
+    AgregarPersonas(){
+        if(this.CantidadPersonas != this.PersonasUnidas)
+            this.PersonasUnidas++;
+    }
+
     /**
      * 
      * @param {string} nombrePersona 

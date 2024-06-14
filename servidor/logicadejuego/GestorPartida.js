@@ -87,7 +87,7 @@ class GestorPartida {
         
         const resultado = partida.AgregarPersona(nombreJugador);
         if (resultado) {
-            this.io.to(idPartida).emit('jugadorUnido', { nombreJugador, idPartida });
+            this.io.to(idPartida).emit('jugadorUnido', { resultado });
         }
         return resultado;
     }

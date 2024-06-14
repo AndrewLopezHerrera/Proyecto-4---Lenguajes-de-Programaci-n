@@ -9,21 +9,35 @@ class PartidaCuatroJugadores extends Partida{
     }
 
     AgregarPersona(nombrePersona){
+    super.AgregarPersonas();
         if(this.PersonaDos == null)
             this.PersonaDos = new Jugador(nombrePersona, 'amarillo');
         else if(this.PersonaTres == null)
             this.PersonaTres = new Jugador(nombrePersona, 'azul');
         else if(this.PersonaCuatro == null)
-            this.PersonaCuatro == new Jugador(nombrePersona, 'verde');
+            this.PersonaCuatro = new Jugador(nombrePersona, 'verde');
         else
             return 'La sala está llena';
-        if(this.PersonaDos != null && this.PersonaTres != null){
+        if(this.PersonaDos != null && this.PersonaTres != null && this.PersonaCuatro != null){
             this.Iniciado = true;
             this.EtapaSeleccion = true;
-            return 'OK';
+            return this.DevolverPersonas('OK');
         }
         else
-            return 'NO';
+            return this.DevolverPersonas('NO');
+    }
+
+    DevolverPersonas(estado){
+        const jugadores = {};
+        jugadores['estado'] = estado;
+        jugadores['jugadorUno'] = this.Creador.Nombre;
+        if(this.PersonaDos != null)
+            jugadores['jugadorDos'] = this.PersonaDos.Nombre;
+        if(this.PersonaTres != null)
+            jugadores['jugadorTres'] = this.PersonaTres.Nombre;
+        if(this.PersonaCuatro != null)
+            jugadores['jugadorCuatro'] = this.PersonaCuatro.Nombre;
+        return jugadores;
     }
 
     ElegirPrimero(nombrePersona){

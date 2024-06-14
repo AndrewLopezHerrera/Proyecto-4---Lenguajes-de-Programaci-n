@@ -8,6 +8,7 @@ class PartidaTresJugadores extends Partida{
     }
 
     AgregarPersona(nombrePersona){
+        super.AgregarPersonas();
         if(this.PersonaDos == null)
             this.PersonaDos = new Jugador(nombrePersona, 'amarillo');
         else if(this.PersonaTres == null)
@@ -17,10 +18,10 @@ class PartidaTresJugadores extends Partida{
         if(this.PersonaDos != null && this.PersonaTres != null){
             this.Iniciado = true;
             this.EtapaSeleccion = true;
-            return 'OK';
+            return this.DevolverPersonas('OK');
         }
         else
-            return 'NO';
+            return this.DevolverPersonas('NO');
     }
 
     ElegirPrimero(nombrePersona){
@@ -36,10 +37,21 @@ class PartidaTresJugadores extends Partida{
             this.EtapaSeleccion = false;
             this.EtapaJuego = true;
             this.CrearTurnos();
-            return 'OK'
+            return DevolverPersonas('OK');
         }
         else
-            return 'NO'
+            return DevolverPersonas('NO');
+    }
+
+    DevolverPersonas(estado){
+        const jugadores = {};
+        jugadores['estado'] = estado;
+        jugadores['jugadorUno'] = this.Creador.Nombre;
+        if (this.PersonaDos != null)
+            jugadores['jugadorDos'] = this.PersonaDos.Nombre;
+        if(this.PersonaTres != null)
+            jugadores['jugadorTres'] = this.PersonaTres.Nombre;
+        return jugadores;
     }
 
     CrearTurnos(){

@@ -38,19 +38,19 @@
                 <div class="caradado caradado4">4</div>
                 <div class="caradado caradado5">5</div>
                 <div class="caradado caradado6">6</div>
-            </div> <button id="tirardado">Lanzar Dado</button>
+            </div> <button id="tirardado" style="display: none;">Lanzar Dado</button>
         </div>
-        <div class="jugador jugador1">
+        <div class="jugador jugador1" id = "jugadorUno">
             <span style="font-size: 14px; margin-left: 10px;">Jugador 1</span>
         </div>
-        <div class="jugador jugador2">
-            <span style="font-size: 14px; margin-left: 10px;">Jugador 2</span>
-        </div>
-        <div class="jugador jugador3">
+        <div class="jugador jugador3" id = "jugadorTres">
             <span style="font-size: 14px; margin-left: 10px;">Jugador 3</span>
         </div>
-        <div class="jugador jugador4">
+        <div class="jugador jugador4" id = "jugadorCuatro">
             <span style="font-size: 14px; margin-left: 10px;">Jugador 4</span>
+        </div>
+        <div class="jugador jugador2" id = "jugadorDos">
+            <span style="font-size: 14px; margin-left: 10px;">Jugador 2</span>
         </div>
     </div>
 
@@ -140,6 +140,8 @@
     <br>
     <script src="script.js"></script>
     <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </body>
 </html>
 
