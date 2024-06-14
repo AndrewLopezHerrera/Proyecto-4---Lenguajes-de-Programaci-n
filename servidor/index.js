@@ -46,7 +46,6 @@ io.on('connection', (socket) => {
 
 app.get('/partidas', (req, res) => {
     const partidas = gestorPartida.MostrarPartidas();
-    console.log(partidas);
     res.json(partidas);
 });
 
@@ -70,13 +69,13 @@ app.post('/partida/unirse', (req, res) => {
 
 app.post('/partida/tirarDado', (req, res) => {
     const { idPartida, nombreJugador } = req.body;
-    const resultado = gestorPartida.TirarDado(idPartida, nombreJugador, io);
+    const resultado = gestorPartida.TirarDado(idPartida, nombreJugador);
     res.json({ resultado });
 });
 
 app.post('/partida/moverFicha', (req, res) => {
     const { idPartida, color, numero, casillaActual } = req.body;
-    const resultado = gestorPartida.MoverFicha(idPartida, color, numero, casillaActual, io);
+    const resultado = gestorPartida.MoverFicha(idPartida, color, numero, casillaActual);
     res.json({ resultado });
 });
 

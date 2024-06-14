@@ -173,6 +173,7 @@ document.getElementById('iniciosesion').addEventListener('click', () => {
         nomUsuario.classList.add('invalid');
         nomUsuario.placeholder = 'Ingrese su nombre de usuario';
     }
+    temporizadorPartidas = setInterval(mostrarPartidas, 3000);
 });
 
 function esconderContenido() {
@@ -258,6 +259,7 @@ async function agregarPartida(){
         const nombreJugador = document.getElementById('nomUsuario').value;
         const response = await axios.post(urlServer + "/partida", {nombreJugador, cantidadPersonas});
         gameData= response.data;
+        gameData['yo'] = nombreJugador;
         const idPartida = response.data['id'];
         socket.emit('joinRoom', {idPartida, nombreJugador});
         mostrarPartidas();
@@ -294,6 +296,7 @@ window.unirsePartida = async function(idPartida){
     try {
         const response = await axios.post(urlServer + "/partida/unirse", {idPartida, nombreJugador});
         socket.emit('joinRoom', {idPartida, nombreJugador});
+        gameData = {'id': idPartida, 'yo' : nombreJugador};
         esconderContenido();
         mostrarTablero();
         actualizarJugadores(response.data.resultado);
@@ -382,9 +385,28 @@ function startRolling(pieza,number) {
     }, 3000);
 }
 
+async function tirarDado(){
+    try {
+        const idPartida = gameData.id;
+        const nombreJugador = gameData.yo;
+        const response = await axios.post(urlServer+"/partida/tirarDado",{idPartida, nombreJugador});
+        const random = response.data.resultado;
+        document.getElementById('tirardado').style.display = 'none';
+        startRolling(piezas[0],random);
+    } catch (error) {
+        console.log("Hubo un problema al tirar el dado");
+    }
+}
+
 document.getElementById('tirardado').addEventListener('click', function (){
-    let random= Math.floor(Math.random() * 6) + 1;
-    startRolling(piezas[0],random);
+    tirarDado();
+});
+
+socket.on('dadoTirado', (data) => {
+    if(data.primero == gameData.yo)
+        document.getElementById('tirardado').style.display = 'block';
+    else
+        document.getElementById('tirardado').style.display = 'none';
 });
 
 //MANEJO DE PIEZAS

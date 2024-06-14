@@ -53,12 +53,27 @@ class Partida{
         }
     }
 
-    TirarDado(nombrePersona){
+    TirarDado(nombrePersona, io){
         if(this.EtapaSeleccion)
-            return [nombrePersona, this.ElegirPrimero(nombrePersona)];
+            return this.TirarDadoSeleccion(nombrePersona, io);
         if(this.EtapaJuego && nombrePersona == this.Gestor.JugadorActual)
             return [nombrePersona, this.Gestor.CambiarUltimoNumero(Dado.TirarDado())];
         return null;
+    }
+
+    TirarDadoSeleccion(nombrePersona, io){
+        const resultado = this.ElegirPrimero(nombrePersona);
+        const primero = resultado['primero'];
+        setTimeout(() =>{
+            if(primero != undefined)
+                io.to(this.ID).emit('dadoTirado', { primero });
+            console.log(primero);
+        }, 3000)
+        return resultado['numero'];
+    }
+
+    TirarDadoJuego(){
+
     }
 
     MoverFicha(color, numero, casillaActual){

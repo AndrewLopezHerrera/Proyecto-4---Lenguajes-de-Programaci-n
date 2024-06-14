@@ -96,12 +96,7 @@ class GestorPartida {
         const partida = this.Partidas[idPartida];
         if (partida == undefined)
             return null;
-        
-        const resultado = partida.TirarDado(nombreJugador);
-        if (resultado) {
-            this.io.to(idPartida).emit('dadoTirado', { nombreJugador, resultado });
-        }
-        return resultado;
+        return partida.TirarDado(nombreJugador, this.io);
     }
 
     MoverFicha(idPartida, color, numero, casillaActual) {

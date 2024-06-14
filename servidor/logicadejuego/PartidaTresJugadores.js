@@ -1,6 +1,7 @@
 const Dado = require('./Dado');
 const Jugador = require('./Jugador');
-const Partida = require('./Partida')
+const Partida = require('./Partida');
+const Turno = require('./Turno');
 
 class PartidaTresJugadores extends Partida{
     constructor(cantidadPersonas, personaCreadora){
@@ -25,22 +26,23 @@ class PartidaTresJugadores extends Partida{
     }
 
     ElegirPrimero(nombrePersona){
+        const numero = Dado.TirarDado;
         if(this.Creador.Nombre == nombrePersona)
-            this.Creador.NumeroInicio = Dado.TirarDado();
+            this.Creador.NumeroInicio = numero;
         else if(this.PersonaDos.Nombre == nombrePersona)
-            this.PersonaDos.NumeroInicio = Dado.TirarDado();
+            this.PersonaDos.NumeroInicio = numero;
         else if(this.PersonaTres.Nombre == nombrePersona)
-            this.PersonaTres.NumeroInicio = Dado.TirarDado();
+            this.PersonaTres.NumeroInicio = numero;
         if(this.Creador.NumeroInicio != null && this.PersonaDos.NumeroInicio != null
             && this.PersonaTres.NumeroInicio != null
         ){
             this.EtapaSeleccion = false;
             this.EtapaJuego = true;
             this.CrearTurnos();
-            return DevolverPersonas('OK');
+            return {'primero': this.Turnos.ObtenerActual().Nombre, numero};
         }
         else
-            return DevolverPersonas('NO');
+            return {numero};
     }
 
     DevolverPersonas(estado){

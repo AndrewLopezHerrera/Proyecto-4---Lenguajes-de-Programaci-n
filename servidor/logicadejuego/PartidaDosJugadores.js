@@ -1,6 +1,7 @@
 const Dado = require('./Dado');
 const Jugador = require('./Jugador');
 const Partida = require('./Partida');
+const Turno = require('./Turno');
 
 class PartidaDosJugadores extends Partida{
 
@@ -38,18 +39,19 @@ class PartidaDosJugadores extends Partida{
      * @returns 
      */
     ElegirPrimero(nombrePersona){
+        const numero = Dado.TirarDado()
         if(this.Creador.Nombre == nombrePersona)
-            this.Creador.NumeroInicio = Dado.TirarDado();
+            this.Creador.NumeroInicio = numero;
         else if(this.PersonaDos.Nombre == nombrePersona)
-            this.PersonaDos.NumeroInicio = Dado.TirarDado();
+            this.PersonaDos.NumeroInicio = numero;
         if(this.Creador.NumeroInicio != null && this.PersonaDos.NumeroInicio != null){
             this.EtapaSeleccion = false;
             this.EtapaJuego = true;
             this.CrearTurnos();
-            return 'OK'
+            return {'primero': this.Turnos.ObtenerActual().Nombre, numero};
         }
         else
-            return 'NO'
+            return {numero};
     }
 
     CrearTurnos(){
