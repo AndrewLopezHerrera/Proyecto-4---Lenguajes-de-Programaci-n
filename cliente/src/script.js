@@ -396,8 +396,9 @@ async function tirarDado(){
         const nombreJugador = gameData.yo;
         document.getElementById('tirardado').style.display = 'none';
         const response = await axios.post(urlServer+"/partida/tirarDado",{idPartida, nombreJugador});
+        console.log(response.data.resultado);
         const random = response.data.resultado;
-        startRolling(piezas[0],random);
+        startRolling(random);
     } catch (error) {
         console.log("Hubo un problema al tirar el dado");
     }
