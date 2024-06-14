@@ -123,9 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    piezas.forEach(pieza =>{
-        placePieza(pieza.pos,pieza.color);
-    })
+    piezas.forEach((pieza,index) =>{
+        placePieza(pieza.pos,pieza.color,index);
+    });
 });
 
 //MENU PRINCIPAL
@@ -268,17 +268,11 @@ async function agregarPartida(){
     }
 }
 
-document.getElementById('salirPartida').addEventListener('click', (event) => {
-    // eslint-disable-next-line no-restricted-globals
-    const confirmExit = confirm('¿Estás seguro de que quieres salir de la partida?');
-    if (!confirmExit) {
-        event.preventDefault();
-    }else{
-        salirPartida();
-        esconderContenido();
-        document.getElementById('menu').style.display = 'block';
-        document.getElementById('partidasContainer').style.display = 'block';
-    }
+document.getElementById('salirPartida').addEventListener('click', () => {
+    salirPartida();
+    esconderContenido();
+    document.getElementById('menu').style.display = 'block';
+    document.getElementById('partidasContainer').style.display = 'block';
 });
 
 async function salirPartida(){
@@ -313,19 +307,19 @@ socket.on('jugadorUnido', (data) => {
 function actualizarJugadores(jugadores){
     document.getElementById('jugadorUno').innerText = jugadores['jugadorUno'];
     document.getElementById('circuloUno').innerText = jugadores['jugadorUno'][0];
-    if(jugadores['jugadorDos'] != undefined){
+    if(jugadores['jugadorDos'] !== undefined){
         document.getElementById('jugadorDos').innerText = jugadores['jugadorDos'];
         document.getElementById('circuloDos').innerText = jugadores['jugadorDos'][0];
     }
-    if(jugadores['jugadorTres'] != undefined){
+    if(jugadores['jugadorTres'] !== undefined){
         document.getElementById('jugadorTres').innerText = jugadores['jugadorTres'];
         document.getElementById('circuloTres').innerText = jugadores['jugadorTres'][0];
     }
-    if(jugadores['jugadorCuatro'] != undefined){
+    if(jugadores['jugadorCuatro'] !== undefined){
         document.getElementById('jugadorCuatro').innerText = jugadores['jugadorCuatro'];
         document.getElementById('circuloCuatro').innerText = jugadores['jugadorCuatro'][0];
     }
-    if(jugadores['estado'] == 'OK')
+    if(jugadores['estado'] === 'OK')
         document.getElementById('tirardado').style.display = 'block';
 }
 
@@ -362,7 +356,7 @@ function rollDado(number) {
     let [x, y] = rotations[number];
     dado.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
 }
-function startRolling(pieza,number) {
+function startRolling(number) {
     let randomX = 0;
     let randomY = 0;
     let interval = setInterval(() => {
@@ -375,15 +369,13 @@ function startRolling(pieza,number) {
         clearInterval(interval);
         if (number >= 1 && number <= 6) {
             rollDado(number);
-            let camino =generarCamino(pieza.pos,number);
-            console.log(camino);
-            let nuevapos =movePiezaEnRango(camino,500,pieza.color);
-            pieza.pos = nuevapos;
         } else {
             alert("Por favor, introduce un número válido entre 1 y 6.");
         }
     }, 3000);
 }
+
+let numDado=0;
 
 async function tirarDado(){
     try {
@@ -392,7 +384,8 @@ async function tirarDado(){
         const response = await axios.post(urlServer+"/partida/tirarDado",{idPartida, nombreJugador});
         const random = response.data.resultado;
         document.getElementById('tirardado').style.display = 'none';
-        startRolling(piezas[0],random);
+        startRolling(random);
+        numDado=random;
     } catch (error) {
         console.log("Hubo un problema al tirar el dado");
     }
@@ -403,7 +396,7 @@ document.getElementById('tirardado').addEventListener('click', function (){
 });
 
 socket.on('dadoTirado', (data) => {
-    if(data.primero == gameData.yo)
+    if(data.primero === gameData.yo)
         document.getElementById('tirardado').style.display = 'block';
     else
         document.getElementById('tirardado').style.display = 'none';
@@ -412,16 +405,21 @@ socket.on('dadoTirado', (data) => {
 //MANEJO DE PIEZAS
 
 function generarCamino(posicion, pasos){
+    if(posicion === 'Casilla100' || posicion === 'Casilla101' || posicion === 'Casilla102'){posicion = 'Casilla5'}
+    if(posicion === 'Casilla103' || posicion === 'Casilla104' || posicion === 'Casilla105'){posicion = 'Casilla39'}
+    if(posicion === 'Casilla106' || posicion === 'Casilla107' || posicion === 'Casilla108'){posicion = 'Casilla22'}
+    if(posicion === 'Casilla109' || posicion === 'Casilla110' || posicion === 'Casilla111'){posicion = 'Casilla56'}
     let cadena = posicion;
     let numero = parseInt(posicion.match(/\d+/)[0]);
     let lista = [];
     for (let index = 0; index <= pasos; index++) {
         lista[index] = cadena.replace(/\d+/, (numero + index)%69);
         cadena = posicion;
+        if((numero + index)%69 == 0){pasos++;}
     }return lista.filter(elemento => elemento !== 'Casilla0');
 }
 
-function placePieza(celdaId, colors) {
+function placePieza(celdaId, colors, piezaId) {
     const celda = document.getElementById(celdaId);
     const existingPiezas = celda.querySelectorAll('.pieza');
     const pieza = document.createElement('div');
@@ -439,8 +437,15 @@ function placePieza(celdaId, colors) {
         colorDiv.classList.add('color');
         colorDiv.style.backgroundColor = colors;
         pieza.appendChild(colorDiv);
-    }pieza.style.backgroundColor = colors;
+    }
+    pieza.style.backgroundColor = colors;
     celda.appendChild(pieza);
+    pieza.addEventListener('click', function () {
+        let camino =generarCamino(piezas[piezaId].pos,numDado);
+        let nuevapos =movePiezaEnRango(camino,500,piezas[piezaId].color,piezaId);
+        removePieza(piezas[piezaId].pos);
+        piezas[piezaId].pos = nuevapos;
+    });
 }
 
 function removePieza(celdaId) {
@@ -480,14 +485,14 @@ function removePieza(celdaId) {
     }
 }
 
-function movePiezaEnRango(rangoCasillas, intervalo,color) {
+function movePiezaEnRango(rangoCasillas, intervalo,color,piezaId) {
     let index = 0;
     const moveInterval = setInterval(() => {
         if (index < rangoCasillas.length) {
             if (index > 0) {
                 removePieza(rangoCasillas[index - 1]);
-                placePieza(rangoCasillas[index], color);
             }
+            placePieza(rangoCasillas[index], color,piezaId);
             index++;
         } else {
             clearInterval(moveInterval);
