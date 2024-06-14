@@ -262,7 +262,10 @@ async function agregarPartida(){
         gameData['yo'] = nombreJugador;
         const idPartida = response.data['id'];
         socket.emit('joinRoom', {idPartida, nombreJugador});
-        mostrarPartidas();
+        document.getElementById('creadorJuego').innerText = nombreJugador;
+        document.getElementById('idSala').innerText = idPartida;
+        document.getElementById('cantMaxJugadores').innerHTML = response.data['tamanoJugadores'];
+
     } catch (error) {
         console.error('Error al agregar partidas:', error);
     }
@@ -285,20 +288,24 @@ async function salirPartida(){
     try {
         const idPartida= gameData.id;
         const nombreJugador= gameData.creador;
-        const response= await axios.post(urlServer+"/partida/salir",{idPartida, nombreJugador});
+        const response = await axios.post(urlServer+"/partida/salir",{idPartida, nombreJugador});
     } catch (error) {
         console.log("No se logro cerra partida")
     }
 }
 
+
+
 window.unirsePartida = async function(idPartida){
     const nombreJugador = document.getElementById('nomUsuario').value;
     try {
+        esconderContenido();
         const response = await axios.post(urlServer + "/partida/unirse", {idPartida, nombreJugador});
         socket.emit('joinRoom', {idPartida, nombreJugador});
         gameData = {'id': idPartida, 'yo' : nombreJugador};
-        esconderContenido();
         mostrarTablero();
+        document.getElementById('idSala').innerText = idPartida;
+        document.getElementById('cantMaxJugadores').innerText = response.data.resultado['cantidad'];
         actualizarJugadores(response.data.resultado);
     } catch (error) {
         console.log('No se puede unir');
@@ -313,17 +320,23 @@ socket.on('jugadorUnido', (data) => {
 function actualizarJugadores(jugadores){
     document.getElementById('jugadorUno').innerText = jugadores['jugadorUno'];
     document.getElementById('circuloUno').innerText = jugadores['jugadorUno'][0];
+    document.getElementById('circuloUno').title = jugadores['jugadorUno'];
+    document.getElementById('creadorJuego').innerText = jugadores['jugadorUno'];
+    document.getElementById('cantJugadores').innerText = Object.keys(jugadores).length - 2;
     if(jugadores['jugadorDos'] != undefined){
         document.getElementById('jugadorDos').innerText = jugadores['jugadorDos'];
         document.getElementById('circuloDos').innerText = jugadores['jugadorDos'][0];
+        document.getElementById('circuloDos').title = jugadores['jugadorDos'];
     }
     if(jugadores['jugadorTres'] != undefined){
         document.getElementById('jugadorTres').innerText = jugadores['jugadorTres'];
         document.getElementById('circuloTres').innerText = jugadores['jugadorTres'][0];
+        document.getElementById('circuloTres').title = jugadores['jugadorTres'];
     }
     if(jugadores['jugadorCuatro'] != undefined){
         document.getElementById('jugadorCuatro').innerText = jugadores['jugadorCuatro'];
         document.getElementById('circuloCuatro').innerText = jugadores['jugadorCuatro'][0];
+        document.getElementById('circuloCuatro').title = jugadores['jugadorCuatro'];
     }
     if(jugadores['estado'] == 'OK')
         document.getElementById('tirardado').style.display = 'block';
@@ -389,9 +402,9 @@ async function tirarDado(){
     try {
         const idPartida = gameData.id;
         const nombreJugador = gameData.yo;
+        document.getElementById('tirardado').style.display = 'none';
         const response = await axios.post(urlServer+"/partida/tirarDado",{idPartida, nombreJugador});
         const random = response.data.resultado;
-        document.getElementById('tirardado').style.display = 'none';
         startRolling(piezas[0],random);
     } catch (error) {
         console.log("Hubo un problema al tirar el dado");

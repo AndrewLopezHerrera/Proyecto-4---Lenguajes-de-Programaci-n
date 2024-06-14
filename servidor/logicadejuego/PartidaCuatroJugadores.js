@@ -38,6 +38,7 @@ class PartidaCuatroJugadores extends Partida{
             jugadores['jugadorTres'] = this.PersonaTres.Nombre;
         if(this.PersonaCuatro != null)
             jugadores['jugadorCuatro'] = this.PersonaCuatro.Nombre;
+        jugadores['cantidad'] = this.CantidadPersonas.toString();
         return jugadores;
     }
 

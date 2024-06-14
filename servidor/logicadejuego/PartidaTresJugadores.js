@@ -26,7 +26,7 @@ class PartidaTresJugadores extends Partida{
     }
 
     ElegirPrimero(nombrePersona){
-        const numero = Dado.TirarDado;
+        const numero = Dado.TirarDado();
         if(this.Creador.Nombre == nombrePersona)
             this.Creador.NumeroInicio = numero;
         else if(this.PersonaDos.Nombre == nombrePersona)
@@ -53,6 +53,7 @@ class PartidaTresJugadores extends Partida{
             jugadores['jugadorDos'] = this.PersonaDos.Nombre;
         if(this.PersonaTres != null)
             jugadores['jugadorTres'] = this.PersonaTres.Nombre;
+        jugadores['cantidad'] = this.CantidadPersonas.toString();
         return jugadores;
     }
 

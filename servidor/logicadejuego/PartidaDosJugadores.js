@@ -30,6 +30,7 @@ class PartidaDosJugadores extends Partida{
         jugadores['jugadorUno'] = this.Creador.Nombre;
         if (this.PersonaDos != null)
             jugadores['jugadorDos'] = this.PersonaDos.Nombre;
+        jugadores['cantidad'] = this.CantidadPersonas.toString();
         return jugadores;
     }
 
