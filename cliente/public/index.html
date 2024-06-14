@@ -23,11 +23,30 @@
         <div id="welcomeForm">
             <label>Nombre de Usuario</label>
             <input id="nomUsuario">
-            <button id="iniciosesion" type="submit">Entrar</button>
+            <button id="iniciosesion">Entrar</button>
         </div>
     </div>
 
     <div id="juegoContainer" class="contenido" style="display: none;">
+        <header class="menujuego">
+            <div class="mjitem">
+                <strong>ID Sala:</strong> <span id="creadorJuego">cDz3-asIu</span>
+            </div>
+            <div class="mjitem">
+                <strong>Creador:</strong> <span id="creadorJuego">Usuario123</span>
+            </div>
+            <div class="mjitem">
+                <span id="cantJugadores">4</span> <strong>/</strong> <strong id="cantMaxJugadores">4</strong>
+            </div>
+            <div class="mjitem jugadores">
+                <div class="circuloJugador" title="Juan">J</div>
+                <div class="circuloJugador" title="Ana">A</div>
+                <div class="circuloJugador" title="Luis">L</div>
+                <div class="circuloJugador" title="María">M</div>
+            </div>
+            <button class="btnsalir" id="salirPartida">Salir</button>
+        </header>
+
         <div id="tablero"></div>
 
         <div style="display:flex;justify-content: center;align-items: center;">
@@ -42,12 +61,19 @@
         </div>
         <div class="jugador jugador1" id = "jugadorUno">
             <span style="font-size: 14px; margin-left: 10px;">Jugador 1</span>
+        <div class="jugador jugador1">
+            <span id="jugador1" style="font-size: 14px; margin-left: 10px;">Jugador 1</span>
         </div>
         <div class="jugador jugador3" id = "jugadorTres">
             <span style="font-size: 14px; margin-left: 10px;">Jugador 3</span>
+        <div class="jugador jugador2">
+            <span id="jugador2" style="font-size: 14px; margin-left: 10px;">Jugador 2</span>
+        </div>
+        <div class="jugador jugador3">
+            <span id="jugador3" style="font-size: 14px; margin-left: 10px;">Jugador 3</span>
         </div>
         <div class="jugador jugador4" id = "jugadorCuatro">
-            <span style="font-size: 14px; margin-left: 10px;">Jugador 4</span>
+            <span id="jugador4" style="font-size: 14px; margin-left: 10px;">Jugador 4</span>
         </div>
         <div class="jugador jugador2" id = "jugadorDos">
             <span style="font-size: 14px; margin-left: 10px;">Jugador 2</span>

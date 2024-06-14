@@ -210,10 +210,18 @@ document.getElementById('reglas').addEventListener('click', () => {
 });
 
 document.getElementById('iniciosesion').addEventListener('click', () => {
-    esconderContenido();
-    document.getElementById('menu').style.display = 'block';
-    document.getElementById('partidasContainer').style.display = 'block';
-    document.getElementById('bienvenida').style.display = 'none';
+    const nomUsuario = document.getElementById('nomUsuario');
+    if (nomUsuario.value !== '') {
+        esconderContenido();
+        nomUsuario.classList.remove('invalid');
+        document.getElementById('jugador1').textContent = document.getElementById('nomUsuario').value;
+        document.getElementById('menu').style.display = 'block';
+        document.getElementById('partidasContainer').style.display = 'block';
+        document.getElementById('bienvenida').style.display = 'none';
+    }else {
+        nomUsuario.classList.add('invalid');
+        nomUsuario.placeholder = 'Ingrese su nombre de usuario';
+    }
 });
 
 function esconderContenido() {
