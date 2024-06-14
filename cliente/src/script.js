@@ -217,7 +217,7 @@ document.getElementById('iniciosesion').addEventListener('click', () => {
     if (nomUsuario.value !== '') {
         esconderContenido();
         nomUsuario.classList.remove('invalid');
-        document.getElementById('jugador1').textContent = document.getElementById('nomUsuario').value;
+        document.getElementById('jugadorUno').textContent = document.getElementById('nomUsuario').value;
         document.getElementById('menu').style.display = 'block';
         document.getElementById('partidasContainer').style.display = 'block';
         document.getElementById('bienvenida').style.display = 'none';
@@ -360,12 +360,19 @@ socket.on('jugadorUnido', (data) => {
 
 function actualizarJugadores(jugadores){
     document.getElementById('jugadorUno').innerText = jugadores['jugadorUno'];
-    if(jugadores['jugadorDos'] != undefined)
+    document.getElementById('circuloUno').innerText = jugadores['jugadorUno'][0];
+    if(jugadores['jugadorDos'] != undefined){
         document.getElementById('jugadorDos').innerText = jugadores['jugadorDos'];
-    if(jugadores['jugadorTres'] != undefined)
+        document.getElementById('circuloDos').innerText = jugadores['jugadorDos'][0];
+    }
+    if(jugadores['jugadorTres'] != undefined){
         document.getElementById('jugadorTres').innerText = jugadores['jugadorTres'];
-    if(jugadores['jugadorCuatro'] != undefined)
+        document.getElementById('circuloTres').innerText = jugadores['jugadorTres'][0];
+    }
+    if(jugadores['jugadorCuatro'] != undefined){
         document.getElementById('jugadorCuatro').innerText = jugadores['jugadorCuatro'];
+        document.getElementById('circuloCuatro').innerText = jugadores['jugadorCuatro'][0];
+    }
     if(jugadores['estado'] == 'OK')
         document.getElementById('tirardado').style.display = 'block';
 }
