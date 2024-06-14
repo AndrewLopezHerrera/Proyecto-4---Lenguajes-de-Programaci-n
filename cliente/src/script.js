@@ -9,64 +9,11 @@ const socket = io(urlServer, {
     rejectUnauthorized: false
 });
 let temporizadorPartidas = null;
-
-const App = () => {
-  const [serverData, setServerData] = useState(null);
-  const [idPartida, setIdPartida] = useState('');
-  const [nombreJugador, setNombreJugador] = useState('');
-  const [dado, setDado] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-    };
-
-    fetchData();
-  }, []);
-
-  const handleJoinRoom = () => {
-    socket.emit('joinRoom', idPartida);
-  };
-
-  const handleTirarDado = async () => {
-
-  };
-
-  return (
-    <div>
-      <h1>Datos del servidor:</h1>
-      {serverData ? (
-        <pre>{JSON.stringify(serverData, null, 2)}</pre>
-      ) : (
-        <p>Cargando...</p>
-      )}
-      <div>
-        <input
-          type="text"
-          placeholder="ID de la partida"
-          value={idPartida}
-          onChange={(e) => setIdPartida(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Nombre del jugador"
-          value={nombreJugador}
-          onChange={(e) => setNombreJugador(e.target.value)}
-        />
-        <button onClick={handleJoinRoom}>Unirse a la partida</button>
-        <button onClick={handleTirarDado}>Tirar dado</button>
-      </div>
-      {dado && <p>Resultado del dado: {dado}</p>}
-    </div>
-  );
-};
-
-export default App;
-
-var gameData=null;
+let gameData=null;
 
 //PIEZAS
 
-var piezas= [
+let piezas= [
     {pos:"Casilla100",color:"#ffffcc"},
     {pos:"Casilla101",color:"#ffffcc"},
     {pos:"Casilla102",color:"#ffffcc"},
@@ -216,6 +163,7 @@ document.getElementById('iniciosesion').addEventListener('click', () => {
     const nomUsuario = document.getElementById('nomUsuario');
     if (nomUsuario.value !== '') {
         esconderContenido();
+        mostrarPartidas();
         nomUsuario.classList.remove('invalid');
         document.getElementById('jugador1').textContent = document.getElementById('nomUsuario').value;
         document.getElementById('menu').style.display = 'block';
@@ -262,31 +210,31 @@ async function mostrarPartidas() {
             nombrePartidaElement.textContent = `${partida.creador}`;
             partidaItem.appendChild(nombrePartidaElement);
 
-        const detallesDiv = document.createElement('div');
-        detallesDiv.classList.add('detalles-partida');
-        detallesDiv.innerHTML = `
-            <p>Id de la Sala: ${partida['id']}</p>
-            <p>Número de jugadores: ${partida['jugadoresUnidos']} / ${partida['tamanoJugadores']}</p>
-            <p>Estado: ${partida['jugadoresUnidos']===partida['tamanoJugadores'] ? 'En curso' : 'No iniciado'}</p>
-            <button>Ingresar</button>
-        `;
-        detallesDiv.style.display = 'none';
-        partidaItem.appendChild(detallesDiv);
-        partidaItem.addEventListener('click', function() {
-            const isExpanded = detallesDiv.style.display === 'block';
-            detallesDiv.style.display = isExpanded ? 'none' : 'block';
-        });
-        const button = detallesDiv.querySelector('button');
-        if (!button) {
-            const newButton = document.createElement('button');
-            newButton.textContent = 'Ingresar';
-            newButton.setAttribute('onclick', `unirsePartida('${partida.id}')`);
-            detallesDiv.appendChild(newButton);
-        } else {
-            button.setAttribute('onclick', `unirsePartida('${partida.id}')`);
+            const detallesDiv = document.createElement('div');
+            detallesDiv.classList.add('detalles-partida');
+            detallesDiv.innerHTML = `
+                <p>Id de la Sala: ${partida['id']}</p>
+                <p>Número de jugadores: ${partida['jugadoresUnidos']} / ${partida['tamanoJugadores']}</p>
+                <p>Estado: ${partida['jugadoresUnidos']===partida['tamanoJugadores'] ? 'En curso' : 'No iniciado'}</p>
+                <button>Ingresar</button>
+            `;
+            detallesDiv.style.display = 'none';
+            partidaItem.appendChild(detallesDiv);
+            partidaItem.addEventListener('click', function() {
+                const isExpanded = detallesDiv.style.display === 'block';
+                detallesDiv.style.display = isExpanded ? 'none' : 'block';
+            });
+            const button = detallesDiv.querySelector('button');
+            if (!button) {
+                const newButton = document.createElement('button');
+                newButton.textContent = 'Ingresar';
+                newButton.setAttribute('onclick', `unirsePartida('${partida.id}')`);
+                detallesDiv.appendChild(newButton);
+            } else {
+                button.setAttribute('onclick', `unirsePartida('${partida.id}')`);
+            }
+            document.getElementById('partidasList').appendChild(partidaItem);
         }
-        document.getElementById('partidasList').appendChild(partidaItem);
-    }
     });
 }
 
@@ -309,6 +257,7 @@ async function agregarPartida(){
     try {
         const nombreJugador = document.getElementById('nomUsuario').value;
         const response = await axios.post(urlServer + "/partida", {nombreJugador, cantidadPersonas});
+        gameData= response.data;
         const idPartida = response.data['id'];
         socket.emit('joinRoom', {idPartida, nombreJugador});
         mostrarPartidas();
@@ -332,9 +281,9 @@ document.getElementById('salirPartida').addEventListener('click', (event) => {
 
 async function salirPartida(){
     try {
-        const idPartida= gameData.data.id;
-        const nombreJugador= gameData.data.creador;
-        const response= await axios.post("http://localhost:4000/partida/salir",{idPartida, nombreJugador});
+        const idPartida= gameData.id;
+        const nombreJugador= gameData.creador;
+        const response= await axios.post(urlServer+"/partida/salir",{idPartida, nombreJugador});
     } catch (error) {
         console.log("No se logro cerra partida")
     }
