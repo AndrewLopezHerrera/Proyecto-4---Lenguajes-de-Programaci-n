@@ -62,6 +62,8 @@ const App = () => {
 
 export default App;
 
+var gameData=null;
+
 //PIEZAS
 
 var piezas= [
@@ -195,6 +197,7 @@ document.getElementById('agregarPartida').addEventListener('click', () => {
 document.getElementById('manejarpartidas').addEventListener('click', () => {
     esconderContenido();
     document.getElementById('partidasContainer').style.display = 'block';
+    mostrarPartidas();
     temporizadorPartidas = setInterval(mostrarPartidas, 7000);
 });
 
@@ -235,7 +238,6 @@ function esconderContenido() {
 
 async function mostrarPartidas() {
     const partidas = await mostrarPartidasServidor();
-    console.log(partidas);
     const partidasListElement = document.getElementById('partidasList');
     partidasListElement.innerHTML = '';
     partidas.forEach(partida => {
@@ -251,6 +253,7 @@ async function mostrarPartidas() {
         const detallesDiv = document.createElement('div');
         detallesDiv.classList.add('detalles-partida');
         detallesDiv.innerHTML = `
+            <p>Id de la Sala: ${partida['id']}</p>
             <p>Número de jugadores: ${partida['jugadoresUnidos']} / ${partida['tamanoJugadores']}</p>
             <p>Estado: ${partida['jugadoresUnidos']===partida['tamanoJugadores'] ? 'En curso' : 'No iniciado'}</p>
             <button>Ingresar</button>
@@ -283,10 +286,34 @@ async function agregarPartida(){
     const cantidadPersonas = parseInt(document.getElementById("numeroJugadores").value);
     try {
         const nombreJugador = document.getElementById('nomUsuario').value;
-        await axios.post("http://localhost:4000/partida", {nombreJugador, cantidadPersonas});
+        const response= await axios.post("http://localhost:4000/partida", {nombreJugador, cantidadPersonas});
+        gameData= response;
         mostrarPartidas();
     } catch (error) {
         console.error('Error al agregar partidas:', error);
+    }
+}
+
+document.getElementById('salirPartida').addEventListener('click', (event) => {
+    // eslint-disable-next-line no-restricted-globals
+    const confirmExit = confirm('¿Estás seguro de que quieres salir de la partida?');
+    if (!confirmExit) {
+        event.preventDefault();
+    }else{
+        salirPartida();
+        esconderContenido();
+        document.getElementById('menu').style.display = 'block';
+        document.getElementById('partidasContainer').style.display = 'block';
+    }
+});
+
+async function salirPartida(){
+    try {
+        const idPartida= gameData.data.id;
+        const nombreJugador= gameData.data.creador;
+        const response= await axios.post("http://localhost:4000/partida/salir",{idPartida, nombreJugador});
+    } catch (error) {
+        console.log("No se logro cerra partida")
     }
 }
 
