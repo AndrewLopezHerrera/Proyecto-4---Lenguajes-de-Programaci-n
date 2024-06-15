@@ -128,6 +128,13 @@ function inicializarTablero() {
         placePieza(pieza.pos,pieza.color,index);
     });
 }
+
+//Estadisticas
+
+document.getElementById('cerrarEstadisticas').addEventListener('click', () => {
+    document.getElementById('estadisticasContainer').style.display= 'none';
+});
+
 //RANKING
 
 async function mostrarRanking(){
