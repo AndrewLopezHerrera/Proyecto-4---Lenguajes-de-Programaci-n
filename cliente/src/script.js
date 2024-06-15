@@ -37,7 +37,6 @@ const tableroLayout = [
     ['verde', 'verde','verde', 'verde', 'verde', 'verde', 'verde', 'verde', 'casilla', 'casilla', 'casilla', 'amarillo', 'amarillo', 'amarillo', 'amarillo', 'amarillo', 'amarillo', 'amarillo', 'amarillo']
 ];
 
-
 const listaCasillas = [35,34,33,36,32,37,31,38,30,39,29,40,28,41,27,42,26,50,49,48,47,46,45,44,43,25,24,23,22,21
     ,20,19,18,51,17,52,53,54,55,56,57,58,59,9,10,11,12,13,14,15,16,60,8,61,7,62,6,63,5,64,4,65,3,66,2,67,68,1];
 let pasilloCont=0;
@@ -129,6 +128,25 @@ function inicializarTablero() {
         placePieza(pieza.pos,pieza.color,index);
     });
 }
+//RANKING
+
+async function mostrarRanking(){
+    try {
+        const response = await axios.get(urlServer + '/ranking');
+        response.data.forEach(ranking =>{
+            const fila = document.createElement("tr");
+            const celdaNombre = document.createElement("td");
+            celdaNombre.textContent = ranking['ganador'];
+            fila.appendChild(celdaNombre);
+            const celdaVictorias = document.createElement("td");
+            celdaVictorias.textContent = ranking['ganador'];
+            fila.appendChild(celdaVictorias);
+            document.getElementById('rankingTable').appendChild(fila);
+        });
+    } catch (error) {
+        console.log('Error al mostrar ranking:', error);
+    }
+}
 
 //INICIACION
 
@@ -159,6 +177,7 @@ document.getElementById('manejarpartidas').addEventListener('click', () => {
 
 document.getElementById('ranking').addEventListener('click', () => {
     esconderContenido();
+    mostrarRanking();
     document.getElementById('rankingContainer').style.display = 'block';
 });
 
