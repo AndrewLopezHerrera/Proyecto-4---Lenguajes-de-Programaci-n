@@ -543,6 +543,7 @@ socket.on('moverFicha', (movimientos, siguiente) => {
 });
 
 function calcularColorHaciaServidor(color){
+    console.log(color);
     if(color == '#ffffcc')
         return 'amarillo';
     if(color == '#ffcccc')
