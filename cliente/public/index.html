@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -93,10 +93,8 @@
         <table id="rankingTable">
             <thead>
                 <tr>
-                    <th>Posición</th>
-                    <th>Creador</th>
-                    <th>Ganador</th>
-                    <th>Puntuacion</th>
+                    <th>Jugador</th>
+                    <th>Victorias</th>
                 </tr>
             </thead>
         </table>
@@ -153,6 +151,32 @@
         <p>El Parchís Online se puede jugar con diferentes reglas y variantes según las preferencias de los jugadores. Algunas variantes incluyen el uso de más o menos fichas, reglas especiales para capturas y diferentes formas de puntuar.</p>
 
         <p>¡Diviértete jugando al Parchís Online con tus amigos y familia!</p>
+    </div>
+
+    <div id="estadisticasContainer" class="contenido" style="display: none;">
+        <span id="cerrarEstadisticas">&times;</span>
+        <h2>Detalles de la Partida</h2>
+        <br>
+        <table id="detallesPartida">
+            <tbody>
+                <tr>
+                    <th>Nickname Jugadores</th>
+                    <th id="estadNombres" style="background-color: white;"></th>
+                </tr>
+                <tr>
+                    <th>Ganador</th>
+                    <th id="estadGanador" style="background-color: white;"></th>
+                </tr>
+                <tr>
+                    <th>Creador</th>
+                    <th id="estadCreador" style="background-color: white;"></th>
+                </tr>
+                <tr>
+                    <th>Identificador</th>
+                    <th id="estadID" style="background-color: white;"></th>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <p style="display: flex; margin: 5px ;font: bold 1em monospace;justify-content: center;">Creado por: Andrew Lopez y Mynell Myers</p>
