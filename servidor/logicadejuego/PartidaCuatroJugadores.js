@@ -69,19 +69,19 @@ class PartidaCuatroJugadores extends Partida{
             && this.Creador.NumeroInicio > this.PersonaTres.NumeroInicio
             && this.Creador.NumeroInicio > this.PersonaCuatro.NumeroInicio
         )
-            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, this.PersonaCuatro, 1);
+            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, this.PersonaCuatro, 1, 4);
         else if(this.PersonaDos.NumeroInicio > this.Creador.NumeroInicio
             && this.PersonaDos.NumeroInicio > this.PersonaTres.NumeroInicio
             && this.PersonaDos.NumeroInicio > this.PersonaCuatro.NumeroInicio
         )
-            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, this.PersonaCuatro, 2);
+            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, this.PersonaCuatro, 2, 4);
         else if(this.PersonaTres.NumeroInicio > this.Creador.NumeroInicio
             && this.PersonaTres.NumeroInicio > this.PersonaDos.NumeroInicio
             && this.PersonaTres.NumeroInicio > this.PersonaCuatro
         )
-            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, this.PersonaCuatro, 3);
+            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, this.PersonaCuatro, 3, 4);
         else
-            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, this.PersonaCuatro, 4);
+            this.Turnos = new Turno(this.Creador, this.PersonaDos, this.PersonaTres, this.PersonaCuatro, 4, 4);
         this.Gestor.ReiniciarUltimoNumero(this.Turnos.ObtenerActual().Nombre)
     }
 

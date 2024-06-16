@@ -31,7 +31,7 @@ class Casa {
             return fichaDos;
         }
         if(numero == 3){
-            const fichaTres = this.FichaUno;
+            const fichaTres = this.FichaTres;
             fichaTres.PosicionActual = this.CasillaSalida;
             this.FichaTres = null;
             return fichaTres;
@@ -52,6 +52,20 @@ class Casa {
         if(ficha.Numero == 3){
             this.FichaTres = ficha;
         }
+    }
+
+    /**
+     * 
+     * @param {Ficha} ficha 
+     */
+    static DarUbicacionInicial(ficha){
+        if(ficha.Color == 'amarillo')
+            return 99 + ficha.Numero;
+        if(ficha.Color == 'rojo')
+            return 102 +ficha.Numero;
+        if(ficha.Color == 'azul')
+            return 105 + ficha.Numero;
+        return 108 + ficha.Numero;
     }
 }
 

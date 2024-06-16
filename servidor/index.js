@@ -39,6 +39,14 @@ io.on('connection', (socket) => {
         console.log(`Jugador ${nombreJugador} se unió a la partida ${idPartida}`);
     });
 
+    socket.on('tirarDado', (idPartida, nombreJugador) => {
+        gestorPartida.TirarDado(idPartida, nombreJugador);
+    })
+
+    socket.on('moverFichaServidor', (idPartida, nombreJugador, color, numero, posicionActual) => {
+        gestorPartida.MoverFicha(idPartida, nombreJugador, color, numero, posicionActual);
+    })
+
     socket.on('disconnect', () => {
         console.log('Un jugador se ha desconectado');
     });
@@ -64,18 +72,6 @@ app.post('/partida/salir', (req, res) => {
 app.post('/partida/unirse', (req, res) => {
     const { idPartida, nombreJugador } = req.body;
     const resultado = gestorPartida.UnirsePartida(idPartida, nombreJugador);
-    res.json({ resultado });
-});
-
-app.post('/partida/tirarDado', (req, res) => {
-    const { idPartida, nombreJugador } = req.body;
-    const resultado = gestorPartida.TirarDado(idPartida, nombreJugador);
-    res.json({ resultado });
-});
-
-app.post('/partida/moverFicha', (req, res) => {
-    const { idPartida, color, numero, casillaActual } = req.body;
-    const resultado = gestorPartida.MoverFicha(idPartida, color, numero, casillaActual);
     res.json({ resultado });
 });
 

@@ -4,6 +4,7 @@ const Jugador = require('./Jugador')
 const {nanoid} = require('nanoid');
 const Tablero = require('./Tablero');
 const Turno = require('./Turno');
+const { Socket } = require('socket.io');
 
 class Partida{
     constructor(cantidadPersonas, personaCreadora){
@@ -57,41 +58,66 @@ class Partida{
         if(this.EtapaSeleccion)
             return this.TirarDadoSeleccion(nombrePersona, io);
         if(this.EtapaJuego && nombrePersona == this.Gestor.JugadorActual)
-            return [nombrePersona, this.Gestor.CambiarUltimoNumero(Dado.TirarDado())];
+            return this.TirarDadoJuego(nombrePersona, io);
         return null;
     }
 
     TirarDadoSeleccion(nombrePersona, io){
         const resultado = this.ElegirPrimero(nombrePersona);
         const primero = resultado['primero'];
+        io.to(this.ID).emit('observarNumero', nombrePersona, resultado['numero']);
         setTimeout(() =>{
             if(primero != undefined)
                 io.to(this.ID).emit('dadoTirado', { primero });
-            console.log(primero);
         }, 3000)
-        return resultado['numero'];
     }
 
-    TirarDadoJuego(){
-
-    }
-
-    MoverFicha(color, numero, casillaActual){
-        const pasos = this.Gestor.NumeroSacado;
-        const camino = this.TableroPartida.MoverFicha(color, numero, casillaActual, pasos);
-        var fichasMovidas = camino.length;
-        for(var cantidad = 3; fichasMovidas == 2; cantidad++){
-            const nuevoCamino = this.TableroPartida.MoverFicha(color, numero, casillaActual, 20);
-            fichasMovidas = nuevoCamino.length;
-            camino.concat(nuevoCamino);
+    /**
+     * 
+     * @param {string} nombrePersona 
+     * @param {Socket} io 
+     */
+    TirarDadoJuego(nombrePersona, io){
+        const resultado = this.Gestor.CambiarUltimoNumero(Dado.TirarDado());
+        const numero = this.Gestor.NumeroSacado;
+        if(resultado == 'OK'){
+            io.to(this.ID).emit('dadoTiradoJuego', numero, nombrePersona, {}, this.Gestor.JugadorActual);
         }
-        this.CambiarJugador();
-        return camino;
+        else{
+            const ficha = this.Gestor.UltimaFichaMovida;
+            this.TableroPartida.DevolverFicha(ficha);
+            CambiarJugador();
+            io.to(this.ID).emit('dadoTiradoJuego', numero, nombrePersona, {'numero': ficha.Numero,
+                'color': ficha.Color, 'destino' : [ficha.PosicionActual]}, this.Gestor.JugadorActual);
+        }
+        return numero;
+    }
+
+    MoverFicha(nombreJugador, color, numero, casillaActual, io){
+        if(nombreJugador == this.Turnos.ObtenerActual().Nombre && color == this.Turnos.ObtenerActual().Color){
+            const pasos = this.Gestor.NumeroSacado;
+            const camino = this.TableroPartida.MoverFicha(color, numero, casillaActual, pasos);
+            if(camino == null){
+                this.CambiarJugador();
+                io.to(this.ID).emit('moverFicha', [], this.Gestor.JugadorActual);
+                return;
+            }
+            var fichasMovidas = camino.length;
+            for(var cantidad = 3; fichasMovidas == 2; cantidad++){
+                const nuevoCamino = this.TableroPartida.MoverFicha(color, numero, casillaActual, 20);
+                fichasMovidas = nuevoCamino.length;
+                camino.concat(nuevoCamino);
+            }
+            this.CambiarJugador();
+            io.to(this.ID).emit('moverFicha', camino, this.Gestor.JugadorActual);
+            return;
+        }
+        io.to(this.ID).emit('moverFicha', null, this.Gestor.JugadorActual);
     }
 
     CambiarJugador(){
         if(this.Gestor.NumeroSacado != 6)
-            this.Gestor.ReiniciarUltimoNumero(this.Turnos.DarSiguiente())
+            this.Gestor.ReiniciarUltimoNumero(this.Turnos.DarSiguiente().Nombre);
     }
 
     ConsultarJugadorActual(){

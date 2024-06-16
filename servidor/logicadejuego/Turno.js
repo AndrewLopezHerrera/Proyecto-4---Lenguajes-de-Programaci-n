@@ -1,8 +1,8 @@
 const Jugador = require("./Jugador");
 
 class Turno{
-    constructor(personaUno, personaDos, personaTres, personaCuatro, inicio){
-        this.CantidadPersonas = 4;
+    constructor(personaUno, personaDos, personaTres, personaCuatro, inicio, cantidadPersonas){
+        this.CantidadPersonas = cantidadPersonas;
         this.PosicionActual = inicio;
         this.PersonaUno = personaUno;
         this.PersonaDos = personaDos;
@@ -24,6 +24,10 @@ class Turno{
         return this.PersonaCuatro
     }
 
+    /**
+     * 
+     * @returns {Jugador}
+     */
     DarSiguiente(){
         if(this.CantidadPersonas == 2)
             return this.DarSiguienteDos();
@@ -35,40 +39,40 @@ class Turno{
     DarSiguienteDos(){
         if(this.PosicionActual == 1){
             this.PosicionActual++;
-            return this.PersonaUno;
+            return this.PersonaDos;
         }
         this.PosicionActual = 1;
-        return this.PersonaDos;
+        return this.PersonaUno;
     }
 
     DarSiguienteTres(){
         if(this.PosicionActual == 1){
             this.PosicionActual++;
-            return this.PersonaUno;
+            return this.PersonaDos;
         }
         if(this.PosicionActual == 2){
             this.PosicionActual++;
-            return this.PersonaDos;
+            return this.PersonaTres;
         }
         this.PosicionActual = 1;
-        return this.PersonaTres;
+        return this.PersonaUno;
     }
 
     DarSiguienteCuatro(){
         if(this.PosicionActual == 1){
             this.PosicionActual++;
-            return this.PersonaUno;
+            return this.PersonaDos;
         }
         if(this.PosicionActual == 2){
             this.PosicionActual++;
-            return this.PersonaDos;
+            return this.PersonaTres;
         }
         if(this.PosicionActual == 3){
             this.PosicionActual++;
-            return this.PersonaTres;
+            return this.PersonaCuatro;
         }
         this.PosicionActual = 1;
-        return this.PersonaCuatro;
+        return this.PersonaUno;
     }
 }
 

@@ -344,7 +344,7 @@ document.getElementById('buscarPartida').addEventListener('click', () => {
         const nombrePartida = partida.querySelector('strong').textContent.toLowerCase();
         const idPartida = partida.id.toLowerCase();
 
-        if (nombrePartida.includes(terminoBusqueda)|| idPartida.includes(terminoBusqueda)) {
+        if (nombrePartida.includes(terminoBusqueda) || idPartida.includes(terminoBusqueda)) {
             partida.removeAttribute('style');
         } else {
             partida.style.display = 'none';
@@ -388,33 +388,39 @@ function startRolling(number) {
     }, 3000);
 }
 
-let numDado=0;
+let numDado = 0;
+let numDadoAux = 0;
 
-async function tirarDado(){
-    try {
-        const idPartida = gameData.id;
-        const nombreJugador = gameData.yo;
-        document.getElementById('tirardado').style.display = 'none';
-        const response = await axios.post(urlServer+"/partida/tirarDado",{idPartida, nombreJugador});
-        console.log(response.data.resultado);
-        const random = response.data.resultado;
-        startRolling(random);
-    } catch (error) {
-        console.log("Hubo un problema al tirar el dado");
-    }
-}
 
 document.getElementById('tirardado').addEventListener('click', function (){
-    tirarDado();
+    document.getElementById('tirardado').style.display = 'none';
+    socket.emit('tirarDado', gameData['id'], gameData['yo']);
 });
 
-socket.on('dadoTirado', (data) => {
-    if(data.primero === gameData.yo)
+socket.on('observarNumero', (nombrePersona, numero) => {
+    console.log(nombrePersona, numero)
+    if(nombrePersona == gameData['yo'])
+        startRolling(numero);
+})
+
+socket.on('dadoTirado', (jugador) => {
+    if(jugador.primero == gameData.yo)
         document.getElementById('tirardado').style.display = 'block';
     else
         document.getElementById('tirardado').style.display = 'none';
 });
 
+socket.on('dadoTiradoJuego', (numero, nombreJugador, movimientos, siguiente) => {
+    startRolling(numero);
+    if(nombreJugador == gameData.yo)
+        numDado = 1;
+    if(movimientos['numero'] != undefined){
+        const numeroFicha = calcularNumeroDesdeServidor(movimientos['numero']);
+        const colorFicha = calcularColorDesdeServidor(movimientos['color']);
+        const nuevaPosicion = movePiezaEnRango(movimientos['destino'], 500, colorFicha, numeroFicha);
+        piezas[numeroFicha].pos = nuevaPosicion;
+    }
+});
 //MANEJO DE PIEZAS
 
 function generarCamino(posicion, pasos){
@@ -461,12 +467,85 @@ function placePieza(celdaId, colors, piezaId) {
     celda.appendChild(pieza);
     pieza.addEventListener('click', function () {
         if(numDado!==0){
-            let camino =generarCamino(piezas[piezaId].pos,numDado);
-            let nuevapos =movePiezaEnRango(camino,500,piezas[piezaId].color,piezaId);
-            piezas[piezaId].pos = nuevapos;
+            numDadoAux = numDado;
             numDado=0;
+            console.log(piezas[piezaId].pos, piezas[piezaId].color, piezaId);
+            moverPiezaServidor(piezas[piezaId].pos, piezas[piezaId].color, piezaId);
         }
     });
+}
+
+function moverPiezaServidor(posicionActual, color, piezaId){
+    console.log('mover 1')
+    const idPartida = gameData.id;
+    console.log('mover 2')
+    const nombreJugador = gameData.yo;
+    console.log('mover 3')
+    color = calcularColorHaciaServidor(color);
+    console.log('mover 4')
+    const numero = calcularNumeroHaciaServidor(piezaId);
+    console.log('mover 5')
+    socket.emit('moverFichaServidor', idPartida, nombreJugador, color, numero, posicionActual);
+    console.log('mover 6')
+}
+
+socket.on('moverFicha', (movimientos, siguiente) => {
+    if(movimientos != null){
+        movimientos.forEach(movimiento => {
+            console.log(movimientos);
+            const color = calcularColorDesdeServidor(movimiento['color']);
+            const numero = calcularNumeroDesdeServidor(movimiento['numero']);
+            const nuevaPosicion = movePiezaEnRango(movimiento['camino'], 500, color, numero);
+            console.log(color, numero, nuevaPosicion);
+            piezas[numero].pos = nuevaPosicion;
+        })
+    }
+    else
+        numDado = numDadoAux;
+    if(siguiente == gameData.yo && movimientos != null)
+        document.getElementById('tirardado').style.display = 'block';
+    else
+        document.getElementById('tirardado').style.display = 'none';
+});
+
+function calcularColorHaciaServidor(color){
+    if(color == '#ffffcc')
+        return 'amarillo';
+    if(color == '#ffcccc')
+        return 'rojo';
+    if(color == '#ccccff')
+        return 'azul';
+    return 'verde';
+}
+
+function calcularColorDesdeServidor(color){
+    if(color == 'amarillo')
+        return '#ffffcc';
+    if(color == 'rojo')
+        return '#ffcccc';
+    if(color == 'azul')
+        return '#ccccff';
+    return '#ccffcc';
+}
+
+function calcularNumeroHaciaServidor(numero){
+    if(numero <= 2)
+        return numero + 1;
+    if(numero >= 3 && numero <= 5)
+        return numero - 2;
+    if(numero >= 6 && numero <= 8)
+        return numero - 5;
+    return numero - 8;
+}
+
+function calcularNumeroDesdeServidor(numero){
+    if(numero <= 2)
+        return numero - 1;
+    if(numero >= 3 && numero <= 5)
+        return numero + 2;
+    if(numero >= 6 && numero <= 8)
+        return numero + 5;
+    return numero + 8;
 }
 
 function removePieza(celdaId) {
@@ -508,6 +587,7 @@ function removePieza(celdaId) {
 
 function movePiezaEnRango(rangoCasillas, intervalo,color,piezaId) {
     let index = 0;
+    console.log(rangoCasillas, intervalo,color,piezaId);
     const moveInterval = setInterval(() => {
         if (index < rangoCasillas.length) {
             if (index > 0) {

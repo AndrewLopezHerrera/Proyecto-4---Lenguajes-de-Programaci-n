@@ -21,13 +21,13 @@ class CasaAzul extends Casa{
     IngresarFicha(ficha){
         super.IngresarFicha(ficha);
         if(ficha.Numero == 1){
-            ficha.PosicionActual(106);
+            ficha.PosicionActual = 106;
         }
         if(ficha.Numero == 2){
-            ficha.PosicionActual(107);
+            ficha.PosicionActual = 107;
         }
         if(ficha.Numero == 3){
-            ficha.PosicionActual(108);
+            ficha.PosicionActual = 108;
         }
     }
 }

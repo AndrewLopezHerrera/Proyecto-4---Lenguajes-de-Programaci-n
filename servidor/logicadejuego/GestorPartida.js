@@ -95,20 +95,15 @@ class GestorPartida {
     TirarDado(idPartida, nombreJugador) {
         const partida = this.Partidas[idPartida];
         if (partida == undefined)
-            return null;
-        return partida.TirarDado(nombreJugador, this.io);
+            return;
+        partida.TirarDado(nombreJugador, this.io);
     }
 
-    MoverFicha(idPartida, color, numero, casillaActual) {
+    MoverFicha(idPartida, nombreJugador, color, numero, casillaActual) {
         const partida = this.Partidas[idPartida];
         if (partida == undefined)
-            return null;
-        
-        const resultado = partida.MoverFicha(color, numero, casillaActual);
-        if (resultado) {
-            this.io.to(idPartida).emit('fichaMovida', { color, numero, casillaActual });
-        }
-        return resultado;
+            return;
+        partida.MoverFicha(nombreJugador, color, numero, casillaActual, this.io);
     }
 
     MostrarGane(idPartida) {

@@ -21,13 +21,13 @@ class CasaAmarilla extends Casa{
     IngresarFicha(ficha){
         super.IngresarFicha(ficha);
         if(ficha.Numero == 1){
-            ficha.PosicionActual(100);
+            ficha.PosicionActual = 100;
         }
         if(ficha.Numero == 2){
-            ficha.PosicionActual(101);
+            ficha.PosicionActual = 101;
         }
         if(ficha.Numero == 3){
-            ficha.PosicionActual(102);
+            ficha.PosicionActual = 102;
         }
     }
 }
