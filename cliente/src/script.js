@@ -159,13 +159,13 @@ async function mostrarRanking(){
             const fila = document.createElement("tr");
             const celdaIndice = document.createElement("td");
             console.log(ranking);
-            celdaIndice.textContent = String(ranking['indice']);
+            celdaIndice.textContent = String(ranking['id']);
             fila.appendChild(celdaIndice);
             const celdaNombre = document.createElement("td");
-            celdaNombre.textContent = ranking['ganador'];
+            celdaNombre.textContent = ranking['creador'];
             fila.appendChild(celdaNombre);
             const celdaVictorias = document.createElement("td");
-            celdaVictorias.textContent = String(ranking['victorias']);
+            celdaVictorias.textContent = String(ranking['ganador']);
             fila.appendChild(celdaVictorias);
             document.querySelector('#rankingTable tbody').appendChild(fila);
         });

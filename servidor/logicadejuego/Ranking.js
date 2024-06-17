@@ -35,7 +35,7 @@ class Ranking {
   MostrarRanking() {
     return new Promise((resolve, reject) => {
       const query = `
-        CALL ObtenerGanadoresConMasVictorias()
+        CALL obtenerTodasPartidas()
       `;
       this.connection.query(query, (err, results) => {
         if (err) {
