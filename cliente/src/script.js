@@ -140,6 +140,7 @@ document.getElementById('cerrarEstadisticas').addEventListener('click', () => {
 async function mostrarRanking(){
     try {
         const response = await axios.get(urlServer + '/ranking');
+        document.querySelector('#rankingTable tbody').innerHTML='';
         response.data[0].forEach(ranking =>{
             const fila = document.createElement("tr");
             const celdaIndice = document.createElement("td");
@@ -152,7 +153,7 @@ async function mostrarRanking(){
             const celdaVictorias = document.createElement("td");
             celdaVictorias.textContent = String(ranking['victorias']);
             fila.appendChild(celdaVictorias);
-            document.getElementById('rankingTable').appendChild(fila);
+            document.querySelector('#rankingTable tbody').appendChild(fila);
         });
     } catch (error) {
         console.log('Error al mostrar ranking:', error);
