@@ -23,10 +23,7 @@ class Ranking {
   MostrarRanking() {
     return new Promise((resolve, reject) => {
       const query = `
-        SELECT ganador, COUNT(*) as partidas_ganadas
-        FROM partidas
-        GROUP BY ganador
-        ORDER BY partidas_ganadas DESC;
+        CALL ObtenerGanadoresConMasVictorias()
       `;
       this.connection.query(query, (err, results) => {
         if (err) {

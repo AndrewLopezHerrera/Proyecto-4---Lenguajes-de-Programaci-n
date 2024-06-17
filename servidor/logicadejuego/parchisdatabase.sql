@@ -9,6 +9,29 @@ CREATE TABLE partidas (
 );
 
 DELIMITER //
+
+CREATE PROCEDURE ObtenerGanadoresConMasVictorias()
+BEGIN
+    SET @ranking = 0;
+
+    SELECT 
+        @ranking := @ranking + 1 AS indice,
+        ganador,
+        victorias
+    FROM (
+        SELECT 
+            ganador, 
+            COUNT(*) AS victorias
+        FROM partidas
+        WHERE ganador IS NOT NULL
+        GROUP BY ganador
+        ORDER BY victorias DESC
+    ) AS subquery;
+END //
+
+DELIMITER ;
+
+DELIMITER //
 CREATE PROCEDURE guardarPartida(
   IN p_id
   VARCHAR(36),
