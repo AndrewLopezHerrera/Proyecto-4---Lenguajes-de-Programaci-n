@@ -40,6 +40,13 @@ const listaCasillas = [35,34,33,36,32,37,31,38,30,39,29,40,28,41,27,42,26,50,49,
     ,20,19,18,51,17,52,53,54,55,56,57,58,59,9,10,11,12,13,14,15,16,60,8,61,7,62,6,63,5,64,4,65,3,66,2,67,68,1];
 let pasilloCont=0;
 
+/**
+ * Crea y retorna un elemento HTML de tipo 'div' representando una celda del tablero.
+ * @param {string} celdaType Tipo de celda ('rojo', 'azul', 'amarillo', 'verde', 'casilla', 'projo', 'pverde', 'pamarillo', 'pazul', 'casa', 'centro').
+ * @param {number} rowIndex Índice de la fila en la que se encuentra la celda.
+ * @param {number} colIndex Índice de la columna en la que se encuentra la celda.
+ * @returns {HTMLDivElement} Elemento HTML de tipo 'div' que representa una celda del tablero.
+ */
 function createCelda(celdaType, rowIndex, colIndex) {
     const celda = document.createElement('div');
     celda.classList.add('celda');
@@ -97,6 +104,10 @@ function createCelda(celdaType, rowIndex, colIndex) {
     return celda;
 }
 
+
+/**
+ * Inicializa el tablero en el documento HTML, generando todas las celdas según el diseño de tablero predefinido.
+ */
 function inicializarTablero() {
     const tableroElement = document.getElementById('tablero');
     tableroElement.innerHTML = '';
@@ -136,6 +147,10 @@ document.getElementById('cerrarEstadisticas').addEventListener('click', () => {
 
 //RANKING
 
+/**
+ * Muestra el ranking de jugadores consultando la API del servidor y actualizando la tabla de ranking en el documento HTML.
+ * @returns {Promise<void>} resuelve después de actualizar la tabla de ranking.
+ */
 async function mostrarRanking(){
     try {
         const response = await axios.get(urlServer + '/ranking');
@@ -161,6 +176,10 @@ async function mostrarRanking(){
 
 //INICIACION
 
+/**
+ * Función principal que se ejecuta cuando el DOM está completamente cargado.
+ * Inicializa el tablero y configura los eventos y elementos necesarios en la página.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     inicializarTablero();
 });
@@ -214,6 +233,9 @@ document.getElementById('iniciosesion').addEventListener('click', () => {
     temporizadorPartidas = setInterval(mostrarPartidas, 3000);
 });
 
+/**
+ * Oculta todos los elementos con la clase CSS 'contenido' en el documento y detiene el temporizador de actualización de partidas.
+ */
 function esconderContenido() {
     clearInterval(temporizadorPartidas);
     const contentElements = document.querySelectorAll('.contenido');
@@ -224,6 +246,10 @@ function esconderContenido() {
 
 //MANEJO DE PARTIDAS
 
+/**
+ * Muestra la lista de partidas disponibles consultando la API del servidor y actualizando la lista en el documento HTML.
+ * @returns {Promise<void>} resuelve después de actualizar la lista de partidas.
+ */
 async function mostrarPartidas() {
     const partidas = await mostrarPartidasServidor();
     const partidasListElement = document.getElementById('partidasList');
@@ -278,8 +304,8 @@ async function mostrarPartidas() {
 }
 
 /**
- * 
- * @returns {[]}
+ * Consulta al servidor para obtener la lista de partidas disponibles.
+ * @returns {Promise<Array<Object>>} devuelve un array de objetos representando las partidas disponibles.
  */
 async function mostrarPartidasServidor(){
     try {
@@ -291,6 +317,10 @@ async function mostrarPartidasServidor(){
     }
 }
 
+/**
+ * Agrega una nueva partida al servidor con la cantidad de jugadores especificada y actualiza la información del juego en el cliente.
+ * @returns {Promise<void>} resuelve después de agregar la partida.
+ */
 async function agregarPartida(){
     const cantidadPersonas = parseInt(document.getElementById("numeroJugadores").value);
     try {
@@ -316,18 +346,26 @@ document.getElementById('salirPartida').addEventListener('click', () => {
     document.getElementById('partidasContainer').style.display = 'block';
 });
 
+/**
+ * Maneja la salida del jugador de la partida actual, enviando la solicitud al servidor para actualizar el estado de la partida.
+ * @returns {Promise<void>} resuelve después de que el jugador sale de la partida.
+ */
 async function salirPartida(){
     try {
         const idPartida= gameData.id;
         const nombreJugador= gameData.creador;
         const response = await axios.post(urlServer+"/partida/salir",{idPartida, nombreJugador});
+        inicializarTablero();
     } catch (error) {
         console.log("No se logro cerra partida")
     }
 }
 
-
-
+/**
+ * Permite que un jugador se una a una partida existente especificada por su ID.
+ * @param {string} idPartida ID de la partida a la que el jugador desea unirse.
+ * @returns {Promise<void>} resuelve después de que el jugador se une a la partida.
+ */
 window.unirsePartida = async function(idPartida){
     const nombreJugador = document.getElementById('nomUsuario').value;
     try {
@@ -349,6 +387,10 @@ socket.on('jugadorUnido', (data) => {
     actualizarJugadores(jugadores);
 });
 
+/**
+ * Actualiza la interfaz de usuario con los detalles de los jugadores que están actualmente en la partida.
+ * @param {Object} jugadores Objeto que contiene los detalles de los jugadores en la partida.
+ */
 function actualizarJugadores(jugadores){
     document.getElementById('jugadorUno').innerText = jugadores['jugadorUno'];
     document.getElementById('circuloUno').innerText = jugadores['jugadorUno'][0];
@@ -394,6 +436,10 @@ document.getElementById('buscarPartida').addEventListener('click', () => {
 
 const dado = document.getElementById('dado');
 
+/**
+ * Rota visualmente el dado para mostrar un número específico.
+ * @param {number} number Número del dado que se mostrará.
+ */
 function rollDado(number) {
     let rotations = {
         1: [0, 0],
@@ -407,6 +453,11 @@ function rollDado(number) {
     let [x, y] = rotations[number];
     dado.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
 }
+
+/**
+ * Inicia la animación de tirar el dado en la interfaz de usuario, simulando el movimiento del dado.
+ * @param {number} number Número del dado que se mostrará al finalizar la animación.
+ */
 function startRolling(number) {
     let randomX = 0;
     let randomY = 0;
@@ -461,6 +512,14 @@ socket.on('dadoTiradoJuego', (numero, nombreJugador, movimientos, siguiente) => 
 });
 //MANEJO DE PIEZAS
 
+/**
+ * Genera una lista de posiciones consecutivas a partir de una posición inicial y un número de pasos.
+ * Si la posición inicial es una de las casillas especiales (100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111),
+ * se realiza un ajuste correspondiente a una casilla diferente.
+ * @param {string} posicion - La posición inicial en formato 'CasillaX' donde X es un número.
+ * @param {number} pasos - El número de pasos a generar desde la posición inicial.
+ * @returns {string[]} Una lista de posiciones consecutivas en formato 'CasillaX', donde X es un número.
+ */
 function generarCamino(posicion, pasos){
     let cadena = posicion;
     let lista = [];
@@ -482,6 +541,13 @@ function generarCamino(posicion, pasos){
     return lista.filter(elemento => elemento !== 'Casilla0');
 }
 
+/**
+ * Coloca una nueva pieza en una celda específica del tablero, actualizando colores y comportamiento de las piezas existentes.
+ * Si la celda ya contiene piezas, se agrega la nueva pieza junto con los colores anteriores.
+ * @param {string} celdaId - ID de la celda donde se colocará la pieza.
+ * @param {string} colors - Color de la nueva pieza en formato hexadecimal o nombre de color.
+ * @param {number} piezaId - ID único de la pieza a colocar.
+ */
 function placePieza(celdaId, colors, piezaId) {
     const celda = document.getElementById(celdaId);
     const existingPiezas = celda.querySelectorAll('.pieza');
@@ -513,6 +579,12 @@ function placePieza(celdaId, colors, piezaId) {
     });
 }
 
+/**
+ * Envia una solicitud al servidor para mover una pieza en el juego actual.
+ * @param {string} posicionActual - La posición actual de la pieza a mover.
+ * @param {string} color - El color de la pieza en formato legible para el servidor.
+ * @param {number} piezaId - El identificador único de la pieza a mover.
+ */
 function moverPiezaServidor(posicionActual, color, piezaId){
     console.log('mover 1')
     const idPartida = gameData.id;
@@ -546,6 +618,11 @@ socket.on('moverFicha', (movimientos, siguiente) => {
         document.getElementById('tirardado').style.display = 'none';
 });
 
+/**
+ * Convierte un color en formato hexadecimal a su equivalente legible para el servidor.
+ * @param {string} color - Color en formato hexadecimal (#RRGGBB).
+ * @returns {string} Color en formato legible para el servidor ('amarillo', 'rojo', 'azul' o 'verde').
+ */
 function calcularColorHaciaServidor(color){
     console.log(color);
     if(color == '#ffffcc')
@@ -557,6 +634,11 @@ function calcularColorHaciaServidor(color){
     return 'verde';
 }
 
+/**
+ * Convierte un color en formato legible para el servidor a su equivalente en formato hexadecimal.
+ * @param {string} color - Color en formato legible para el servidor ('amarillo', 'rojo', 'azul' o 'verde').
+ * @returns {string} Color en formato hexadecimal (#RRGGBB).
+ */
 function calcularColorDesdeServidor(color){
     if(color == 'amarillo')
         return '#ffffcc';
@@ -567,6 +649,11 @@ function calcularColorDesdeServidor(color){
     return '#ccffcc';
 }
 
+/**
+ * Convierte un número de identificación de pieza al formato esperado por el servidor.
+ * @param {number} numero - Número de identificación de la pieza.
+ * @returns {number} Número de identificación ajustado para el servidor.
+ */
 function calcularNumeroHaciaServidor(numero){
     if(numero <= 2)
         return numero + 1;
@@ -577,6 +664,11 @@ function calcularNumeroHaciaServidor(numero){
     return numero - 8;
 }
 
+/**
+ * Convierte un número de identificación de pieza desde el formato recibido del servidor.
+ * @param {number} numero - Número de identificación de la pieza en formato servidor.
+ * @returns {number} Número de identificación ajustado para la aplicación cliente.
+ */
 function calcularNumeroDesdeServidor(numero){
     if(numero <= 2)
         return numero - 1;
@@ -587,6 +679,10 @@ function calcularNumeroDesdeServidor(numero){
     return numero + 8;
 }
 
+/**
+ * Remueve la pieza de una celda específica, restaurando su estado visual original si es necesario.
+ * @param {string} celdaId - ID de la celda de la cual se removerá la pieza.
+ */
 function removePieza(celdaId) {
     const celda = document.getElementById(celdaId);
     if (celda) {
@@ -624,6 +720,14 @@ function removePieza(celdaId) {
     }
 }
 
+/**
+ * Mueve una pieza en un rango específico de casillas a intervalos regulares.
+ * @param {Array.<string>} rangoCasillas - Arreglo de IDs de las casillas por donde se moverá la pieza.
+ * @param {number} intervalo - Intervalo de tiempo en milisegundos entre cada movimiento de casilla.
+ * @param {string} color - Color de la pieza que se moverá.
+ * @param {string} piezaId - Identificador de la pieza que se moverá.
+ * @returns {string} - ID de la última casilla a la que se movió la pieza.
+ */
 function movePiezaEnRango(rangoCasillas, intervalo,color,piezaId) {
     let index = 0;
     console.log(rangoCasillas, intervalo,color,piezaId);
