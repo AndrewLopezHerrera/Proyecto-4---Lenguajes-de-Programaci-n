@@ -1,4 +1,4 @@
-/** https://servidorparchistecgame.loca.lt */
+/** https://servidorparchistec.loca.lt */
 
 const express = require('express');
 const http = require('http');
@@ -11,18 +11,19 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: ['http://localhost:3000', 'https://parchistecgame.loca.lt'],
+        path: '/socket.io', // Asegúrate de que esta ruta coincide con la configuración en el cliente
+        origin: ['http://localhost:3000', 'https://parchistec.loca.lt', 'wss://parchistec.loca.lt:3000/ws'],
         methods: ['GET', 'POST'],
         allowedHeaders: ['Content-Type'],
-        credentials: true
+        credentials: false
     }
 });
 
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://parchistecgame.loca.lt'],
+    origin: ['http://localhost:3000', 'https://parchistec.loca.lt', 'wss://parchistec.loca.lt:3000/ws'],
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
-    credentials: true,
+    credentials: false,
     optionsSuccessStatus: 200
 };
 

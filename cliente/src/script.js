@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 
-const urlServer = "http://localhost:4000"
+const urlServer = "https://servidorparchistec.loca.lt/"
 const socket = io(urlServer, {
+    path: '/socket.io', // Asegúrate de que esta ruta coincide con la configuración en el servidor
     transports: ['websocket'],
     secure: true,
-    rejectUnauthorized: false
-});
+  });
 let temporizadorPartidas = null;
 let gameData=null;
 
