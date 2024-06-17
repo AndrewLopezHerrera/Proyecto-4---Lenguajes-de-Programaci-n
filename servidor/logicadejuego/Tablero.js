@@ -6,7 +6,14 @@ const CasaVerde = require('./CasaVerde');
 const Ficha = require('./Ficha');
 const Casa = require('./Casa');
 
+/**
+ * Esta clase representa el tablero del parchis.
+ * @author Mynell Myers y Andrew López
+ */
 class Tablero{
+    /**
+     * El método constructor.
+     */
     constructor(){
         /**@type {Object.<string, string>} */
         this.Casillas = {};
@@ -26,6 +33,9 @@ class Tablero{
         this.Casillas['Casilla76Amarillo'].Espacios = Array(4);
     }
 
+    /**
+     * Crea las casillas del tablero.
+     */
     CrearCasillas(){
         for(var numero = 1; numero < 69; numero++){
             if(numero == 5 || numero == 22 || numero == 39 || numero == 56
@@ -38,6 +48,9 @@ class Tablero{
         }
     }
 
+    /**
+     * Crea los pasillos del tablero.
+     */
     CrearPasillos(){
         for(var numero = 18; numero <= 25; numero++)
             this.Casillas['Casilla' + numero + 'Azul'] = new Casilla(numero, true);
@@ -50,12 +63,12 @@ class Tablero{
     }
 
     /**
-     * 
-     * @param {string} color 
-     * @param {number} numero 
-     * @param {string} casillaActual 
-     * @param {number} cantidadEspacios 
-     * @returns {Object[]}
+     * Envia a mover la ficha seleccionada por un jugador en específico.
+     * @param {string} color El color de la ficha.
+     * @param {number} numero El número de la ficha.
+     * @param {string} casillaActual La casilla en la que se encuentra la casilla.
+     * @param {number} cantidadEspacios La cantidad de espacios que debe moverse la ficha.
+     * @returns {Object[]} Una lista con al información de las fichas: color, numero y camino recorrido.
      */
     MoverFicha(color, numero, casillaActual, cantidadEspacios){
         const casilla = this.Casillas[casillaActual];
@@ -76,10 +89,10 @@ class Tablero{
     }
 
     /**
-     * 
-     * @param {Ficha} ficha 
-     * @param {Casilla} casilla
-     * @param {number} espacios
+     * Mueve las fichas amarillas.
+     * @param {Ficha} ficha La ficha seleccionada.
+     * @param {Casilla} casilla La casilla en la que se encuentra la ficha
+     * @param {number} espacios La cantidad de espacios a moverse.
      */
     MoverFichaAmarilla(ficha, casilla, espacios){
         const posicionActual = ficha.PosicionActual;
@@ -97,6 +110,12 @@ class Tablero{
         return this.EnviarInformacion(ficha, camino);
     }
 
+    /**
+     * Mueve las fichas rojas.
+     * @param {Ficha} ficha La ficha seleccionada.
+     * @param {Casilla} casilla La casilla en la que se encuentra la ficha
+     * @param {number} espacios La cantidad de espacios a moverse.
+     */
     MoverFichaRojo(ficha, casilla, nombreCasilla, espacios){
         const posicionActual = ficha.PosicionActual;
         const camino = this.BuscarBloqueos(posicionActual, espacios, nombreCasilla, 34, 'rojo');
@@ -113,6 +132,12 @@ class Tablero{
         return this.EnviarInformacion(ficha, camino);
     }
 
+    /**
+     * Mueve las fichas azules.
+     * @param {Ficha} ficha La ficha seleccionada.
+     * @param {Casilla} casilla La casilla en la que se encuentra la ficha
+     * @param {number} espacios La cantidad de espacios a moverse.
+     */
     MoverFichaAzul(ficha, casilla, nombreCasilla, espacios){
         const posicionActual = ficha.PosicionActual;
         const casillaDestino = this.BuscarBloqueos(posicionActual, espacios, nombreCasilla, 17, 'azul')
@@ -129,6 +154,12 @@ class Tablero{
         return this.EnviarInformacion(ficha, camino);
     }
 
+    /**
+     * Mueve las fichas verde.
+     * @param {Ficha} ficha La ficha seleccionada.
+     * @param {Casilla} casilla La casilla en la que se encuentra la ficha
+     * @param {number} espacios La cantidad de espacios a moverse.
+     */
     MoverFichaVerde(ficha, casilla, nombreCasilla, espacios){
         const posicionActual = ficha.PosicionActual;
         const casillaDestino = this.BuscarBloqueos(posicionActual, espacios, nombreCasilla, 51, 'rojo')
@@ -145,6 +176,12 @@ class Tablero{
         return this.EnviarInformacion(ficha, camino);
     }
 
+    /**
+     * Saca una ficha de la casa de esta.
+     * @param {string} color El color de la ficha.
+     * @param {number} numero El número de la ficha.
+     * @returns {Ficha} La ficha que ha sido extrída de la casa.
+     */
     SacarFicha(color, numero){
         var ficha = null;
         if(color == 'verde')
@@ -163,9 +200,9 @@ class Tablero{
     }
 
     /**
-     * 
-     * @param {Ficha} ficha 
-     * @returns 
+     * Ingresa una ficha a la casa que le corresponde.
+     * @param {Ficha} ficha La ficha que se desea ingresar.
+     * @returns {null} Envia nulo porque no se puede avanzar más.
      */
     IngresarFicha(ficha){
         if(ficha.Color == 'verde')
@@ -180,10 +217,10 @@ class Tablero{
     }
 
     /**
-     * 
-     * @param {Ficha} ficha 
-     * @param {Casilla} casilla 
-     * @returns 
+     * Verifica si la ficha movida se comió a otra ficha en el proceso.
+     * @param {Ficha} ficha La ficha que se movió.
+     * @param {Casilla} casilla la casilla en la que se desea insertar la ficha.
+     * @returns {Object[]} La lista de las fichas que se movieron.
      */
     VerificarResultadoCasilla(ficha, casilla){
         const fichaDevuelta = casilla.InsertarFicha(ficha);
@@ -195,9 +232,11 @@ class Tablero{
     }
 
     /**
-     * 
-     * @param {Ficha} fichaMovida 
-     * @param {Ficha} fichaDevuelta 
+     * Arma la información cuando la ficha movida se comió otra ficha.
+     * @param {Ficha} fichaMovida La ficha que se movió,
+     * @param {String[]} camino El camino recorrido por la ficha que se movió.
+     * @param {Ficha} fichaDevuelta La ficha que se comió la otra ficha.
+     * @returns {Object[]} La lista con la información de los movimientos.
      */
     EnviarInformacion(fichaMovida, camino, fichaDevuelta){
         const fichaUno = {};
@@ -209,11 +248,17 @@ class Tablero{
         fichaDos['color'] = fichaDevuelta.Color;
         fichaDos['numero'] = fichaDevuelta.Numero;
         fichaDos['posicion'] = fichaDevuelta.PosicionActual;
-        fichaDos['camino'] = fichaDevuelta.PosicionActual;
+        fichaDos['camino'] = ['Casilla' + fichaMovida.PosicionActual, 'Casilla' + fichaDevuelta.PosicionActual];
         const fichas = [fichaUno, fichaDos];
         return fichas;
     }
 
+    /**
+     * Arma la información cuando la ficha se ha movido.
+     * @param {Ficha} fichaMovida La ficha que se movió,
+     * @param {String[]} camino El camino recorrido por la ficha que se movió.
+     * @returns {Object[]} La lista con la información de los movimientos.
+     */
     EnviarInformacion(fichaMovida, camino){
         const fichaUno = {};
         fichaUno['color'] = fichaMovida.Color;
@@ -225,8 +270,8 @@ class Tablero{
     }
 
     /**
-     * 
-     * @param {Ficha} ficha  
+     * Ingresa la ficha a la casa cuando ha sido comida por otra ficha.
+     * @param {Ficha} ficha La ficha que se ha movido.
      */
     DevolverFicha(ficha){
         if(ficha.Color == 'azul')
@@ -240,11 +285,11 @@ class Tablero{
     }
 
     /**
-     * 
-     * @param {string} color 
-     * @param {number} numero 
-     * @param {Casilla} casillaActual 
-     * @returns {Ficha}
+     * Selecciona una ficha según las características de esta.
+     * @param {string} color El color de la ficha.
+     * @param {number} numero El número de la ficha.
+     * @param {Casilla} casillaActual La casilla en la que se encuentra la ficha.
+     * @returns {Ficha} La ficha que se ha movido.
      */
     SeleccionarFicha(color, numero, casillaActual){
         const fichas = casillaActual.Espacios;
@@ -256,10 +301,10 @@ class Tablero{
     }
 
     /**
-     * 
-     * @param {number} posicionActual 
-     * @param {number} cantidadEspacios 
-     * @returns {string[]}
+     * Busca los bloqueos que se encuentran cuando se mueve una ficha amarilla.
+     * @param {number} posicionActual La posición actual de la ficha.
+     * @param {number} cantidadEspacios La cantidad de espacios que se debe mover una ficha.
+     * @returns {string[]} El camino que recorre la ficha amarilla.
      */
     BuscarBloqueosAmarillo(posicionActual, cantidadEspacios){
         var posicionFinal = posicionActual + espacios;
@@ -287,13 +332,13 @@ class Tablero{
     }
 
     /**
-     * 
-     * @param {number} posicionActual 
-     * @param {number} cantidadEspacios 
-     * @param {string} nombreCasilla 
-     * @param {number} entradaPasillo 
-     * @param {string} color 
-     * @returns {string[]}
+     * Busca los bloqueos que están cuando se mueve otra ficha que no sean las amarilla.
+     * @param {number} posicionActual La posición en la que se encuentra las fichas.
+     * @param {number} cantidadEspacios La cantidad que se debe mover la ficha.
+     * @param {string} nombreCasilla El nombre de la casilla actual.
+     * @param {number} entradaPasillo La entrada del pasillo según el color.
+     * @param {string} color El color de la ficha.
+     * @returns {string[]} El camino que se genera.
      */
     BuscarBloqueos(posicionActual, cantidadEspacios, nombreCasilla, entradaPasillo, color){
         var entrarPasillo = false;

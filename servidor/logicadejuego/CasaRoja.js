@@ -1,32 +1,56 @@
 const Casa = require('./Casa');
 const Ficha = require('./Ficha');
 
-class CasaRoja extends Casa{
-    constructor(){
+/**
+ * @class CasaRoja
+ * @brief Clase que representa la casa de un jugador con fichas rojas.
+ * @extends Casa
+ * @author Mynell Myers y Andrew López
+ */
+class CasaRoja extends Casa {
+    /**
+     * @brief Constructor de la clase CasaRoja.
+     */
+    constructor() {
         super();
-        /**@type {Ficha}*/
+        /**
+         * @brief Ficha uno en la casa, de color rojo.
+         * @type {Ficha}
+         */
         this.FichaUno = new Ficha('rojo', 1, 103);
-        /**@type {Ficha}*/
+
+        /**
+         * @brief Ficha dos en la casa, de color rojo.
+         * @type {Ficha}
+         */
         this.FichaDos = new Ficha('rojo', 2, 104);
-        /**@type {Ficha}*/
+
+        /**
+         * @brief Ficha tres en la casa, de color rojo.
+         * @type {Ficha}
+         */
         this.FichaTres = new Ficha('rojo', 3, 105);
-        /**@type {number} */
+
+        /**
+         * @brief Número de casilla de salida para las fichas de la casa roja.
+         * @type {number}
+         */
         this.CasillaSalida = 39;
     }
 
     /**
-     * 
-     * @param {Ficha} ficha 
+     * @brief Ingresa una ficha a la casa roja.
+     * @param {Ficha} ficha - La ficha a ingresar.
      */
-    IngresarFicha(ficha){
+    IngresarFicha(ficha) {
         super.IngresarFicha(ficha);
-        if(ficha.Numero == 1){
+        if (ficha.Numero == 1) {
             ficha.PosicionActual = 103;
         }
-        if(ficha.Numero == 2){
+        if (ficha.Numero == 2) {
             ficha.PosicionActual = 104;
         }
-        if(ficha.Numero == 3){
+        if (ficha.Numero == 3) {
             ficha.PosicionActual = 105;
         }
     }

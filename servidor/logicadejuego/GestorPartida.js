@@ -5,6 +5,10 @@ const PartidaTresJugadores = require("./PartidaTresJugadores");
 const Ranking = require("./Ranking");
 const Jugador = require("./Jugador");
 
+/**
+ * Esta clase administra todas las partidas del juego.
+ * @author Mynell Myers y Andrew López
+ */
 class GestorPartida {
     /**
      * Constructor de la clase GestorPartida
@@ -17,6 +21,10 @@ class GestorPartida {
         this.io = io;
     }
 
+    /**
+     * Envia las partidas creadas que no han sido iniciadas.
+     * @returns La lista de partidas que existen.
+     */
     MostrarPartidas() {
         const partidasEncontradas = [];
         const partidas = Object.values(this.Partidas);
@@ -39,6 +47,12 @@ class GestorPartida {
         return partidasEncontradas;
     }
 
+    /**
+     * Crea una partida nueva.
+     * @param {string} nombreJugador El nombre del jugador de la partida.
+     * @param {string} cantidadPersonas La cantidad de jugadores de la partida.
+     * @returns {Object[]} La lista de las partidas disponibles.
+     */
     CrearPartida(nombreJugador, cantidadPersonas) {
         let partida = null;
         if (cantidadPersonas == 2)
@@ -54,9 +68,9 @@ class GestorPartida {
     }
 
     /**
-     * 
-     * @param {Partida} partida 
-     * @returns 
+     * Crea la información de la partida.
+     * @param {Partida} partida La partida a la que se le desea extraer la infomación.
+     * @returns {Object<string, string}
      */
     CrearInformacion(partida) {
         const informacionPartida = {};
@@ -67,6 +81,12 @@ class GestorPartida {
         return informacionPartida;
     }
 
+    /**
+     * Saca de la partida a un jugador de una partida en particular.
+     * @param {string} idPartida El id de la partida de la que se desea sacar la persona.
+     * @param {string} nombreJugador El nombre del jugador que se desea salir.
+     * @returns {null} Devuelve null si la partida no existe.
+     */
     SalirPartida(idPartida, nombreJugador) {
         const partida = this.Partidas[idPartida];
         if (partida == undefined)
@@ -80,6 +100,12 @@ class GestorPartida {
         }
     }
 
+    /**
+     * Une a un jugador a una partida con el identificador indicado.
+     * @param {string} idPartida El id de la partida.
+     * @param {*} nombreJugador El nombre del jugador que desea unirse.
+     * @returns {Object} La información de la partida a la que se unió.
+     */
     UnirsePartida(idPartida, nombreJugador) {
         const partida = this.Partidas[idPartida];
         if (partida == undefined)
@@ -92,6 +118,12 @@ class GestorPartida {
         return resultado;
     }
 
+    /**
+     * Este método envía a tirar el dado en la partida indicada.
+     * @param {string} idPartida El identificador de la partida.
+     * @param {string} nombreJugador El nombre del jugador que tira la partida.
+     * @returns {undefined} Nada.
+     */
     TirarDado(idPartida, nombreJugador) {
         const partida = this.Partidas[idPartida];
         if (partida == undefined)
@@ -99,6 +131,15 @@ class GestorPartida {
         partida.TirarDado(nombreJugador, this.io);
     }
 
+    /**
+     * Mueve la ficha que ha indicado el jugador.
+     * @param {string} idPartida El id de la partida
+     * @param {string} nombreJugador El nombre del jugador que mueve la ficha.
+     * @param {string} color El color de la ficha a mover.
+     * @param {number} numero El número de la ficha a mover.
+     * @param {string} casillaActual La casilla actual en la que se encuentra la ficha.
+     * @returns {undefined} Nada.
+     */
     MoverFicha(idPartida, nombreJugador, color, numero, casillaActual) {
         const partida = this.Partidas[idPartida];
         if (partida == undefined)
@@ -106,6 +147,11 @@ class GestorPartida {
         partida.MoverFicha(nombreJugador, color, numero, casillaActual, this.io);
     }
 
+    /**
+     * Este método envía al ganador de la partida.
+     * @param {string} idPartida El id de la partida.
+     * @returns El ganador de la partida.
+     */
     MostrarGane(idPartida) {
         const partida = this.Partidas[idPartida];
         if (partida == undefined)
@@ -119,6 +165,11 @@ class GestorPartida {
         return ganador;
     }
 
+    /**
+     * Envia las estadísticas del juego.
+     * @param {string} idPartida El id de la partida.
+     * @returns {Object} Información de la estadística.
+     */
     MostrarEstadisticas(idPartida) {
         const partida = this.Partidas[idPartida];
         if (partida == undefined)
@@ -141,9 +192,9 @@ class GestorPartida {
     }
 
     /**
-     * 
-     * @param {Partida} partida 
-     * @param {string} ganador
+     * Guarda la partida que ha sido finalizada.
+     * @param {Partida} partida El id de la partida.
+     * @param {string} ganador El ganador de la partida.
      */
     GuardarPartida(partida, ganador) {
         partida.EtapaJuego = false;
@@ -155,6 +206,10 @@ class GestorPartida {
         }
     }
 
+    /**
+     * Muestra los datos del ranking.
+     * @returns Los datos del ranking
+     */
     MostrarRanking() {
         return this.RankingPartidas.MostrarRanking();
     }
